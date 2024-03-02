@@ -1,7 +1,11 @@
-@tailwind base;
+  @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+input{
+  @apply w-[400px] border border-gray-200 py-2 px-6 bg-zinc-100/40;
+}
+/*
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -30,4 +34,4 @@ body {
   .text-balance {
     text-wrap: balance;
   }
-}
+}  */
