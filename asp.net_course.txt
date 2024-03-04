@@ -1,0 +1,50 @@
+
+ASP .Net Core
+
+
+LinQ  (1.5 to 2 Days)
+https://www.youtube.com/playlist?list=PLaFzfwmPR7_IZuwiT6nqcvNEhKl_Mg19A
+
+
+ASP.net Core (25 days)
+https://www.youtube.com/playlist?list=PL18HZjtdIA4Al-wYHC-i2TA-lgXLvHVmB
+
+(All basics of .net will be covered in this)
+
+jquery- Ajax (2 to 2:30 hours)
+https://www.tutorialspoint.com/jquery/index.htm
+
+(Topics to be covered under this)
+	- Home
+	- Overview
+	- Basics
+	- Syntax
+	- Selector
+	- Events
+	- Attribute
+	- Ajax
+	- https://www.tutorialspoint.com/jquery/ajax-jquery-ajax.htm
+
+- https://hackersandslackers.com/making-ajax-calls-with-jquery/
+ (api calls using ajax)
+
+Automapper in .net core (1:30 Hours)
+https://www.freecodespot.com/blog/how-to-use-automapper-in-asp-net-core-6-0/
+
+https://www.c-sharpcorner.com/article/automapper-in-net-6-web-api/
+
+
+GraphQL with .Net Core (1.5 - 2 days)
+https://www.udemy.com/course/learn-graphql-with-net-core-for-absolute-beginners/
+
+(45mins to 1 hour)
+Stored Procedure
+https://youtu.be/MSbzErdcb6g?si=wkpa5v7LozkrjamQ
+Trigger
+https://www.youtube.com/watch?v=TtgH6NNDC8c
+View
+https://youtu.be/fsJDbjHv8uY?si=E26zXH-LykhR2K6i
+Case
+https://youtu.be/WkNHHcDD30k?si=djrFQcGTQ6v4Nksc 
+
+
