@@ -1,9 +1,37 @@
-import Image from "next/image";
+//import Image from "next/image";
+//import Link from 'next/link';
+'use client'
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router=useRouter();
+  // const handleclick=(name)=>{
+  //   router.push(name)
+  // }
+  //in button onclick={()=>handleclick('./login)}
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
+    <main >
+      <div><h1>home page</h1></div>
+      <br/>
+      <Link href='/login'>go to login page</Link>
+      <br/>
+      <Link href='/aboutus'>go to about us page</Link>
+      <br/>
+      <br/>
+      <div className="button">
+       <button onClick={()=>router.push('/login')}>go to login page</button>
+       </div><br/>
+       <div className="button">
+       <button onClick={()=>router.push('/aboutus')}>go to about us page</button>
+      </div>
+   
+    </main>
+  );
+}
+//className="flex min-h-screen flex-col items-center justify-between p-24"
+/*
+<div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
         <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
           Get started by editing&nbsp;
           <code className="font-mono font-bold">src/app/page.tsx</code>
@@ -108,6 +136,4 @@ export default function Home() {
           </p>
         </a>
       </div>
-    </main>
-  );
-}
+*/ 

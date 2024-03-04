@@ -1,0 +1,26 @@
+
+.menu{
+    display: flex;
+   flex-direction: column;
+    color: brown;
+}
+.menu li{
+    margin-left: 25px;
+    list-style-type: disc;
+}
+
+.menu li a{
+    text-decoration: none;
+}
+.menu h4{
+    margin: 0;
+}
+
+.heading{
+    color: orange;
+    text-align: center;
+    margin-top: 50px;
+}
+
+
+
