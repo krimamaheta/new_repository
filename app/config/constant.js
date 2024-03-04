@@ -1,0 +1,1 @@
+export const API_BASE=process.env.NODE_ENV=='development'?"www.dev.api.com":"www.dev.api.com"
