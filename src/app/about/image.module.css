@@ -1,0 +1,43 @@
+
+  .image_container{
+    position: relative; 
+    
+    /* left: 0; */
+    padding: 2rem 2rem;
+    width: 100%; 
+    height: calc(100% - 60px); 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    padding: 0 10px; 
+    box-sizing: border-box; 
+    overflow: auto; 
+  }
+  
+  .image_container img {
+    max-width: calc(100% - 80px); /* Adjusted for left and right padding */
+  height: auto;
+  border-radius: 0%;
+  padding: 20px 40px; /* 20px top and bottom padding, 40px left and right padding */
+  box-shadow: none; 
+  } 
+  
+
+  .grid_container{
+    
+  }
+
+  
+
+  .homeimage1{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
+  .carouselItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

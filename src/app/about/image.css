@@ -1,0 +1,19 @@
+
+  .image-container {
+    position: fixed; /* Fixed position to cover the whole page */
+    top: 60px; /* Position from the top (adjust according to your navigation bar height) */
+    left: 0; /* Position from the left */
+    width: 100%; /* Cover the whole width of the page */
+    height: calc(100% - 60px); /* Cover the remaining height of the page after considering the navigation bar */
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    padding: 0 10px; /* 10px padding on left and right */
+    box-sizing: border-box; /* Include padding in the width calculation */
+    overflow: auto; /* Enable scrolling if the content overflows the container */
+  }
+  
+  .image-container img {
+    max-width: calc(100% - 20px); /* Calculate the maximum width with padding subtracted */
+    height: auto; /* Maintain aspect ratio */
+  }

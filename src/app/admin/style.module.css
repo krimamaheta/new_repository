@@ -1,0 +1,164 @@
+.page {
+    height: 100%;
+    margin: 0;
+    
+}
+
+.page {
+    width: 100vh;
+  /* Corrected from width: 100vh; */
+}
+
+.container {
+    width: 100vw;
+  
+}
+
+.sidebar{
+    height: 100%;
+    width: 250px;
+    background-color:#f5e9e1;
+}
+.sidebarlist{
+    height: auto;
+    padding: 0%;
+    width: 100%;
+    
+   
+}
+
+.sidebarlist .row{
+    width: 100%;
+    height: 90px;
+    border: 1px solid brown;
+    list-style-type:none;
+    margin: 0%;
+    display: flex;
+    flex-direction: row;
+    color: #b04d1f;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.sidebarlist .row:hover{
+    cursor: pointer;
+    background-color: antiquewhite;
+}
+.row .icon{
+    flex:30%;
+    display: grid;
+    place-items: center;
+}
+.row .title{
+    flex:70%;
+}
+.sidebarlist #active{
+    background-color: antiquewhite;
+}
+.searchContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Spread items evenly */
+    padding: 10px;
+    background-color: #f5e9e1;
+    border-top: 1px solid brown; /* Add border to separate search bar from list */
+}
+
+.searchContainer input {
+    flex: 1;
+    
+    padding: 8px; /* Increase padding for better input appearance */
+    margin: 0 10px; /* Add margin to both sides of the input for spacing */
+    border: none; /* Remove default input border */
+    outline: none; /* Remove default input outline */
+    border-radius: 5px; /* Add border-radius for rounded corners */
+    background-color: #ffffff; /* Input background color */
+}
+
+.searchContainer .searchIcon {
+    cursor: pointer;
+    margin-right: 30px; /* Add margin to the right of the search icon for spacing */
+     /* Increase padding for better icon appearance */
+    border-radius: 5px; /* Add border-radius for rounded corners */
+    background-color: #cd825f; /* Background color for the search icon */
+    color: #ffffff; /* Text color for the search icon */
+  
+}
+
+.search1{
+    margin-left: 10rem;
+}
+
+.search2{
+    margin-left: 10rem;
+}
+
+.heading1{
+    color: #b04d1f;
+    margin-left: 1rem;
+}
+
+.dash{
+    display: flex;
+    flex-direction: column;
+}
+
+.b1{
+   
+    margin-top: 25px;
+    padding: 0%;
+    
+    border-radius: 12px;
+    background-color: #d28058; /* Green */
+    border: none;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+.m2{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    
+}
+.b3{
+     
+    border-radius: 12px;
+    background-color: #d28058; /* Green */
+    border: none;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 8px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.table1 {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .th1
+  {
+    padding: 8px; 
+  } 
+  
+  .td1 {
+    padding: 8px; /* Adjust the value as needed */
+  }
+  
+  /* Add margin to the buttons */
+  .button1 {
+    margin-right: 5px; /* Adjust the value as needed */
+  }
+  .m1{
+    background-color: #f8f6f5;
+  }

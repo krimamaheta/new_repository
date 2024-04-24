@@ -1,0 +1,87 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    border-color: #693307;
+    box-sizing: border-box;
+    background-image: url("https://img.freepik.com/premium-photo/festive-decoration-orange-banquet-hall-wedding-2539_208657-1231.jpg?w=900");
+    background-size: cover;
+
+}
+
+.card {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.inputgroup {
+    margin-bottom: 15px;
+}
+
+.inputgroup label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.inputgroup input,
+.inputgroup select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.buttongroup {
+    text-align: center;
+}
+
+.buttongroup button {
+    padding: 10px 20px;
+    background-color: #ceab8b;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.buttongroup button:hover {
+    background-color: #6e380c;
+}
+
+.heading{
+    font-size: larger;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color:#693307;
+    text-align: center;
+    text-decoration: underline;
+    
+}
+
+.image1{
+    height: 400px;
+    width: 500px;
+    margin-left: 10px;
+}
+
+.b2{
+   background-color: #90613b;
+   font-size: larger;
+   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+   border: none;
+   color: white;
+   padding: 20px;
+   text-align: center;
+   text-decoration: none;
+   display: inline-block;
+   font-size: 16px;
+   margin: 4px 2px;
+   cursor: pointer;
+   border-radius: 12px;
+   margin-top: 20px;
+   margin-left: 40px;
+}

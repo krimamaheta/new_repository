@@ -1,0 +1,61 @@
+.input1{
+     /* Green */
+  
+     border: none;
+     color:black;
+     padding: 20px;
+     text-align: center;
+     text-decoration: none;
+     display: inline-block;
+     font-size: 16px;
+     margin: 4px 2px;
+     cursor: pointer;
+    
+   
+    
+ }
+ .container{
+    margin-left: auto;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    
+    
+ }
+ .heading2{
+    font-size: large;
+    color: rgb(185, 103, 48);
+    margin-left: 10px;
+ }
+ .s1{
+    background-color: rgb(218, 171, 136);
+    border-radius: 12px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: 2px;
+    
+ }
+ .carousel{
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+ }
+ .image1{
+    height: auto;
+    width: auto;
+ }
+ .heading1{
+    font-size: large;
+    color: rgb(185, 103, 48);
+    margin-left: 10px;
+    background-color: antiquewhite;
+ }
+ .heading3{
+    font-size: xx-large;
+    align-items: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: rgb(121, 59, 18);
+    justify-content: center;
+   
+    margin-left: 30rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+ }

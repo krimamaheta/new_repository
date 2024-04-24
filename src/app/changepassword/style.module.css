@@ -1,0 +1,50 @@
+.change-password-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full height of the viewport */
+  }
+  
+  .card-container {
+    width: 400px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f5f5dc; /* Light brown background color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  }
+  
+  .input-container {
+    margin-bottom: 20px;
+  }
+  
+  .input-container input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+  }
+  .head{
+    font-size: larger;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-align: center;
+    color: rgb(152, 86, 20);
+  }
+  .b1{
+    margin-top: 10px;
+    font-size: larger;
+    background-color: #8b4e2b;
+    border-color: black;
+    border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 6px 2px;
+  cursor: pointer;
+  margin-left: 10px;
+  margin-top:20px
+
+  }

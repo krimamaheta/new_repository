@@ -1,0 +1,126 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* 
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+} */
+.navbar {
+  background-color:rgb(250, 243, 238);
+  margin-top: 20px;
+  margin-bottom: 20px; /* Light brown background color */
+  text-align: center;
+  color: #633007; /* Black text color */
+  height: 60px; /* Adjust height as needed */
+  
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  margin-bottom: 20px;
+}
+
+.navbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+.nav-links {
+  font-size:larger;
+  font:bolder;
+  color: #6f4e37;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li {
+  display: inline;
+  margin-left: 20px;
+}
+
+.nav-links li:first-child {
+  margin-left: 0;
+}
+
+.nav-links a {
+  color: #000; /* Text color for links */
+  text-decoration: none;
+}
+
+.nav-links a:hover {
+  color: #6f4e37; /* Coffee color for links on hover */
+  background-color: #c09f88; /* Dark brown background color on hover */
+  box-shadow: 0 2px 4px rgba(109, 81, 60, 0.4); /* 
+}
+
+.image1{
+  height: 1400px;
+  width: 1400px;
+
+}
+.h1{
+  
+    font-family: "Bigelow", sans-serif; /* Specify the "Bigelow" font */
+    font-weight: bold; /* Set font weight to bold */
+    color: black; /* Specify the color of the text as black */
+    /* Additional styling properties can be added here */
+
+}
+.i2{
+  background-color: rgb(224, 205, 177);
+}
+.image2{
+ 
+}
+
+
+
+.button {
+  background-color: #04AA6D;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+.sign-up a {
+  color: #8c7569;
+}
+
+
+
