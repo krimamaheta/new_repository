@@ -27,7 +27,7 @@ const VendorForm:React.FC=()=>{
     });
     
     const User=useSelector((state)=>state.auth.user);
-    
+    console.log(User);
     const handleSubmit=async()=>{
         try{
             console.log(User.user.userID);
@@ -51,7 +51,7 @@ const VendorForm:React.FC=()=>{
                     var data=await res.json();
                     console.log(data);
                     alert("Added value Successfully");
-                    route.push("vendor/allvendor/list");
+                    route.push("vendor/allvendor");
                 }else{
                     alert("Fail to add value");
                 }

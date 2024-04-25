@@ -11,6 +11,7 @@ import { isAuthenticated, logout, user } from '@/Redux/authslice/authslice';
 import { useEffect, useState } from 'react';
  import { UseSelector } from 'react-redux';
 import { RootState } from '@/Redux/store';
+import { useRouter } from 'next/navigation';
 // const LogoutButton = () => {
 //   const dispatch = useDispatch();
   //  dispatch(logout());
@@ -30,20 +31,31 @@ const Logo = () => (
 );
 
 const NavBar =() => {
- 
- 
-//const currentuser=localStorage.getItem("CurrentUser")
-//  const isAuthenticatedValue = useSelector((state)=>state.auth.isAuthenticated);
- 
-//  const user = useSelector((state: RootState) => state.auth.user);
-//  const userId = user ? user.userId : null;
- 
- const handleLogout=()=>{
+  const route=useRouter();
+  const dispatch = useDispatch();
+  // const User=useSelector((state)=>state.auth.user);
+  // console.log(User);
 
+
+
+  // const Email=User.user.email;
+  // console.log(Email)
+
+  const isAuthenticatedValue = useSelector((state) => state.auth.isAuthenticate);
+  const currentUser = useSelector((state) => state.auth.user);
+
+  // const useremail=currentUser.user.email
+  // console.log(useremail)
+  //const Email = currentUser ? currentUser.user.email : null;
+ 
+
+
+ const handleLogout=()=>{
+  dispatch(logout());
+  route.push("/landingpage");
  }
 
- 
-  //const[user,setUser]=useState<string|null>(null);
+
 
   return (
     <div className="navbar">
@@ -71,7 +83,12 @@ const NavBar =() => {
             </li>
            
            <li>
-            <Link href="/logout">LogOut</Link>
+            {/* <Link href="/logout">LogOut</Link> */}<li>
+  {/* Conditionally render Login link or Logout button */}
+           {isAuthenticatedValue ? (<li><button onClick={handleLogout}>LogOut</button></li>):(<li><Link href="/login">LogIn</Link></li>)}
+       
+</li>
+            {/* {!isAuthenticated && (<li><Link href="/login">Login</Link></li>)} */}
            </li>
 
 
