@@ -11,8 +11,6 @@ const AdminPanel=({children}:any)=>{
                 <SideBar/>
                 {children}
             </div>
-             
-            
         </div>
     )
 }

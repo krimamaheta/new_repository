@@ -1,13 +1,13 @@
 import React from "react";
 import AdminPanel from "../page";
-import Decorator from "@/app/component/Decorator";
+import Vendor from "@/app/component/Vendor";
 
 const DecoratorPage=()=>{
     return(
         <div>
             <h2>welcome decorator page</h2>
             <AdminPanel>
-            <Decorator/>
+            <Vendor/>
             </AdminPanel>
            
         </div>

@@ -162,3 +162,114 @@
   .m1{
     background-color: #f8f6f5;
   }
+
+  .eventList {
+    margin-top: 20px;
+}
+
+.eventList p {
+    font-size: 16px;
+    color: #ff0000; /* Red color for error messages */
+}
+
+.head{
+    font-size: large;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    margin-top: 1rem;
+    color: #b04d1f;
+    font-size: x-large;
+    margin-left: 1rem;
+}
+
+.eventlist1{
+        margin-left: 1rem;
+        
+}
+
+
+.eventCard1 {
+    background-color: #f7f8f8; /* Light brown background color */
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    list-style-type: none;
+    
+}
+.container1{
+    display: flex;
+    flex-direction: column;
+}
+.eventName1 {
+    font-weight: bold;
+    font-size: 18px;
+    margin-right: 2rem;
+   
+}
+
+.description1 {
+    margin-top: 5px;
+    font-size: 16px;
+}
+
+.eventDetails1 {
+    margin-top: 10px; /* Add margin between event name and description */
+}
+
+.delete{
+    margin-left: 2rem;
+}
+.update{
+    margin-left: 2rem;
+}
+
+
+
+
+
+.eventCard{
+    background-color: #f7f8f8; /* Light brown background color */
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.eventTable {
+    width: 100%; /* Make the table width 100% */
+    border-collapse: collapse; /* Collapse table borders */
+}
+
+.eventTable th,
+.eventTable td {
+    padding: 8px; /* Add padding to table cells */
+    border-bottom: 1px solid #ddd; /* Add border bottom for table rows */
+}
+
+.eventName {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.description {
+    font-size: 16px;
+}
+
+
+
+.button1{
+  margin-top: 2rem;
+  font-size: large;
+  color: #8b4e2b;
+  border: none;
+  background-color: antiquewhite;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+}
+
+
+

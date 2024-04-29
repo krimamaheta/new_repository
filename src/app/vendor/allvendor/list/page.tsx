@@ -96,6 +96,7 @@ const ListPage=()=>{
 
     const fetchevents=async()=>{
       try{
+        debugger
           const res=await fetch("https://localhost:44340/Api/Event/AllEvent");
           console.log(res)
           if(res.ok){

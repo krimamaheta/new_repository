@@ -10,6 +10,7 @@ import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
 import PaymentIcon from '@mui/icons-material/Payment';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import EmailIcon from '@mui/icons-material/Email';
+import EventIcon from '@mui/icons-material/Event';
 
 interface SideBarItem{
     title:string;
@@ -33,15 +34,20 @@ export const SideBarData:SideBarItem[]=[
         link: "/User",
     },
     {
-        title: "Decorator",
-        icon: <AutoAwesomeIcon/>, // Replace Icon with your actual icon component
-        link: "/admin/decorator",
+        title: "Event",
+        icon: <EventIcon/>, // Replace Icon with your actual icon component
+        link: "/admin/event",
     },
     {
-        title: "Caterer",
-        icon: <RestaurantMenuIcon/>, // Replace Icon with your actual icon component
-        link: "/caterer",
+        title: "Vendors",
+        icon: <AutoAwesomeIcon/>, // Replace Icon with your actual icon component
+        link: "/admin/vendors",
     },
+    // {
+    //     title: "Caterer",
+    //     icon: <RestaurantMenuIcon/>, // Replace Icon with your actual icon component
+    //     link: "/caterer",
+    // },
     {
         title: "Booking",
         icon: <BookmarkAddedIcon/>, // Replace Icon with your actual icon component

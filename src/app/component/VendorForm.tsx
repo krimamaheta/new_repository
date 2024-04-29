@@ -4,6 +4,7 @@ import Style from "./../vendor/vendorStyle.module.css"
 import { UseSelector, useSelector } from "react-redux";
 import style from "./../vendor/vendorStyle.module.css"
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 //during first time login
 //coman for decorator AND VENDOR
@@ -14,52 +15,83 @@ const VendorForm:React.FC=()=>{
     // const user = useSelector((state)=>state.auth.user)
     // const UserId=user.UserId;
     // console.log(UserId);
-
     const route=useRouter();
     const[value,setValue]=useState({
+        vendorId:"",
         userId: "",
         WebsiteUrl: "",
         Address: "",
         District:"",
         CityName: "",
         FirmName: "",
-        typeOfvendor: ""
+        TypeOfvendor: ""
     });
     
     const User=useSelector((state)=>state.auth.user);
     console.log(User);
+    
     const handleSubmit=async()=>{
-        try{
-            console.log(User.user.userID);
-            const userId= User.user.userID; // User.userID
-            const url=`https://localhost:44340/Api/Vendor/AddVendor/${userId}`;
-                setValue({...value,userId:userId})
-               // UserId
-                console.log(value);
-                console.log(userId);
-                //userId
-                const res=await fetch(url,{
-                    method:"POST",
-                    headers:{
-                        "Content-Type":"Application/json",
-                        "Access-Control-Allow-Origin": "*",
-                    },
-                    body:JSON.stringify(value),
-                });
-                debugger
-                if(res.ok){
-                    var data=await res.json();
-                    console.log(data);
-                    alert("Added value Successfully");
-                    route.push("vendor/allvendor");
-                }else{
-                    alert("Fail to add value");
-                }
-        }
-        catch(error){
+        try {
+            debugger
+            const userId = User.user.userID;
+            console.log(userId);
+            
+            const url = `https://localhost:44340/Api/Vendor/AddVendor/${userId}`;
+            setValue({...value,userId:userId})
+            const response = await axios.post(url, value, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+        
+            if (response.status >= 200 && response.status < 300) {
+                const data = response.data;
+                console.log(data);
+                //alert(response.data.message)
+                alert("Added value successfully");
+                route.push("vendor/allvendor");
+            } else {
+                // Handle other HTTP errors
+                console.error("Failed to add value:", response.statusText);
+                alert("Failed to add value. Please try again later.");
+            }
+        } catch (error) {
+            // Handle error
             console.error("Error:", error);
             alert("An error occurred during adding value.");
         }
+        // try{
+        //     debugger
+        //     console.log(User.user.userID);
+        //     const userId= User.user.userID; // User.userID
+        //     const url=`https://localhost:44340/Api/Vendor/AddVendor/${userId}`;
+        //         setValue({...value,userId:userId})
+        //        // UserId
+        //         console.log(value);
+        //         console.log(userId);
+        //         //userId
+        //         const res=await fetch(url,{
+        //             method:"POST",
+        //             headers:{
+        //                 "Content-Type":"Application/json",
+        //                 // "Access-Control-Allow-Origin": "*",
+        //             },
+        //             body:JSON.stringify(value),
+        //         });
+                
+        //         if(res.ok){
+        //             var data=await res.json();
+        //             console.log(data);
+        //             alert("Added value Successfully");
+        //             route.push("vendor/allvendor");
+        //         }else{
+        //             alert("Fail to add value");
+        //         }
+        // }
+        // catch(error){
+        //     console.error("Error:", error);
+        //     alert("An error occurred during adding value.");
+        // }
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
@@ -86,7 +118,8 @@ const VendorForm:React.FC=()=>{
                 </div>
                 <div className={Style.inputgroup}>
                     <label htmlFor="District">District</label>
-                    <select name="District" id="District" value={value.District} onChange={handleChange}>
+                    <input type="text" name="District" id="District" value={value.District} onChange={handleChange} />
+                    {/* <select name="District" id="District" value={value.District} onChange={handleChange}>
                         <option value="Gujarat">Gujarat</option>
                         <option value="Rajsthan">Rajsthan</option>
                         <option value="Taminnadu">Taminnadu</option>
@@ -125,7 +158,7 @@ const VendorForm:React.FC=()=>{
                         <option value="Puducherry">Puducherry</option>
                         
                         
-                    </select>
+                    </select> */}
                 </div>
                 <div className={Style.inputgroup}>
                     <label htmlFor="CityName">City Name:</label>
@@ -137,10 +170,11 @@ const VendorForm:React.FC=()=>{
                 </div>
                 <div className={Style.inputgroup}>
                     <label htmlFor="typeOfvendor">Type of Vendor:</label>
-                    <select name="typeOfvendor" id="typeOfvendor" value={value.typeOfvendor} onChange={handleChange}>
+                    <input type="text" name="TypeOfvendor" id="TypeOfvendor" value={value.TypeOfvendor} onChange={handleChange} />
+                    {/* <select name="TypeOfvendor" id="typeOfvendor" value={value.TypeOfvendor} onChange={handleChange}>
                         <option value="Caterer">Caterer</option>
                         <option value="Decorator">Decorator</option>
-                    </select>
+                    </select> */}
                 </div>
                 <div className={Style.buttongroup}>
                     <button onClick={handleSubmit}>Submit</button>
@@ -166,7 +200,7 @@ export default VendorForm;
     const[event,setEvent]=useState("");
     const onClick=(e):any=>{
         setEvent(e.target.event);
-        route.push("allvendor/addevent");
+        route.push("allvendor/addDecoration");
         
     }
     const onClick1=(e):any=>{
@@ -180,8 +214,8 @@ export default VendorForm;
                 
                 
                  <p className={Style.left}>
-                <button className={style.b2} onClick={onClick}>AddEvent</button>
-                <button className={style.b2} onClick={onClick1}>EventList</button>
+                <button className={style.b2} onClick={onClick}>AddDecoration</button>
+                <button className={style.b2} onClick={onClick1}>DecorationList</button>
                  </p>
         {/* <div className="flex  flex-wrap -m-4" style={{ marginTop: '20px' }}>
           {imageFilenames.map((item, index):any => (

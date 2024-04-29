@@ -43,10 +43,11 @@ const NavBar =() => {
 
   const isAuthenticatedValue = useSelector((state) => state.auth.isAuthenticate);
   const currentUser = useSelector((state) => state.auth.user);
+  console.log(currentUser);
 
   // const useremail=currentUser.user.email
   // console.log(useremail)
-  //const Email = currentUser ? currentUser.user.email : null;
+   const Email = currentUser?.user?.email
  
 
 
@@ -85,7 +86,7 @@ const NavBar =() => {
            <li>
             {/* <Link href="/logout">LogOut</Link> */}<li>
   {/* Conditionally render Login link or Logout button */}
-           {isAuthenticatedValue ? (<li><button onClick={handleLogout}>LogOut</button></li>):(<li><Link href="/login">LogIn</Link></li>)}
+           {isAuthenticatedValue ? (<li>{Email}<button onClick={handleLogout}>LogOut</button></li>):(<li><Link href="/login">LogIn</Link></li>)}
        
 </li>
             {/* {!isAuthenticated && (<li><Link href="/login">Login</Link></li>)} */}

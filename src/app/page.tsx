@@ -17,6 +17,8 @@ import NavBar from "./navigation";
 import Footer from "./componets/footer";
 import store from "@/Redux/store";
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 //import store from "@/Redux/store";
 
 
@@ -35,7 +37,7 @@ interface HomeProps{
   return (
     <>
     <Provider store={store}>
-      
+    <ToastContainer />
       <NavBar/>
       <LandingPage />
       <Footer/>

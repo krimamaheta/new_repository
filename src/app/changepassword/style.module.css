@@ -1,4 +1,6 @@
 .change-password-container {
+  background-image:url("https://img.freepik.com/premium-photo/table-with-flowers-candles-front-large-window_948735-296675.jpg?w=900");
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -47,4 +49,20 @@
   margin-left: 10px;
   margin-top:20px
 
+  }
+
+
+  .button1{
+    font-size: large;
+    color: #8b4e2b;
+    border: none;
+    background-color: antiquewhite;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px;
   }
