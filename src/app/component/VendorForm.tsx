@@ -335,7 +335,7 @@ export const GetAllVendor: React.FC = () => {
                                 </div>
 
                                 <div className={style.buttoncontainer}>
-                                <button onClick={update} className={style.button}>Update</button>
+                                {/* <button onClick={update} className={style.button}>Update</button> */}
                                  <button onClick={()=>DeleteVendorEvent(event.id)} className={style.button}>Remove</button>
                             
                                 </div>
@@ -386,7 +386,7 @@ export const GetAllVendor: React.FC = () => {
         {/* 
         update code 
         */}
-        
+
 
 
 
