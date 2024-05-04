@@ -85,3 +85,40 @@
    margin-top: 20px;
    margin-left: 40px;
 }
+
+.button {
+        background-color: #90613b; 
+        border: none;
+        color: white;
+        padding: 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 12px;
+      }
+.buttoncontainer{
+    margin-top: 1rem;
+    display: flex;
+    margin-right:10px;
+    margin-left: 0 rem
+
+
+}
+
+.details{
+    font-size: larger;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 300;
+    color:#693307;
+    display: flex;
+    flex-direction: column;
+    white-space: 2rem; 
+}
+
+.details1{
+    display: flex;
+    flex-direction: column;
+}

@@ -485,7 +485,7 @@ const DecorationForm: React.FC = () => {
 
   const onChangeFile = (e: { target: { files: any; }; }) => {
     const files = e.target.files;
-  
+   // setValue((prevValue) => ({ ...prevValue, images: files }));
     if (files) {
       setValue((prevValue) => ({ ...prevValue, images: Array.from(files) }));
     }
@@ -503,6 +503,7 @@ const DecorationForm: React.FC = () => {
       const cloudinaryUploadPromises = value.images.map(async (image) => {
         const formData = new FormData();
         formData.append("file", image);
+        //formData.append("Images",image)
         formData.append("upload_preset", "unsign_upload");
         formData.append("cloud_name", "dqtsmfpvb");
 
@@ -521,29 +522,36 @@ const DecorationForm: React.FC = () => {
         //   ...pre,
         //   images:data.secure_url
         // }))
-
-
         return data.secure_url;
       });
 
       // Wait for all the Cloudinary upload promises to resolve
       const uploadedImageUrls = await Promise.all(cloudinaryUploadPromises);
+      console.log("-------------",uploadedImageUrls);
+      
+      uploadedImageUrls.forEach(url => {
+        formData.append("Images", url);
+      });
+      // uploadedImageUrls.forEach((url,index)=>{
+      //   formData.append(`Images[${index}]`,url)
+      // })
+
 
       // Update the state with the uploaded image URLs
-      setValue((prevValue: FormValue) => ({
-        ...prevValue,
-        images: uploadedImageUrls,
-      }));
+      // setValue((prevValue: FormValue) => ({
+      //   ...prevValue,
+      //   images: uploadedImageUrls,
+      // }));
 
-      formData.append("Images",value.images[0]);
-
-      console.log("image upload", uploadedImageUrls);
+     // formData.append("Images",value.images[0]);
+      console.log("image upload",uploadedImageUrls);
       console.log(uploadedImageUrls[0]);
       console.log("image upload", uploadedImageUrls); // Log uploadedImageUrls to verify the array of URLs
       console.log("First image URL:", uploadedImageUrls[0]); // Log the first image URL for debugging
       console.log("value before state update:", value);
       console.log("value", value);
 
+      
 
       const res = await axios.post("https://localhost:44340/api/VendorEvent/AddVendorEvent.", formData, {
         headers: {

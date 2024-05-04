@@ -3,7 +3,7 @@ import Style from "./../app/home/loader.module.css"
  const Loader=()=>{
     return(
         <div>
-        <span className={Style.loaderone}></span>
+        <span className={Style.loaderthree}></span>
         </div>
     )
 }
