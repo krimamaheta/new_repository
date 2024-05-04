@@ -16,6 +16,11 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+
+
+//admin side vendor
+
 //return value
 interface vendor {
     vendorId?: string;
@@ -110,10 +115,19 @@ const Vendor = () => {
 
              if (updateVendor && updateVendor.vendorId) {
                 const updatedVendor = await UpdateVendor(updateVendor.vendorId, updatedData);
+                console.log(updatedVendor);
+                // if(updatedVendor.status===200){
+                //     console.log("......12342345")
+                //     alert(message)
+                // }
+                
                 console.log("vendor details Updated Successfully:", updatedVendor);
                 alert("Vendor Details Updated Successfully");
                 handleUpdateClose();
                 await AllVendor();
+               
+               
+                
                 // EventList();
              } else {
                  console.error("vendor Id is missing or invalid.");

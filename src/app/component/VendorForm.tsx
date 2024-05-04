@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Style from "./../vendor/vendorStyle.module.css"
 import { UseSelector, useSelector } from "react-redux";
 import style from "./../vendor/vendorStyle.module.css"
@@ -9,7 +9,7 @@ import axios from "axios";
 //during first time login
 //coman for decorator AND VENDOR
 
-
+//user side vendor
 const VendorForm:React.FC=()=>{
 
     // const user = useSelector((state)=>state.auth.user)
@@ -27,12 +27,27 @@ const VendorForm:React.FC=()=>{
         TypeOfvendor: ""
     });
     
+    const [vendorTypes,setVendorTypes]=useState<string[]>([])
+    useEffect(() => {
+        const fetchVendorTypes = async () => {
+            try {
+                const res = await axios.get("https://localhost:44340/Api/Vendor/alltype");
+                setVendorTypes(res.data);
+            } catch (error) {
+                console.error("Error fetching vendor types:", error);
+            }
+        };
+    
+        fetchVendorTypes(); // Call the fetchVendorTypes function here
+    
+    }, []);
     const User=useSelector((state)=>state.auth.user);
     console.log(User);
     
+    //add vendor
     const handleSubmit=async()=>{
         try {
-            debugger
+           // debugger
             const userId = User.user.userID;
             console.log(userId);
             
@@ -46,9 +61,15 @@ const VendorForm:React.FC=()=>{
         
             if (response.status >= 200 && response.status < 300) {
                 const data = response.data;
-                console.log(data);
+                console.log("---------------",data);
                 //alert(response.data.message)
                 alert("Added value successfully");
+
+                console.log("vendor details..",data);
+                console.log("vendorid.......",data.vendorId);
+                setValue({...value,vendorId:data.vendorId});
+                console.log("vendor details..123",data);
+
                 route.push("vendor/allvendor");
             } else {
                 // Handle other HTTP errors
@@ -169,12 +190,13 @@ const VendorForm:React.FC=()=>{
                     <input type="text" name="FirmName" id="FirmName" value={value.FirmName} onChange={handleChange} />
                 </div>
                 <div className={Style.inputgroup}>
-                    <label htmlFor="typeOfvendor">Type of Vendor:</label>
-                    <input type="text" name="TypeOfvendor" id="TypeOfvendor" value={value.TypeOfvendor} onChange={handleChange} />
-                    {/* <select name="TypeOfvendor" id="typeOfvendor" value={value.TypeOfvendor} onChange={handleChange}>
-                        <option value="Caterer">Caterer</option>
-                        <option value="Decorator">Decorator</option>
-                    </select> */}
+                    <label htmlFor="TypeOfvendor">Type of Vendor:</label>
+                    <select name="TypeOfvendor" id="TypeOfvendor" value={value.TypeOfvendor} onChange={handleChange}>
+                        <option value="">Select Type</option>
+                        {vendorTypes.map((vendorType, index)=>(
+                            <option key={index} value={vendorType}>{vendorType}</option>
+                        ))}
+                    </select>
                 </div>
                 <div className={Style.buttongroup}>
                     <button onClick={handleSubmit}>Submit</button>
@@ -203,10 +225,11 @@ export default VendorForm;
         route.push("allvendor/addDecoration");
         
     }
+    //to display same page 
     const onClick1=(e):any=>{
         setEvent(e.target.event);
-        route.push("/vendor/allvendor/list");
         
+        //route.push("/vendor/allvendor/list");
     }
 
     return(

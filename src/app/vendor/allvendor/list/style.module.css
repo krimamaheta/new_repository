@@ -65,3 +65,42 @@
     font-size: larger;
     
   }
+
+
+
+
+  
+  /* vendorEventCard.module.css */
+.vendorEventCardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px; /* Adjust the gap between cards */
+}
+
+.vendorEventCard {
+  flex: 1 0 calc(25% - 16px); /* Adjust the width of each card */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.vendorEventCard img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.vendorEventCard input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.vendorEventCard input[type="text"]:last-child {
+  margin-bottom: 0;
+}

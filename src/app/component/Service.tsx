@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from "next/image"
 import Profile from "./../../../public/ring1.png"
 import Birthday from "./../../../public/birthday.jpeg"
@@ -14,6 +14,7 @@ import style1 from "./../../Styles/global.module.css"
 import Carousel from "@itseasy21/react-elastic-carousel";
 //import c1 from "./../../../public/landingpage1.png";
 import chair from "./../../../public/chair.jpeg"
+import axios from 'axios';
 
 
 const Service=()=>{
@@ -52,6 +53,7 @@ const Service=()=>{
       district:"",
       city:"",
       price:"",
+      eventName:"",
     })
     const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
       const { name, value } = e.target;
@@ -60,6 +62,34 @@ const Service=()=>{
           [name]: value
       }));
   };
+
+
+  const[events,setEvents]=useState([]);
+  const[Loading,setLoading]=useState(false);
+
+  useEffect(()=>{
+
+    FetchEvents();
+  },[])
+
+  const FetchEvents=async ()=>{
+    try{
+      console.log("----get all");
+      const res=await axios.get("https://localhost:44340/Api/Event/AllEvent");
+      setEvents(res.data);
+      console.log("eventId",res.data);
+      //console.log("eventId:",res.data.eventId);
+      
+      
+    }
+      catch(error){
+        console.error("error....!");
+        alert("fail to fetch error");
+      }
+      finally{
+        setLoading(false);
+      }
+  }
     return(
         <div>
    
@@ -205,13 +235,19 @@ const Service=()=>{
 
         <div className={style1.input1}>
                <div className={style1.heading2}>
-                    <label htmlFor="price">Select Event:</label></div>
-                    <select className={style1.s1} name="price" id="price" value={value.price} onChange={handleChange}>
-                        <option value="WeddingCeremony">WeddingCeremony</option>
+                    <label htmlFor="Event">Select Event:</label></div>
+
+                    <select className={style1.s1} name="events" id="events" value={value.eventName} onChange={handleChange}>
+                      {Loading?(<option value="">Loading.....</option>):(events.map((event)=>(
+                        <option  key={event.eventId} value={event.eventId}>{event.eventName}</option>
+                      )))
+
+                      }
+                        {/* <option value="WeddingCeremony">WeddingCeremony</option>
                         <option value="RingCeremony">RingCeremony</option>
                         <option value="BirthdayCelebration">BirthdayCelebration</option>
                         <option value="AnnyversaryParty">AnnyversaryParty</option>
-                        <option value="YagnopavitCeremony">YagnopavitCeremony</option>
+                        <option value="YagnopavitCeremony">YagnopavitCeremony</option> */}
 
                     </select>
         </div>
