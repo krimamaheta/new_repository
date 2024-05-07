@@ -439,7 +439,9 @@ interface FormValue {
   Price: string;
   images: string[]; // Assuming images will be stored as URLs
 }
+
 const DecorationForm: React.FC = () => {
+
   const [value, setValue] = useState<FormValue>({
     eventId: "",
     vendorId: "",
@@ -466,6 +468,8 @@ const DecorationForm: React.FC = () => {
     fetchEvent();
   }, []);
 
+
+  //fetch vendor by userId
   const User = useSelector((state) => state.auth.user);
 
   const FetchVendor = async (userId: any) => {
@@ -485,7 +489,7 @@ const DecorationForm: React.FC = () => {
 
   const onChangeFile = (e: { target: { files: any; }; }) => {
     const files = e.target.files;
-   // setValue((prevValue) => ({ ...prevValue, images: files }));
+    // setValue((prevValue) => ({ ...prevValue, images: files }));
     if (files) {
       setValue((prevValue) => ({ ...prevValue, images: Array.from(files) }));
     }
@@ -493,7 +497,7 @@ const DecorationForm: React.FC = () => {
 
   const onClick = async () => {
     try {
-      debugger
+      // debugger
       const vendorId = await FetchVendor(User.user.userID);
       const formData = new FormData();
       formData.append("eventId", value.eventId);
@@ -527,8 +531,8 @@ const DecorationForm: React.FC = () => {
 
       // Wait for all the Cloudinary upload promises to resolve
       const uploadedImageUrls = await Promise.all(cloudinaryUploadPromises);
-      console.log("-------------",uploadedImageUrls);
-      
+      console.log("-------------", uploadedImageUrls);
+
       uploadedImageUrls.forEach(url => {
         formData.append("Images", url);
       });
@@ -543,15 +547,15 @@ const DecorationForm: React.FC = () => {
       //   images: uploadedImageUrls,
       // }));
 
-     // formData.append("Images",value.images[0]);
-      console.log("image upload",uploadedImageUrls);
+      // formData.append("Images",value.images[0]);
+      console.log("image upload", uploadedImageUrls);
       console.log(uploadedImageUrls[0]);
       console.log("image upload", uploadedImageUrls); // Log uploadedImageUrls to verify the array of URLs
       console.log("First image URL:", uploadedImageUrls[0]); // Log the first image URL for debugging
       console.log("value before state update:", value);
       console.log("value", value);
 
-      
+
 
       const res = await axios.post("https://localhost:44340/api/VendorEvent/AddVendorEvent.", formData, {
         headers: {
@@ -579,28 +583,29 @@ const DecorationForm: React.FC = () => {
     }
   };
 
+
   return (
     <div>
       <div className={styles["change-password-container"]}>
         <div className={styles["card-container"]}>
           <div className={styles["input-container"]}>
             <h2 className={styles.head}>Add Decoration</h2>
-           
-              <label htmlFor="EventName">Event:</label>
 
-              <select name="EventName" id="EventName" onChange={selectchange}>
-                <option value="">Select Event</option>
-                {loading ? (
-                  <option disabled>Loading...</option>
-                ) : (
-                  events.map((event) => (
-                    <option key={event.eventId} value={event.eventId}>
-                      {event.eventName}
-                    </option>
-                  ))
-                )}
-              </select>
-            
+            <label htmlFor="EventName">Event:</label>
+
+            <select name="EventName" id="EventName" onChange={selectchange}>
+              <option value="">Select Event</option>
+              {loading ? (
+                <option disabled>Loading...</option>
+              ) : (
+                events.map((event) => (
+                  <option key={event.eventId} value={event.eventId}>
+                    {event.eventName}
+                  </option>
+                ))
+              )}
+            </select>
+
 
           </div>
           <div className={styles["input-container"]}>

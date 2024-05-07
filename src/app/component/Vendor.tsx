@@ -373,6 +373,7 @@ const Vendor = () => {
                         </DialogActions>
                     </Dialog>
                 </div>
+                
                 <div className={style.button1} onClick={AllVendor}><button>VendorList</button></div>
                 <div className={style1.eventList}>
                     {loading ? (<p>Loading....!</p>) : error ? (<p>Error...</p>) : vendors.length > 0 ? (

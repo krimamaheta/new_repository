@@ -67,7 +67,7 @@ console.log(Email);
     <div className={styles["change-password-container"]}>
       <div className={styles["card-container"]}>
         <div className={styles["input-container"]}>
-          <h2 className={styles.head}>Reset Password</h2>
+          <h2 className={styles.head}>Send Email</h2>
           <input
             type="email"
             name="email"
@@ -106,7 +106,7 @@ console.log(Email);
             placeholder="OTP"
           /> */}
           <button className={styles.b1} onClick={Cancel}>cancel</button>
-          <button className={styles.b1} onClick={HandleResetPass}>Reset</button>
+          <button className={styles.b1} onClick={HandleResetPass}>Send</button>
         </div>
       </div>
   

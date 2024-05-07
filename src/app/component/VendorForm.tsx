@@ -211,14 +211,19 @@ const VendorForm: React.FC = () => {
 }
 
 export default VendorForm;
+
 interface vendordecorationModel {
     images: any;
     id: "",
     price: "",
     imageurl: string[]
-    eventName:"",
-    firmName:"",
-    cityName:""
+    eventName: "",
+    firmName: "",
+    cityName: "",
+    address:"",
+    websiteUrl:"",
+    district:""
+    
 }
 
 export const GetAllVendor: React.FC = () => {
@@ -232,8 +237,9 @@ export const GetAllVendor: React.FC = () => {
     //  {imageurl:'https://img.freepik.com/premium-photo/healthy-meal-grilled-meat-vegetable-curry-basmati-rice-naan-bread-generated-by-ai_188544-168804.jpg?w=1060',location:"anand",price:500},
     // ];
     const route = useRouter();
-    const[loading,setLoading]=useState(false)
-    const [event, setEvent] = useState("");
+    const [loading, setLoading] = useState(false)
+    const [event,setEvent] = useState("");
+    
     const onClick = (e): any => {
         setEvent(e.target.event);
         route.push("allvendor/addDecoration");
@@ -242,18 +248,41 @@ export const GetAllVendor: React.FC = () => {
     //to display same page 
     //get all image what ever uploaded
     const [vendorDecoration, setvendorDecoration] = useState([]);
-    const fetchDecoration = async () => {
+
+    //fetch vendorId
+    const User = useSelector((state) => state.auth.user);
+    const FetchVendorId = async (userId:any) => {
+
         try {
-         
+            var res=await axios.get(`https://localhost:44340/Api/Vendor/getByUserId/${userId}`)
+            console.log("res..",res);
+            console.log("vendorid",res.data.vendorId);
+            
+            return res.data.vendorId;
+
+        } catch (error) {
+            console.log("error.....", error);
+            alert(error);
+
+        }
+    }
+
+    const fetchDecoration = async (vendorId:any) => {
+        try {
+
+            // debugger
             setLoading(true)
-            var res = await axios.get("https://localhost:44340/api/VendorEvent/List");
+            const vendorId = await FetchVendorId(User.user.userID);
+            // var res = await axios.get("https://localhost:44340/api/VendorEvent/List");
+            var res = await axios.get(`https://localhost:44340/api/VendorEvent/GetAllByVendorId?vendorId=${vendorId}`)
+            console.log("vendor id",vendorId);
             console.log("response", res);
             setvendorDecoration(res.data);
         } catch (error) {
             console.error("error fetching vendor decoration");
             alert("error to fetch list");
         }
-        finally{
+        finally {
             setLoading(false);
         }
     }
@@ -261,25 +290,25 @@ export const GetAllVendor: React.FC = () => {
     const onClick1 = async (e) => {
         setLoading(true)
         setEvent(e.target.event);
-        setTimeout(async()=>{
+        setTimeout(async () => {
             await fetchDecoration();
             setLoading(false);
 
-        },1000)
+        }, 1000)
 
         //route.push("/vendor/allvendor/list");
     }
-  
 
-    const DeleteVendorEvent=async (Id: string) => {
+
+    const DeleteVendorEvent = async (Id: string,vendorId:string) => {
         if (window.confirm("Are you sure you want to delete this Vendor Decoration?")) {
             try {
                 const res = await axios.delete(`https://localhost:44340/api/VendorEvent/${Id}`);
-                console.log("response",res);
+                console.log("response", res);
                 if (res.status === 200) {
                     console.log("response", res.data);
                     alert("Vendor Event deleted successfully");
-                    await fetchDecoration();
+                    await fetchDecoration(vendorId);
                     return res.data;
                 } else {
                     // Handle unexpected status codes
@@ -313,35 +342,40 @@ export const GetAllVendor: React.FC = () => {
                     </div>
                 ))
             } */}
+            
             <Grid container spacing={{ xs: 2, md: 4 }} columns={{ xs: 4, sm: 8, md: 12 }} style={{ marginTop: '2rem', marginBottom: '2rem' }}>
-                {loading ?(<div><Loader/></div>):vendorDecoration.map((event: vendordecorationModel, index: number) => (
-                    <Grid item xs={2} sm={4} md={4} key={index} style={{ padding: '2rem 5rem', margin: '2rem 0'}}>
+                {loading ? (<div><Loader /></div>) : vendorDecoration.map((event: vendordecorationModel, index: number) => (
+                    <Grid item xs={2} sm={4} md={4} key={index} style={{ padding: '2rem 5rem', margin: '2rem 0' }}>
                         <Card>
                             <CardContent>
-                                
+
                                 {event.images.map((imageUrl: string, imageIndex: number) => (
-                                    <img key={imageIndex} src={imageUrl} alt="vendorDecorationImage"  style={{ width: '500px', height: '300px', objectFit: 'cover' }} />
+                                    <img key={imageIndex} src={imageUrl} alt="vendorDecorationImage" style={{ width: '500px', height: '300px', objectFit: 'cover' }} />
                                 ))}
                                 {/* <Typography variant="h6" gutterBottom>
                                     DecorationPrice:{event.price}
                                 </Typography> */}
                                 <div className={style.details}>
 
-                                <div className={style.details1}>Id:{event.id}</div>        
-                                <div className={style.details1}>FirmName:{event.firmName}</div>
-                                <div className={style.details1}>CityName:{event.cityName}</div>
-                                <div className={style.details1}>EventName:{event.eventName}</div>
-                                <div className={style.details1}>DecorationPrice:{event.price}</div>
+                                    <div className={style.details1}>Id:{event.id}</div>
+                                    <div className={style.details1}>FirmName:{event.firmName}</div>
+                                    <div className={style.details1}>CityName:{event.cityName}</div>
+                                    <div className={style.details1}>FirmAddress:{event.address}</div>
+                                    <div className={style.details1}>District:{event.district}</div>
+                                    <div className={style.details1}>Websiteurl:{event.websiteUrl}</div>
+                                    <div className={style.details1}>EventName:{event.eventName}</div>
+
+                                    <div className={style.details1}>DecorationPrice:{event.price}</div>
                                 </div>
 
                                 <div className={style.buttoncontainer}>
-                                {/* <button onClick={update} className={style.button}>Update</button> */}
-                                 <button onClick={()=>DeleteVendorEvent(event.id)} className={style.button}>Remove</button>
-                            
+                                    <button  className={style.button}>Update</button>
+                                    <button onClick={() => DeleteVendorEvent(event.id)} className={style.button}>Remove</button>
+                                
                                 </div>
                             </CardContent>
                         </Card>
-                       
+
                     </Grid>
                 ))}
             </Grid>
@@ -383,7 +417,7 @@ export const GetAllVendor: React.FC = () => {
         </div> */}
 
 
-        {/* 
+            {/* 
         update code 
         */}
 

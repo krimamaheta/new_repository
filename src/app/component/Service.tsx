@@ -55,6 +55,28 @@ const Service=()=>{
       price:"",
       eventName:"",
     })
+
+    const[district,setdistrict]=useState([]);
+    const[values,setValues]=useState({district:''})
+
+    useEffect(()=>{
+      fetchAllDistrict();
+    },[]);
+
+    const fetchAllDistrict=async ()=>{
+      try{
+        const res=await axios.get("https://localhost:44340/api/VendorEvent/GetAllDistrict")
+        if(res.status===200){
+          setdistrict(res.data);
+        }
+        else{
+          console.error('Failed to fetch districts');
+        }
+      }catch(error){
+        console.log("Error fetching districts",error);
+        
+      }
+    }
     const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
       const { name, value } = e.target;
       setValue(prevState => ({
@@ -63,33 +85,35 @@ const Service=()=>{
       }));
   };
 
+//   const handleChange = (event) => {
+//     setValue({ ...value, [event.target.name]: event.target.value });
+// };
 
-  const[events,setEvents]=useState([]);
-  const[Loading,setLoading]=useState(false);
+const [events, setEvents] = useState([]);
+const [loading, setLoading] = useState(false);
 
-  useEffect(()=>{
-
-    FetchEvents();
-  },[])
-
-  const FetchEvents=async ()=>{
-    try{
-      console.log("----get all");
-      const res=await axios.get("https://localhost:44340/Api/Event/AllEvent");
-      setEvents(res.data);
-      console.log("eventId",res.data);
-      //console.log("eventId:",res.data.eventId);
-      
-      
-    }
-      catch(error){
-        console.error("error....!");
-        alert("fail to fetch error");
-      }
-      finally{
-        setLoading(false);
-      }
+const fetchEvent = async () => {
+  try {
+    setLoading(true);
+    const response = await axios.get("https://localhost:44340/Api/Event/AllEvent");
+    setEvents(response.data);
+    setLoading(false);
+  } catch (error) {
+    console.error("Error fetching events:", error);
+    setLoading(false);
   }
+};
+
+useEffect(() => {
+  fetchEvent();
+}, [])
+
+
+const selectchange = (e: { target: { value: any; }; }) => {
+  const { value } = e.target;
+  setValue((prevValue) => ({ ...prevValue, eventId: value }));
+};
+
     return(
         <div>
    
@@ -125,8 +149,13 @@ const Service=()=>{
         <div className={style1.input1}>
                    <div className={style1.heading2}>
                     <label htmlFor="district">Select District:</label></div>
-                    <select  className={style1.s1} name="typeOfvendor" id="District" value={value.district} onChange={handleChange}>
-                    <option value="Gujarat">Gujarat</option>
+                    <select  className={style1.s1} name="typeOfvendor" id="District" value={value.district} onChange={selectchange}>
+                      {district.map((district)=>(
+                        <option key={district.id} value={district.id}>
+                          {district.district}
+                        </option>
+                      ))}
+                    {/* <option value="Gujarat">Gujarat</option>
                         <option value="Rajsthan">Rajsthan</option>
                         <option value="Taminnadu">Taminnadu</option>
                         <option value="Tripura">Tripura</option>
@@ -161,7 +190,7 @@ const Service=()=>{
                         <option value="Maharastra">Maharastra</option>
                         <option value="Meghalaya">Meghalaya</option>
                         <option value="Nagaland">Nagaland</option>
-                        <option value="Puducherry">Puducherry</option>
+                        <option value="Puducherry">Puducherry</option> */}
                     </select>
         </div>
         <div className={style1.input1}>
@@ -237,8 +266,8 @@ const Service=()=>{
                <div className={style1.heading2}>
                     <label htmlFor="Event">Select Event:</label></div>
 
-                    <select className={style1.s1} name="events" id="events" value={value.eventName} onChange={handleChange}>
-                      {Loading?(<option value="">Loading.....</option>):(events.map((event)=>(
+                    <select className={style1.s1} name="events" id="events" value={value.eventName} onChange={selectchange}>
+                      {loading?(<option value="">Loading.....</option>):(events.map((event)=>(
                         <option  key={event.eventId} value={event.eventId}>{event.eventName}</option>
                       )))
 

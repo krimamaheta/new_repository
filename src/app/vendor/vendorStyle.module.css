@@ -122,3 +122,33 @@
     display: flex;
     flex-direction: column;
 }
+.bg{
+    background-image: url("https://as1.ftcdn.net/v2/jpg/02/63/90/56/1000_F_263905618_zMXLYfdz030cuLxiFdbyIfbhXScOCd42.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+}
+.bg1{
+    background-color: #eee7e1;
+}
+
+.heading{
+    color: #693307;
+    font-size: larger;
+   
+    
+    margin-left: 0rem;
+    background-color:#eee7e1 ;
+
+}
+.bg2{
+    background-image: url("https://img.freepik.com/premium-photo/photo-delicious-feast-with-variety-mouthwatering-dishes-beautifully-set-table_176841-6984.jpg?w=1060");
+   
+    margin: 0;
+    padding: 0;
+   /* Replace 'your-image-url.jpg' with the URL of your image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
