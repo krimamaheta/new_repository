@@ -473,7 +473,9 @@ const Caterer = () => {
     const handleClickOpen = () => {
         setOpen(true);
     };
-
+    const handleClickOpen1 = () => {
+        setOpen(true);
+    };
 
 
     //fetch vendor by userId
@@ -944,7 +946,7 @@ const Caterer = () => {
                                 </div>
 
                                 <div className={style.buttoncontainer}>
-                                    <button className={style.button} onClick={handleClickOpen}>Update</button>
+                                    <button className={style.button} onClick={handleClickOpen1}>Update</button>
 
                                     <Dialog
                                         className={style.bg2}
