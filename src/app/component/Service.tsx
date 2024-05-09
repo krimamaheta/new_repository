@@ -49,7 +49,7 @@ interface Caterer {
 }
 
 const Service = () => {
-  const route=useRouter();
+  const route = useRouter();
 
   const imageFilenames = [{ imageurl: 'https://images.pexels.com/photos/14608917/pexels-photo-14608917.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', price: 15000 },
   { imageurl: 'https://media.istockphoto.com/id/471906412/photo/beautiful-table-setting-for-an-wedding-reception-or-an-event.jpg?s=2048x2048&w=is&k=20&c=_eAWgEvA_hOaeJ4kQLJWR7rwFcmIm6h9_Z83B59t_fk=', price: 16000 },
@@ -282,7 +282,7 @@ const Service = () => {
   };
 
 
-  const CtaringPage=(e)=>{
+  const CtaringPage = (e) => {
     e.preventDefault();
     route.push("services/catering")
   }
@@ -301,7 +301,7 @@ const Service = () => {
             {/* <Image src={deco2} height={200} width={200}/>  */}
           </div>
           <div className={style1.heading3}>
-            <h2>Features:</h2>
+            <h2>Events:</h2>
           </div>
 
           <div className={style1.carousel}>
@@ -317,8 +317,71 @@ const Service = () => {
             </Carousel>
           </div>
 
+          <div className="container px-5 py-24 mx-auto">
+            <div className="text-center mb-20">
+              <h1 className="sm:text-3xl text-2xl font-medium title-font text-gray-900 mb-4">Features</h1>
+              {/* <p className="text-base leading-relaxed xl:w-2/4 lg:w-3/4 mx-auto text-gray-500s">Blue bottle crucifix vinyl post-ironic four dollar toast vegan taxidermy. Gastropub indxgo juice poutine, ramps microdosing banh mi pug.</p> */}
+              <div className="flex mt-6 justify-center">
+
+                <div className="w-16 h-1 rounded-full bg-yellow-700 inline-flex"></div>
+              </div>
+            </div>
+            <div className="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 md:space-y-0 space-y-6">
+              <div className="p-4 md:w-1/3 flex flex-col text-center items-center">
+                <div className="flex-grow border border-black rounded-lg p-4 bg-brown-300 mb-10">
+                  <div className="w-20 h-20 inline-flex items-center justify-center rounded-full bg-amber-100 text-yellow-700 mb-5 flex-shrink-0">
+                    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-10 h-10" viewBox="0 0 24 24">
+                      <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                    </svg>
+                  </div>
+                  <h2 className="text-gray-900 text-lg title-font font-medium mb-3">EventPlanner</h2>
+                  <p className="leading-relaxed text-base">Event planning, design  within time limits. Working with clients to identify their needs
+                    and ensure customer satisfaction,Organizing facilities and details such as decorations, catering,
+                    location,  special guests etc.</p>
+                </div>
+
+              </div>
+
+              <div className="p-4 md:w-1/3 flex flex-col text-center items-center">
+                <div className="flex-grow border border-black rounded-lg p-4 bg-brown-100 mb-10">
+                  <div className="w-20 h-20 inline-flex items-center justify-center rounded-full bg-amber-100 text-yellow-700 mb-5 flex-shrink-0">
+                    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-10 h-10" viewBox="0 0 24 24">
+                      <circle cx="6" cy="6" r="3"></circle>
+                      <circle cx="6" cy="18" r="3"></circle>
+                      <path d="M20 4L8.12 15.88M14.47 14.48L20 20M8.12 8.12L12 12"></path>
+                    </svg>
+                  </div>
+
+
+                  <h2 className="text-gray-900 text-lg title-font font-medium mb-3">Decoration</h2>
+                  <p className="leading-relaxed text-base">
+                    Our team specializes in crafting mesmerizing lighting and flower arrangements that illuminate your venue with warmth and sophistication
+                    our skilled decorators also excel in creating breathtaking floral arrangements.</p>
+                </div>
+
+
+              </div>
+              <div className="p-4 md:w-1/3 flex flex-col text-center items-center">
+                <div className="flex-grow border border-black rounded-lg p-4 bg-brown-100 mb-10">
+                  <div className="w-20 h-20 inline-flex items-center justify-center rounded-full bg-amber-100 text-yellow-700 mb-5 flex-shrink-0">
+                    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-10 h-10" viewBox="0 0 24 24">
+                      <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                  </div>
+
+                  <h2 className="text-gray-900 text-lg title-font font-medium mb-3">Catering</h2>
+                  <p className="leading-relaxed text-base"> Our catering team offers professional service and seamless coordination to ensure that every aspect of your dining experience is flawless,
+                    From menu planning , allowing you to relax and enjoy your event while we take care of the rest.</p>
+                </div>
+
+              </div>
+            </div>
+            {/* <button className="flex mx-auto mt-16 text-white bg-pink-500 border-0 py-2 px-8 focus:outline-none hover:bg-pink-600 rounded text-lg">Button</button> */}
+          </div>
+
           <div className={style1.heading1}>
-            <label htmlFor="city">Search:</label></div>
+            <label htmlFor="city">SearchDecoration:</label></div>
           <div className={style1.container}>
 
             <div className={style1.input1}>
@@ -426,7 +489,7 @@ const Service = () => {
                 ))
               )}
             </Grid> */}
-            
+
             <Grid container spacing={{ xs: 2, md: 4 }} columns={{ xs: 4, sm: 8, md: 12 }} style={{ marginTop: '2rem', marginBottom: '2rem' }}>
               {decorations && decorations.map((decoration: Decoration, index: number) => (
                 <Grid item xs={2} sm={4} md={4} key={index} style={{ padding: '2rem 5rem', margin: '2rem 0' }}>
@@ -436,16 +499,20 @@ const Service = () => {
                         <img key={imageIndex} src={imageUrl} alt="vendorDecorationImage" style={{ width: '700px', height: '300px', objectFit: 'cover' }} />
                       ))}
                       <div className={style.details}>
-                        <div className={style.details1}>EventName: {decoration.eventName}</div>
-                        <div className={style.details1}>Price: {decoration.price}</div>
-                        <div className={style.details1}>CityName: {decoration.cityName}</div>
-                        <div className={style.details1}>District: {decoration.district}</div>
+                        {/* <div className={style.details1}>EventName: {decoration.eventName}</div> */}
+                        <div className={style.details1}>DecorationPrice: {decoration.price}</div>
+                        {/* <div className={style.details1}>CityName: {decoration.cityName}</div>
+                        <div className={style.details1}>District: {decoration.district}</div> */}
                       </div>
                       <div className={style.buttoncontainer}>
                         {/* <button className={style.button}>View</button> */}
                         {/* <button className={style.button} onClick={handleContinue}>Continue</button> */}
 
                         <button className={style.button} onClick={CtaringPage}>Continue</button>
+
+
+
+
 
 
                       </div>
@@ -457,9 +524,34 @@ const Service = () => {
               ))}
             </Grid>
 
+            {!open && ( // Show the button only if the dialog is not open
+        <Button variant="outlined" className={style.b1} onClick={handleClickOpen}>
+          Booked
+        </Button>
+      )}
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Sucesss....!"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Your Event book SuccessFully......!
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          {/* <Button onClick={handleClose}>Disagree</Button> */}
+          <Button onClick={handleClose} autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
 
 
-            <h2>Welcome to Food Area</h2>
+
+
             <Grid container spacing={{ xs: 2, md: 4 }} columns={{ xs: 4, sm: 8, md: 12 }} style={{ marginTop: '2rem', marginBottom: '2rem' }}>
               {showCaterers && (
                 caterers.map((caterer, index) => (
@@ -475,8 +567,8 @@ const Service = () => {
                         <h3>Dish Name: {caterer.dishName}</h3>
                         <p>Price: {caterer.price}</p>
                         <button className={style.button} onClick={handleClickOpen}>Order</button>
-                         
-                         <Dialog  className={style.bg2}
+
+                        <Dialog className={style.bg2}
                           open={open}
                           onClose={handleClose}
                           PaperProps={{
@@ -514,8 +606,8 @@ const Service = () => {
                             <Button type="submit">Subscribe</Button>
                           </DialogActions>
                         </Dialog>
-                        
-                        
+
+
                       </CardContent>
                     </Card>
                   </Grid>
@@ -555,7 +647,7 @@ const Service = () => {
 
 
 
-            <div className={style1.input1}>
+            {/* <div className={style1.input1}>
               <div className={style1.heading2}>
                 <label htmlFor="Decoration">Decoration</label></div>
               <button className={style1.s1}>Decoration</button></div>
@@ -564,7 +656,7 @@ const Service = () => {
               <div className={style1.heading2}>
                 <label htmlFor="Catering">Catering</label></div>
               <button className={style1.s1}>Catering</button>
-            </div>
+            </div> */}
 
 
 

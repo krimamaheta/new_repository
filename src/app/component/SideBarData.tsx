@@ -31,7 +31,7 @@ export const SideBarData:SideBarItem[]=[
     {
         title: "User",
         icon: <PersonIcon/>, // Replace Icon with your actual icon component
-        link: "/User",
+        link: "/admin/user",
     },
     {
         title: "Event",
@@ -51,7 +51,7 @@ export const SideBarData:SideBarItem[]=[
     {
         title: "Booking",
         icon: <BookmarkAddedIcon/>, // Replace Icon with your actual icon component
-        link: "/booking",
+        link: "/admin/booking",
     },
     {
         title: "Payment",

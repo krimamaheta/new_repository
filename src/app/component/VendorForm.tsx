@@ -6,6 +6,16 @@ import style from "./../vendor/vendorStyle.module.css"
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
+
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
+
 import { Grid, Card, CardContent, Typography } from '@mui/material';
 import Loader from "../Loader";
 import { debug } from "console";
@@ -30,6 +40,12 @@ const VendorForm: React.FC = () => {
         FirmName: "",
         TypeOfvendor: ""
     });
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen1 = () => {
+        setOpen(true);
+    };
 
     const [vendorTypes, setVendorTypes] = useState<string[]>([])
     useEffect(() => {
@@ -220,11 +236,18 @@ interface vendordecorationModel {
     eventName: "",
     firmName: "",
     cityName: "",
-    address:"",
-    websiteUrl:"",
-    district:""
-    
+    address: "",
+    websiteUrl: "",
+    district: ""
+
 }
+
+interface FormValue {
+    eventId: string;
+    vendorId: string;
+    Price: string;
+    images: string[]; // Assuming images will be stored as URLs
+  }
 
 export const GetAllVendor: React.FC = () => {
     // const imageFilenames = [{imageurl:'https://img.freepik.com/premium-photo/display-desserts-including-strawberries-strawberries-strawberries_931576-18736.jpg?w=900',location:`surat`,price:400}, 
@@ -238,26 +261,37 @@ export const GetAllVendor: React.FC = () => {
     // ];
     const route = useRouter();
     const [loading, setLoading] = useState(false)
-    const [event,setEvent] = useState("");
-    
+    const [event, setEvent] = useState("");
+
     const onClick = (e): any => {
         setEvent(e.target.event);
         route.push("allvendor/addDecoration");
 
     }
+
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen1 = () => {
+        setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     //to display same page 
     //get all image what ever uploaded
     const [vendorDecoration, setvendorDecoration] = useState([]);
 
     //fetch vendorId
     const User = useSelector((state) => state.auth.user);
-    const FetchVendorId = async (userId:any) => {
+    const FetchVendorId = async (userId: any) => {
 
         try {
-            var res=await axios.get(`https://localhost:44340/Api/Vendor/getByUserId/${userId}`)
-            console.log("res..",res);
-            console.log("vendorid",res.data.vendorId);
-            
+            var res = await axios.get(`https://localhost:44340/Api/Vendor/getByUserId/${userId}`)
+            console.log("res..", res);
+            console.log("vendorid", res.data.vendorId);
+
             return res.data.vendorId;
 
         } catch (error) {
@@ -267,7 +301,7 @@ export const GetAllVendor: React.FC = () => {
         }
     }
 
-    const fetchDecoration = async (vendorId:any) => {
+    const fetchDecoration = async (vendorId: any) => {
         try {
 
             // debugger
@@ -275,7 +309,7 @@ export const GetAllVendor: React.FC = () => {
             const vendorId = await FetchVendorId(User.user.userID);
             // var res = await axios.get("https://localhost:44340/api/VendorEvent/List");
             var res = await axios.get(`https://localhost:44340/api/VendorEvent/GetAllByVendorId?vendorId=${vendorId}`)
-            console.log("vendor id",vendorId);
+            console.log("vendor id", vendorId);
             console.log("response", res);
             setvendorDecoration(res.data);
         } catch (error) {
@@ -300,7 +334,7 @@ export const GetAllVendor: React.FC = () => {
     }
 
 
-    const DeleteVendorEvent = async (Id: string,vendorId:string) => {
+    const DeleteVendorEvent = async (Id: string, vendorId: string) => {
         if (window.confirm("Are you sure you want to delete this Vendor Decoration?")) {
             try {
                 const res = await axios.delete(`https://localhost:44340/api/VendorEvent/${Id}`);
@@ -323,6 +357,37 @@ export const GetAllVendor: React.FC = () => {
         }
     };
 
+
+    const [events, setEvents] = useState([]);
+    //const [loading, setLoading] = useState(false);
+  
+    const fetchEvent = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get("https://localhost:44340/Api/Event/AllEvent");
+        setEvents(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+        setLoading(false);
+      }
+    };
+    const [value, setValue] = useState<FormValue>({
+        eventId: "",
+        vendorId: "",
+        Price: "",
+        images: [],
+      });
+  
+    useEffect(() => {
+      fetchEvent();
+    }, []);
+
+    const selectchange = (e: { target: { value: any; }; }) => {
+        const { value } = e.target;
+        setValue((prevValue) => ({ ...prevValue, eventId: value }));
+      };
+
     return (
         <div>
 
@@ -342,7 +407,7 @@ export const GetAllVendor: React.FC = () => {
                     </div>
                 ))
             } */}
-            
+
             <Grid container spacing={{ xs: 2, md: 4 }} columns={{ xs: 4, sm: 8, md: 12 }} style={{ marginTop: '2rem', marginBottom: '2rem' }}>
                 {loading ? (<div><Loader /></div>) : vendorDecoration.map((event: vendordecorationModel, index: number) => (
                     <Grid item xs={2} sm={4} md={4} key={index} style={{ padding: '2rem 5rem', margin: '2rem 0' }}>
@@ -369,9 +434,81 @@ export const GetAllVendor: React.FC = () => {
                                 </div>
 
                                 <div className={style.buttoncontainer}>
-                                    <button  className={style.button}>Update</button>
+                                    <button className={style.button} onClick={handleClickOpen1}>Update</button>
+
+                                    <Dialog
+                                        className={style.bg3}
+                                        open={open}
+                                        onClose={handleClose}
+                                        PaperProps={{
+                                            component: 'form',
+                                            onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
+                                                event.preventDefault();
+                                                const formData = new FormData(event.currentTarget);
+                                                const formJson = Object.fromEntries((formData as any).entries());
+                                                const email = formJson.email;
+                                                console.log(email);
+                                                handleClose();
+                                            },
+                                        }}
+                                    >
+                                        <DialogTitle className={style.heading}>Update Details</DialogTitle>
+                                        <DialogContent>
+                                            <DialogContentText>
+
+                                            </DialogContentText>
+                                            {/* <TextField
+                                                autoFocus
+                                                required
+                                                margin="dense"
+                                                id="EventName"
+                                                name="EventName"
+                                                label="EventName"
+                                                type="text"
+                                                fullWidth
+                                                variant="standard"
+                                            /> */}
+                                            <label htmlFor="EventName">Event:</label>
+
+                                            <select name="EventName" id="EventName" onChange={selectchange}>
+                                                <option value="">Select Event</option>
+                                                {loading ? (
+                                                    <option disabled>Loading...</option>
+                                                ) : (
+                                                    events.map((event) => (
+                                                        <option key={event.eventId} value={event.eventId}>
+                                                            {event.eventName}
+                                                        </option>
+                                                    ))
+                                                )}
+                                            </select>
+                                            <TextField
+                                                autoFocus
+                                                required
+                                                margin="dense"
+                                                id="DecorationPrice"
+                                                name="DecorationPrice"
+                                                label="DecorationPrice"
+                                                type="text"
+                                                fullWidth
+                                                variant="standard"
+                                            />
+                                            <input
+                                                type="file"
+                                                name="images"
+                                                multiple
+
+                                                accept="image/*"
+                                            />
+
+                                        </DialogContent>
+                                        <DialogActions>
+                                            <Button onClick={handleClose}>Cancel</Button>
+                                            <Button type="submit">Update</Button>
+                                        </DialogActions>
+                                    </Dialog>
                                     <button onClick={() => DeleteVendorEvent(event.id)} className={style.button}>Remove</button>
-                                
+
                                 </div>
                             </CardContent>
                         </Card>

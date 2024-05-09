@@ -79,8 +79,12 @@ const NavBar =() => {
             {/* <li>
               <a href="/categories">categories</a>
             </li> */}
-            <li>
+            {/* <li>
               <Link href="/contacts">Contacts</Link>
+            </li> */}
+
+            <li>
+              <Link href="/userprofile">Profile</Link>
             </li>
            
            <li>
