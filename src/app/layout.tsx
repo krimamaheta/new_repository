@@ -6,6 +6,7 @@ import NavBar from "./navigation";
 import Footer from "./componets/footer"
 import { Provider } from "react-redux";
 import store from "@/Redux/store";
+import { DecorationPriceProvider } from "@/context/DecorationPrice";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,7 +26,9 @@ export default function RootLayout({
         {/* <NavBar/> */}
 
     <Provider store={store}>
-        {children}
+    <DecorationPriceProvider>
+            {children}
+          </DecorationPriceProvider>
         </ Provider >
         {/* <Footer /> */}
         </body>
