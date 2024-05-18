@@ -20,7 +20,7 @@
 //   const SidebarContext=createContext<SidebarContextType>({ expanded: true });
 // const SideBar=({Children}:any)=>{
 //     const[expanded,setExpanded]=useState(true);
-    
+
 //     return(
 //         <SidebarContext.Provider value={{ expanded }}>
 //         <div>
@@ -35,7 +35,7 @@
 //                 >
 //                   <Logo />
 //                 </div>
-  
+
 //                 <button
 //                   className="p-1.5 rounded-lg  bg-gray-50 hover:bg-gray-100"
 //                   onClick={() => setExpanded((cur) => !cur)}
@@ -43,10 +43,10 @@
 //                   {expanded ? <LuChevronFirst /> : <LuChevronLast />}
 //                 </button>
 //               </div>
-  
+
 //               {/* Render children */}
 //               <ul className="flex-1 px-3">{Children}</ul>
-  
+
 //               <div className="border-t flex p-3">
 //                 <Logo />
 //                 <div
@@ -193,30 +193,39 @@ import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import ArrowDropDownCircleIcon from '@mui/icons-material/ArrowDropDownCircle';
 import LightModeIcon from '@mui/icons-material/LightMode';
-const SideBar:React.FC=()=>{
+import Link from "next/link";
+import { logout } from "@/Redux/authslice/authslice";
+import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from 'react-redux';
+const SideBar: React.FC = () => {
 
 
-    const handleclick=(link:string)=>{  
-        window.location.pathname=link;
+    const handleclick = (link: string) => {
+        window.location.pathname = link;
     }
-    return(
+
+    const User=useSelector((state)=>state.auth.user);
+    console.log(User);
+    const Email = User?.user?.email
+    
+    return (
         <div className={style.sidebar}>
-            <div className={style.heading1}>krimamaheta@gmail.com</div>
-             <div className={style.heading1}>Online</div>
-               <ul className={style.sidebarlist}>
-            {SideBarData.map((value,key)=>{
-                return (
-                    <li id={window.location.pathname==value.link?"active":""} 
-                    className={style.row} key={key} onClick={()=>handleclick(value.link)}>{" "}
+            <div className={style.heading1}>{Email}</div>
+            {/* <div className={style.heading1}>Online</div> */}
+            <ul className={style.sidebarlist}>
+                {SideBarData.map((value, key) => {
+                    return (
+                        <li id={window.location.pathname == value.link ? "active" : ""}
+                            className={style.row} key={key} onClick={() => handleclick(value.link)}>{" "}
                             <div className={style.icon}>
                                 {value.icon}
                             </div>{" "}
                             <div className={style.title}>
                                 {value.title}
                             </div>
-                    </li>
-                )
-            })}</ul>
+                        </li>
+                    )
+                })}</ul>
 
 
         </div>
@@ -224,20 +233,33 @@ const SideBar:React.FC=()=>{
 }
 export default SideBar;
 
-export const Searching=()=>{
-    
+export const Searching = () => {
+
     const Logo = () => (
         // <div className={style.image1}>
         <Image src="/logo.png" alt="Logo" width={110} height={40} />
         // </div>
-      );
-    return(
-      
-<div className={style.searchContainer}>
-                <Logo/>
-                <div className={style.search1}><input type="text"  placeholder="Search..." /></div>
-                <div className={style.search2}><NotificationsIcon className={style.searchIcon}/>
-                <LightModeIcon className={style.searchIcon}/><ArrowDropDownCircleIcon className={style.searchIcon} /><ContentPasteSearchIcon className={style.searchIcon} /></div>
+    );
+
+    const route = useRouter();
+    const dispatch = useDispatch();
+
+    const handleLogout = () => {
+        dispatch(logout());
+        route.push("/landingpage");
+    }
+    return (
+
+        <div className={style.searchContainer}>
+            <Logo />
+            <div className={style.search1}><input type="text" placeholder="Search..." /></div>
+            <div className={style.search2}><NotificationsIcon className={style.searchIcon} />
+                <LightModeIcon className={style.searchIcon} /><ArrowDropDownCircleIcon className={style.searchIcon} /><ContentPasteSearchIcon className={style.searchIcon} />
+                <button onClick={handleLogout} className={style.heading1}>LogOut</button>
+
             </div>
+        </div>
     )
 }
+
+

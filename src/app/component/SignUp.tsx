@@ -34,8 +34,9 @@ const initialValues = {
           "🚀 ~ file: Registration.jsx ~ line 11 ~ Registration ~ values",
           values
         );
+        console.log('Selected user role:',values.userRole);
         console.log(values);
-         CreateUserPage(values);
+        CreateUserPage(values);
         action.resetForm();
         route.push("/login");
       },
@@ -144,9 +145,9 @@ const initialValues = {
                       onBlur={handleBlur}
                     >
                       <option value="" style={{ fontSize: "16px", color: "#333" }}>Select a role</option>
-                      <option value="admin" style={{ fontSize: "16px", color: "#333" }}>Admin</option>
-                      <option value="user" style={{ fontSize: "16px", color: "#333" }}>User</option>
-                      <option value="decorator" style={{ fontSize: "16px", color: "#333" }}>Decorator</option>
+                      <option value="Admin" style={{ fontSize: "16px", color: "#333" }}>Admin</option>
+                      <option value="User" style={{ fontSize: "16px", color: "#333" }}>User</option>
+                      <option value="Decorator" style={{ fontSize: "16px", color: "#333" }}>Decorator</option>
                       <option value="Caterer" style={{ fontSize: "16px", color: "#333" }}>Caterer</option>
                       
                     </select>

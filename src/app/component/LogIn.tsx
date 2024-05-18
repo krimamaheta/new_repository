@@ -1,3 +1,4 @@
+"use client"
 
 import React, { useState } from "react";
 import Image from "next/image";
@@ -13,6 +14,7 @@ import { useRouter } from "next/navigation";
 
 import Link from "next/link"
 import { login } from "@/Redux/authslice/authslice";
+import setToken from "@/store/token";
 
 
 // const initialValues={
@@ -52,6 +54,8 @@ const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       body: JSON.stringify(formData),
     });
     const data = await res.json();
+    console.log(res);
+    
     if (!res.ok) {
       alert(data.message);
     }
@@ -65,7 +69,25 @@ const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
      //localStorage.setItem("user", JSON.stringify(current_user));
       console.log(res);
       dispatch(login({ user: current_user }));
-      window.location.href = "/home";
+
+      
+
+      // document.cookie = `access_token=${current_user.token}; path=/; HttpOnly; Secure; SameSite=none; max-age=${3 * 60 * 60}`;
+      // console.log("token",`${current_user.token}`);
+      
+      
+      if(current_user.roles=="User"){
+        window.location.href = "/home";
+      }else if(current_user.roles=="Admin"){
+        window.location.href="/admin"
+      }else if(current_user.roles=="Decorator"||current_user.roles=="Caterer"){
+        window.location.href="/vendor"
+      }else{
+        window.location.href="/landingpage"
+      }
+
+
+
 
     }
   } catch (error) {

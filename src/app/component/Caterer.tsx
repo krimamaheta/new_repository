@@ -34,7 +34,6 @@ interface Caterer {
     images: string[];
     dishName: string;
     price: string;
-
     eventId: string;
 }
 

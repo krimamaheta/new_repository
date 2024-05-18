@@ -15,6 +15,7 @@ import  Style  from "./../about/image.module.css";
 import Styles from "./../home/card.module.css" 
 import b1 from "./../../../public/b1.png"
 import annyversary from "./../../../public/anniversary.png"
+import yellow from "./../../../public/y1.png"
 //import Navbar from "./navigation"
 // const roboto = Roboto({
 //   weight: '400',
@@ -32,7 +33,7 @@ interface HomeProps{
         We help our candidates plan and design unforgettable events and share with their guests so they can spend more time creating beautiful  memories.
       </div>
       <div className={Style.image_container}>
-        <Image src={HomeImage} alt="home page" layout="responsive"/>  
+        <Image src={yellow} alt="home page" layout="responsive"/>  
       </div>
 
       <section className="text-gray-600 body-font">

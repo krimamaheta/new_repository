@@ -216,3 +216,27 @@
     margin-left: 45rem;
     text-decoration: underline;
   }
+  .heading1{
+    margin-left: 50;
+    margin-right: 50;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .logoutbtn{
+    background-color: #90613b;
+   font-size: larger;
+   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+   border: none;
+   color: white;
+   padding: 20px;
+   text-align: center;
+   text-decoration: none;
+   display: inline-block;
+   font-size: 16px;
+   margin: 4px 2px;
+   cursor: pointer;
+   border-radius: 12px;
+   margin-top: 20px;
+   margin-left: 40px;
+  }

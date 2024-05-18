@@ -10,7 +10,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { headers } from "next/headers";
 
 // interface Event {
@@ -436,10 +436,24 @@ import { headers } from "next/headers";
 // }
 
 // export default Caterer;
+
+
+
 import { Grid, Card, CardContent, Typography } from '@mui/material';
 import Loader from "../../Loader"
 import { error } from "console";
+import { useRouter } from "next/navigation";
+import { logout } from "@/Redux/authslice/authslice";
+
+interface Caterer {
+    images: any;
+    dishName: string;
+    price: string;
+}
+
 interface vendorCatererModel {
+    eventId: string;
+    vendorId: string;
 
     images: any;
     id: "",
@@ -457,8 +471,9 @@ interface vendorCatererModel {
 const Caterer = () => {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [selectedEvent, setSelectedEvent] = useState("");
-    //const [open, setOpen] = useState(false);
+    const [selectedEvent, setSelectedEvent] = useState<any>(null);
+    const [caterers, setCaterer] = useState<Caterer[]>([]);
+    const [updateopen, setUpdateOpen] = useState(false);
     const [value, setValue] = useState({
         eventId: "",
         vendorId: "",
@@ -470,12 +485,64 @@ const Caterer = () => {
 
     const [open, setOpen] = React.useState(false);
 
-    const handleClickOpen = () => {
-        setOpen(true);
+    // const handleUpdate = (event: any) => {
+    //     setSelectedEvent(event);
+    //     setValue({
+    //         eventId: event.eventId,
+    //         vendorId: event.vendorId,
+    //         price: event.price,
+    //         dishName: event.dishName,
+    //         images: event.images,
+    //     });
+    //     setUpdateOpen(true);
+    // }
+
+    interface Caterer {
+        images: string[];
+        dishName: string;
+        price: string;
+        eventId: string;
+        vendorId:string
+    }
+
+    const selectFile1 = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (files) {
+            const fileArray = Array.from(files).map((file) => URL.createObjectURL(file));
+            setValue((prevValue) => ({ ...prevValue, images: fileArray }));
+        }
     };
-    const handleClickOpen1 = () => {
-        setOpen(true);
+
+    const handleupdateClose = () => {
+        setUpdateOpen(false);
+    }
+
+
+    const handleUpdateSubmit = async (event: React.FormEvent<HTMLFormElement>, id: string) => {
+        event.preventDefault();
+
+        try {
+            const res = await axios.put(`https://localhost:44340/api/VendorEvent/${id}`, value, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (res.status === 200) {
+                alert("Update successful!");
+            } else {
+                alert("Failed to update value");
+            }
+        } catch (error) {
+            console.error("Error updating value:", error);
+            alert("Failed to update value");
+        }
+
+        console.log(value);
+        handleUpdateClose();
     };
+
+
 
 
     //fetch vendor by userId
@@ -682,6 +749,10 @@ const Caterer = () => {
     //caterer list
     //fetch vendorId
     const [vendorCaterer, setVendorCaterer] = useState<vendorCatererModel[]>([]);
+    const [dishName, setDishName] = useState("");
+    const [price, setPrice] = useState("");
+    const [images, setImages] = useState<File[]>([]);
+    const[vendorId,setVendorId]=useState("");
 
     const FetchVendorId = async (userId: any) => {
 
@@ -737,14 +808,15 @@ const Caterer = () => {
     }
 
     //delete  details api
-    const DeleteDetails = async (Id: string, vendorId: string) => {
+    const DeleteDetails = async (Id: string,vendorId: string) => {
         if (window.confirm("Are you sure you want to delete this Vendor Decoration?")) {
             try {
-                const res = await axios.delete(`https://localhost:44340/api/VendorEvent/${Id}`);
+                const res = await axios.delete(`https://localhost:44340/api/VendorEvent/Delete/${Id}`);
                 console.log("response", res);
                 if (res.status === 200) {
                     console.log("response", res.data);
                     alert("Vendor Event deleted successfully");
+
                     await fetchCaterer(vendorId);
                     return res.data;
                 } else {
@@ -761,76 +833,61 @@ const Caterer = () => {
     };
 
 
+    const handleUpdateOpen = (id: String) => {
+        alert(id);
+        const caterer = vendorCaterer.find(e => e.id == id);
+        if (caterer) {
+            const { dishName, price, images } = caterer;
+            alert(`dishaname:${dishName},price:${price},images:${images}`);
+            setDishName(dishName || '');
+            setPrice(price || '');
+            setImages(images || []);
+            setUpdateOpen(true);
 
-    // const addCatering = async () => {
-    //     try {
-    //       const vendorId = await FetchVendorId(User.user.userID);
-    //       const requestData = {
-    //         VendorId: vendorId,
-    //         EventId: value.eventId,
-    //         Price: value.price,
-    //         DishName: value.dishName,
-    //         Images: value.images,
-    //       };
-    //       const response = await axios.post(
-    //         "https://localhost:44340/api/VendorEvent/AddVendorEvent.",
-    //         requestData,{
-    //             headers:{
-    //                 "Content-Type":"multipart/form-data"
-    //             }
-    //         }
-    //       );
-    //       if (response.status === 200) {
-    //         setValue({
-    //           eventId: "",
-    //           price: "",
-    //           dishName: "",
-    //           images: [],
-    //         });
-    //         alert("Catering added successfully!");
-    //       } else {
-    //         alert("Failed to add catering. Please try again later.");
-    //       }
-    //     } catch (error) {
-    //       console.error("Error while adding catering:", error);
-    //       alert("Failed to add catering. Please try again later.");
-    //     }
-    //   };
+            handleUpdateClick(id);
+        }
 
 
-    // const fetchCaterer = async (vendorId:any) => {
-    //     try {
+    }
 
-    //         debugger
-    //         setLoading(true)
-    //         const vendorId = await FetchVendorId(User.user.userID);
-    //         // var res = await axios.get("https://localhost:44340/api/VendorEvent/List");
-    //         var res = await axios.get(`https://localhost:44340/api/VendorEvent/GetAllByVendorId?vendorId=${vendorId}`)
-    //         console.log("vendor id",vendorId);
-    //         console.log("response", res);
-    //         setVendorCaterer(res.data);
-    //     } catch (error) {
-    //         console.error("error fetching vendor Catering");
-    //         alert("error to fetch list");
-    //     }
-    //     finally {
-    //         setLoading(false);
-    //     }
-    // }
-    // const CatererList = async (e) => {
-    //     setLoading(true)
-    //     setEvents(e.target.event);
-    //     setTimeout(async () => {
-    //         await fetchCaterer();
-    //         setLoading(false);
+    const selectFile2 = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files: FileList | null = event.target.files;
 
-    //     }, 1000)
+        if (files) {
+            const selectedFiles: File[] = Array.from(files);
+            const imageUrls: string[] = selectedFiles.map(file => URL.createObjectURL(file));
+            setImages(imageUrls);
+        }
+    };
 
-    //     //route.push("/vendor/allvendor/list");
-    // }
+    const handleUpdateClick = async (id: String) => {
+        try {
+            debugger
+            // Make the PUT request to update the vendor event
+            const url = `https://localhost:44340/api/VendorEvent/${id}`;
+            const response = await axios.put(url, {
+                //EventId:eventId,
+                VendorId:vendorId,
+                Price:price,
+                DishName:dishName,
+                images:images || [],
+            });
+            console.log("response",response);
+            // Handle success response
+            console.log('Update successful:', response.data);
+        } catch (error) {
+            console.log("error");
+            alert("error coming");
 
+        }
+    }
+    const dispatch=useDispatch();
+    const route =useRouter();
 
-
+    const handlelogout=()=>{
+            dispatch(logout());
+            route.push("/landingpage");  
+    }
 
     return (
         <div>
@@ -916,6 +973,7 @@ const Caterer = () => {
                     </DialogActions>
                 </Dialog>
                 <button className={style.b2} onClick={onClick1}>CateringList</button>
+                <button className={style.logoutbtn} onClick={handlelogout}>Logout</button>
 
             </p>
 
@@ -935,6 +993,7 @@ const Caterer = () => {
                                 <div className={style.details}>
 
                                     <div className={style.details1}>Id:{event.id}</div>
+                                    <div className={style.details1}>EventId:{event.eventId}</div>
                                     {/* <div className={style.details1}>FirmName:{event.firmName}</div>
                                     <div className={style.details1}>CityName:{event.cityName}</div>
                                     <div className={style.details1}>FirmAddress:{event.address}</div>
@@ -946,12 +1005,12 @@ const Caterer = () => {
                                 </div>
 
                                 <div className={style.buttoncontainer}>
-                                    <button className={style.button} onClick={handleClickOpen1}>Update</button>
+                                    <button className={style.button} onClick={() => handleUpdateOpen(event.id)}>Update</button>
 
                                     <Dialog
                                         className={style.bg2}
-                                        open={open}
-                                        onClose={handleClose}
+                                        open={updateopen}
+                                        onClose={handleupdateClose}
                                         PaperProps={{
                                             component: 'form',
                                             onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
@@ -967,7 +1026,7 @@ const Caterer = () => {
                                         <DialogTitle className={style.heading}>Update Details</DialogTitle>
                                         <DialogContent>
                                             <DialogContentText>
-                                               
+
                                             </DialogContentText>
                                             <TextField
                                                 autoFocus
@@ -979,6 +1038,8 @@ const Caterer = () => {
                                                 type="text"
                                                 fullWidth
                                                 variant="standard"
+                                                value={dishName}
+                                                onChange={(e) => setDishName(e.target.value)}
                                             />
                                             <TextField
                                                 autoFocus
@@ -990,21 +1051,32 @@ const Caterer = () => {
                                                 type="text"
                                                 fullWidth
                                                 variant="standard"
+                                                value={price}
+                                                onChange={(e) => setPrice(e.target.value)}
                                             />
-                                            <input
-                                                type="file"
-                                                name="images"
-                                                multiple
-                                                onChange={selectFile}
-                                                accept="image/*"
-                                            />
+                                            <div>
 
+
+                                                <input
+                                                    type="file"
+                                                    name="images"
+                                                    multiple
+                                                    onChange={selectFile2}
+                                                    accept="image/*"
+                                                />
+
+                                                {images && images.map((imageUrl, index) => (
+                                                    <img key={index} src={imageUrl} alt={`Image ${index}`} />
+                                                ))}
+                                            </div>
                                         </DialogContent>
                                         <DialogActions>
-                                            <Button onClick={handleClose}>Cancel</Button>
-                                            <Button type="submit">Update</Button>
+                                            <Button onClick={handleupdateClose}>Cancel</Button>
+                                            <Button type="submit" onClick={handleUpdateClick}>Update</Button>
                                         </DialogActions>
                                     </Dialog>
+
+
                                     <button onClick={() => DeleteDetails(event.id)} className={style.button}>Remove</button>
 
                                 </div>

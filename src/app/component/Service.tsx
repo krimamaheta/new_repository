@@ -517,11 +517,13 @@ import { useSelector } from 'react-redux';
                 ))}
               </Grid>
 
-              {!open && ( // Show the button only if the dialog is not open
+              {/* {!open && ( // Show the button only if the dialog is not open
           <Button variant="outlined" className={style.b1} onClick={handleClickOpen}>
             Booked
           </Button>
-        )}
+        )} */}
+
+
         <Dialog
           open={open}
           onClose={handleClose}

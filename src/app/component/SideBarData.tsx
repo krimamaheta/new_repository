@@ -23,11 +23,11 @@ export const SideBarData:SideBarItem[]=[
         icon: <DashboardIcon/>, // Replace Icon with your actual icon component
         link: "/admin/dashboard",
     },
-    {
-        title: "Home",
-        icon: <HomeIcon/>, // Replace Icon with your actual icon component
-        link: "/home",
-    },
+    // {
+    //     title: "Home",
+    //     icon: <HomeIcon/>, // Replace Icon with your actual icon component
+    //     link: "/home",
+    // },
     {
         title: "User",
         icon: <PersonIcon/>, // Replace Icon with your actual icon component
@@ -53,11 +53,11 @@ export const SideBarData:SideBarItem[]=[
         icon: <BookmarkAddedIcon/>, // Replace Icon with your actual icon component
         link: "/admin/booking",
     },
-    {
-        title: "Payment",
-        icon: <PaymentIcon/>, // Replace Icon with your actual icon component
-        link: "/payment",
-    },
+    // {
+    //     title: "Payment",
+    //     icon: <PaymentIcon/>, // Replace Icon with your actual icon component
+    //     link: "/payment",
+    // },
 
     {
         title: "Mail",

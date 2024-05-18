@@ -73,9 +73,9 @@ const NavBar =() => {
             <li>
               <Link href="/services">Services</Link>
             </li>
-            <li>
+            {/* <li>
               <Link href="/signup">SignUp</Link>
-            </li>
+            </li> */}
             {/* <li>
               <a href="/categories">categories</a>
             </li> */}
@@ -90,7 +90,12 @@ const NavBar =() => {
            <li>
             {/* <Link href="/logout">LogOut</Link> */}<li>
   {/* Conditionally render Login link or Logout button */}
-           {isAuthenticatedValue ? (<li>{Email}<button onClick={handleLogout}>LogOut</button></li>):(<li><Link href="/login">LogIn</Link></li>)}
+           {isAuthenticatedValue ? 
+           (<li>{Email}<button onClick={handleLogout}>LogOut</button></li>):
+           (<li><Link href="/login">Login</Link></li>)}
+
+
+
        
 </li>
             {/* {!isAuthenticated && (<li><Link href="/login">Login</Link></li>)} */}

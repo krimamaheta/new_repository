@@ -16,6 +16,8 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
+import { useDecorationPrice } from "@/context/DecorationPrice";
 
 
 
@@ -23,6 +25,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 //return value
 interface vendor {
+    isApprove: any;
     vendorId?: string;
     userId?: string;
     websiteUrl: string;
@@ -71,12 +74,12 @@ const Vendor = () => {
 
 
     //update
-    
+
     const FecthVendor = async (Id: string) => {
         try {
-           
+
             const res = await axios.get(`https://localhost:44340/Api/Vendor/get/${Id}`);
-            console.log("----fetch",res);
+            console.log("----fetch", res);
             console.log(res.data);
             return res.data;
 
@@ -89,7 +92,7 @@ const Vendor = () => {
     const UpdateVendor = async (Id: string, updatedata: vendor) => {
         try {
             const res = await axios.put(`https://localhost:44340/Api/Vendor/update/${Id}`, updatedata);
-            console.log("-----update",res)
+            console.log("-----update", res)
             return res.data;
 
         } catch (error) {
@@ -113,26 +116,26 @@ const Vendor = () => {
             };
             console.log(updatedData)
 
-             if (updateVendor && updateVendor.vendorId) {
+            if (updateVendor && updateVendor.vendorId) {
                 const updatedVendor = await UpdateVendor(updateVendor.vendorId, updatedData);
                 console.log(updatedVendor);
                 // if(updatedVendor.status===200){
                 //     console.log("......12342345")
                 //     alert(message)
                 // }
-                
+
                 console.log("vendor details Updated Successfully:", updatedVendor);
                 alert("Vendor Details Updated Successfully");
                 handleUpdateClose();
                 await AllVendor();
-               
-               
-                
+
+
+
                 // EventList();
-             } else {
-                 console.error("vendor Id is missing or invalid.");
-                 alert("Failed to update event: Invalid event data");
-             }
+            } else {
+                console.error("vendor Id is missing or invalid.");
+                alert("Failed to update event: Invalid event data");
+            }
         } catch (error) {
             console.error("Error updating event:", error);
             alert("Failed to update event");
@@ -265,12 +268,34 @@ const Vendor = () => {
                 alert("Failed to delete vendor");
             }
     }
+    const { setApprovalStatus } = useDecorationPrice();
+
+    const FinalApprove = async (Id: string) => {
+
+        if (window.confirm("Are You Sure to Approve the Vendor ? "))
+            try {
+                console.log("----id", Id);
+                const res = await axios.put(`https://localhost:44340/api/Vendor/approve/${Id}`);
+                console.log("response", res);
+                console.log("approve",res.data.isApprove);
+                
+                if (res.status === 200) {
+                    alert("Approval Confirmation Done");
+                    setApprovalStatus(true);
+                } else {
+                    alert("fail to approve from Admin side");
+                    setApprovalStatus(false);
+                }
+
+            }
+            catch (error) {
+                alert("Failed to Approve vendor");
+                setApprovalStatus(false);
+            }
+    }
 
 
-
-
-
-
+    const { isApproved } = useDecorationPrice();
 
     return (
 
@@ -373,7 +398,7 @@ const Vendor = () => {
                         </DialogActions>
                     </Dialog>
                 </div>
-                
+
                 <div className={style.button1} onClick={AllVendor}><button>VendorList</button></div>
                 <div className={style1.eventList}>
                     {loading ? (<p>Loading....!</p>) : error ? (<p>Error...</p>) : vendors.length > 0 ? (
@@ -392,6 +417,7 @@ const Vendor = () => {
                                         <th>typeOfVendor</th>
                                         <th>Update</th>
                                         <th>Delete</th>
+                                        <th>Approve</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -407,6 +433,20 @@ const Vendor = () => {
                                             <td>{vendor.typeOfVendor}</td>
                                             <td><button onClick={() => VendorUpdateOpen(vendor)}><ModeEditOutlineOutlinedIcon /></button></td>
                                             <td><button onClick={() => VendorDelete(vendor.vendorId)}><DeleteOutlineOutlinedIcon /></button></td>
+                                            {/* <td><button onClick={()=>FinalApprove(vendor.vendorId)}><CheckBoxOutlinedIcon /></button></td> */}
+                                            <td>
+                                                {vendor.isApprove
+                                                    ? (
+                                                        <button onClick={() => FinalApprove(vendor.vendorId)}>
+                                                            <CheckBoxOutlinedIcon style={{ color: 'green' }} />
+                                                        </button>
+                                                    ) : (
+                                                        <button onClick={() => FinalApprove(vendor.vendorId)}>
+                                                            <CheckBoxOutlinedIcon style={{ color: 'gray' }} />
+                                                        </button>
+                                                    )}
+                                            </td>
+
 
                                         </tr>
                                     ))}
@@ -476,9 +516,9 @@ const Vendor = () => {
                             fullWidth
                             variant="standard"
                             value={updateDistrict}
-                            onChange={(e) =>setUpdateDistrict(e.target.value)}
+                            onChange={(e) => setUpdateDistrict(e.target.value)}
                         />
-                           <TextField
+                        <TextField
                             autoFocus
                             required
                             margin="dense"
@@ -489,9 +529,9 @@ const Vendor = () => {
                             fullWidth
                             variant="standard"
                             value={updateFirmname}
-                            onChange={(e) =>setUpdatefirmname(e.target.value)}
+                            onChange={(e) => setUpdatefirmname(e.target.value)}
                         />
-                           <TextField
+                        <TextField
                             autoFocus
                             required
                             margin="dense"
@@ -502,8 +542,8 @@ const Vendor = () => {
                             fullWidth
                             variant="standard"
                             value={updateTypeofvendor}
-                            onChange={(e)=>setUpdatetypeofvendor(e.target.value)}
-                             />
+                            onChange={(e) => setUpdatetypeofvendor(e.target.value)}
+                        />
                     </DialogContent>
 
 

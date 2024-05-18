@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from "react";
 import Style from "./../vendor/vendorStyle.module.css"
-import { UseSelector, useSelector } from "react-redux";
+import { UseSelector, useDispatch, useSelector } from "react-redux";
 import style from "./../vendor/vendorStyle.module.css"
 import { useRouter } from "next/navigation";
 import axios from "axios";
@@ -19,9 +19,10 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { Grid, Card, CardContent, Typography } from '@mui/material';
 import Loader from "../Loader";
 import { debug } from "console";
+import { logout } from "@/Redux/authslice/authslice";
+import { useDecorationPrice } from "@/context/DecorationPrice";
 
-//during first time login
-//coman for decorator AND VENDOR
+
 
 //user side vendor
 const VendorForm: React.FC = () => {
@@ -65,9 +66,11 @@ const VendorForm: React.FC = () => {
     console.log(User);
 
     //add vendor
+   // const { isApproved } = useDecorationPrice();
+    const [isApproved, setIsApproved] = useState(false);
     const handleSubmit = async () => {
         try {
-            // debugger
+            debugger
             const userId = User.user.userID;
             console.log(userId);
 
@@ -83,14 +86,25 @@ const VendorForm: React.FC = () => {
                 const data = response.data;
                 console.log("---------------", data);
                 //alert(response.data.message)
-                alert("Added value successfully");
+                alert("Added value successfully and please check your email");
 
                 console.log("vendor details..", data);
                 console.log("vendorid.......", data.vendorId);
                 setValue({ ...value, vendorId: data.vendorId });
                 console.log("vendor details..123", data);
 
-                route.push("vendor/allvendor");
+                //await FinalApprove(data.vendorId);
+
+                //wait for approval
+                if(data.typeOfVendor=="Caterer" && isApproved){
+                    //route.push("vendor/caterer");
+                    startPolling(data.vendorId,data.typeOfVendor);
+                }else if (data.typeOfVendor=="Decorator" && isApproved){
+                    route.push("vendor/allvendor");
+                }
+                // else{
+                //     route.push("/landingpage");
+                // }
             } else {
                 // Handle other HTTP errors
                 console.error("Failed to add value:", response.statusText);
@@ -134,6 +148,29 @@ const VendorForm: React.FC = () => {
         //     alert("An error occurred during adding value.");
         // }
     }
+
+    const fetchApprovalStatus = async (vendorId:string) => {
+        try {
+          const response = await axios.get(`https://localhost:44340/api/Vendor/status/${vendorId}`);
+          setIsApproved(prevIsApproved => response.data.isApproved);
+        } catch (error) {
+          console.error("Failed to fetch approval status:", error);
+        }
+      };
+    
+      const startPolling = (vendorId:string, typeOfVendor:string) => {
+        const interval = setInterval(async () => {
+          await fetchApprovalStatus(vendorId);
+          if (isApproved) {
+            clearInterval(interval);
+            if (typeOfVendor === "Caterer") {
+              route.push("vendor/caterer");
+            } else if (typeOfVendor === "Decorator") {
+              route.push("vendor/allvendor");
+            }
+          }
+        }, 5000); // Poll every 5 seconds
+      };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -334,10 +371,33 @@ export const GetAllVendor: React.FC = () => {
     }
 
 
-    const DeleteVendorEvent = async (Id: string, vendorId: string) => {
+    // const DeleteVendorEvent = async (Id: string, vendorId: string) => {
+    //     if (window.confirm("Are you sure you want to delete this Vendor Decoration?")) {
+    //         try {
+    //             const res = await axios.delete(`https://localhost:44340/api/VendorEvent/${Id}`);
+    //             console.log("response", res);
+    //             if (res.status === 200) {
+    //                 console.log("response", res.data);
+    //                 alert("Vendor Event deleted successfully");
+    //                 await fetchDecoration(vendorId);
+    //                 return res.data;
+    //             } else {
+    //                 // Handle unexpected status codes
+    //                 console.error("Unexpected status code:", res.status);
+    //                 alert("Failed to delete Vendor Event: Unexpected status code");
+    //             }
+    //         } catch (error) {
+    //             console.error("Error:", error);
+    //             alert("Failed to delete Vendor Event");
+    //             throw error; // Optionally rethrow the error to handle it elsewhere
+    //         }
+    //     }
+    // };
+    const DeleteDetails = async (Id: string, vendorId: string) => {
         if (window.confirm("Are you sure you want to delete this Vendor Decoration?")) {
             try {
-                const res = await axios.delete(`https://localhost:44340/api/VendorEvent/${Id}`);
+                debugger
+                const res = await axios.delete(`https://localhost:44340/api/VendorEvent/Delete/${Id}`);
                 console.log("response", res);
                 if (res.status === 200) {
                     console.log("response", res.data);
@@ -388,6 +448,14 @@ export const GetAllVendor: React.FC = () => {
         setValue((prevValue) => ({ ...prevValue, eventId: value }));
       };
 
+      const dispatch=useDispatch();
+    
+  
+      const handlelogout=()=>{
+              dispatch(logout());
+              route.push("/landingpage");  
+      }
+
     return (
         <div>
 
@@ -395,6 +463,7 @@ export const GetAllVendor: React.FC = () => {
             <p className={Style.left}>
                 <button className={style.b2} onClick={onClick}>AddDecoration</button>
                 <button className={style.b2} onClick={onClick1}>DecorationList</button>
+                <button className={style.logoutbtn} onClick={handlelogout}>Logout</button>
             </p>
 
             {/* {
@@ -507,7 +576,7 @@ export const GetAllVendor: React.FC = () => {
                                             <Button type="submit">Update</Button>
                                         </DialogActions>
                                     </Dialog>
-                                    <button onClick={() => DeleteVendorEvent(event.id)} className={style.button}>Remove</button>
+                                    <button onClick={() => DeleteDetails(event.id)} className={style.button}>Remove</button>
 
                                 </div>
                             </CardContent>
