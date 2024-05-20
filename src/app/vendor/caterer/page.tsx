@@ -1,5 +1,5 @@
 "use client"
-import React, { cache, useEffect } from "react";
+import React, { ChangeEvent, cache, useEffect } from "react";
 import style from "./../vendorStyle.module.css"
 import { useState } from "react";
 import Button from '@mui/material/Button';
@@ -13,430 +13,6 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { headers } from "next/headers";
 
-// interface Event {
-//     eventId: string,
-//     eventName: string,
-// }
-// interface FormValue {
-//     eventId: string,
-//     vendorId: string,
-//     price: string,
-//     images: string[],
-//     DishName: string,
-// }
-// const Caterer = () => {
-
-//     const [events, setEvents] = useState<Event[]>([]);
-//     const [Loading, setloading] = useState<boolean>(false);
-//     const [selectedEvent, setSelectedEvent] = useState<string>("");
-
-//     useEffect(() => {
-//         FetchEvent();
-//     }, []);
-
-//     const FetchEvent = async () => {
-//         try {
-//             setloading(true);
-//             var res = await axios.get("https://localhost:44340/Api/Event/AllEvent");
-//             setEvents(res.data);
-//             setloading(false);
-
-//         } catch (error) {
-//             console.log("error", error)
-//         }
-//     }
-
-
-
-
-//     const [open, setOpen] = React.useState(false);
-
-//     const handleClickOpen = () => {
-//         setOpen(true);
-//     };
-
-//     const handleClose = () => {
-//         setOpen(false);
-//     };
-
-
-//add process
-
-// const [value, setValue] = useState<FormValue>({
-//     eventId: "",
-//     vendorId: "",
-//     price: "",
-//     DishName: "",
-//     images: []
-
-// })
-// //fetch vendor by userId
-// const User = useSelector((state) => state.auth.user)
-// const FetchVendor = async (userId: any) => {
-//     try {
-//         const res = await axios.get(`https://localhost:44340/Api/Vendor/getByUserId/${userId}`);
-//         return res.data.vendorId;
-//     } catch (error) {
-//         console.log("Error fetching vendor details:", error);
-//         alert("Failed to fetch vendor details. Please try again later.");
-//     }
-// };
-
-// // const selectChange = (e: { target: { value: any; } }) => {
-// //     const { value } = e.target;
-// //     setValue((pre) => ({ ...pre, eventId: value }))
-// // }
-
-// const selectChange = (e: React.ChangeEvent<{ value: unknown }>) => {
-//     setSelectedEvent(e.target.value as string);
-//   };
-
-//   const selectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const files = e.target.files;
-//     if (files) {
-//         const fileArray = Array.from(files);
-//         setValue((prevValue) => ({ ...prevValue, images: fileArray }));
-//     }
-// };
-// const selectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const files = e.target.files;
-//     if (files) {
-//         const fileArray = Array.from(files);
-//         const fileURLs = fileArray.map(file => URL.createObjectURL(file)); // Convert each File object to a URL
-//         setValue((prevValue) => ({ ...prevValue, images: fileURLs }));
-//     }
-// };
-
-//   const selectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const files = e.target.files;
-//     if (files) {
-//         const fileArray = Array.from(files);
-//         const fileURLs = fileArray.map(file => URL.createObjectURL(file)); // Convert each File object to a URL
-//         setValue((prevValue) => ({ ...prevValue, images: fileURLs }));
-//     }
-// };
-// const selectFile = (e: { target: { files: any; } }) => {
-//     const files = e.target.files
-//     if (files) {
-//         setValue((prevalue) => ({ ...prevalue, images: Array.from(files) }))
-//     }
-// }
-
-
-//   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const files = e.target.files;
-//     if (files) {
-//       setValue((prevState) => ({ ...prevState, images: Array.from(files) }));
-//     }
-//   };
-
-//    const AddCatering=async()=> {
-//         try {
-//             debugger
-//             var vendorId = await FetchVendor(User.user.userID);
-//             console.log("vendor ID:", vendorId);
-//             const formdata = new FormData();
-//             formdata.append("eventId", value.eventId);
-//             formdata.append("vendorId", vendorId);
-//             formdata.append("DishName", value.DishName);
-//             formdata.append("price", value.price);
-
-//             const cloudinaryUploadPromises = value.images.map(async (image) => {
-//                 const formdata = new FormData();
-//                 formdata.append("file", image);
-//                 //formData.append("Images",image)
-//                 formdata.append("upload_preset", "unsign_upload1");
-//                 formdata.append("cloud_name", "dqtsmfpvb");
-
-//                 const response = await fetch(
-//                     "https://api.cloudinary.com/v1_1/dqtsmfpvb/image/upload",
-//                     {
-//                         method: "POST",
-//                         body: formdata,
-//                     }
-//                 );
-//                 const data = await response.json();
-//                 console.log("data", data);
-//                 return data.secure_url;
-//             });
-
-//             // Wait for all the Cloudinary upload promises to resolve
-//             const uploadedImageUrls = await Promise.all(cloudinaryUploadPromises);
-//             console.log("-------------", uploadedImageUrls);
-
-//             // value.images.forEach((image) => {
-//             //     formdata.append("Images", image);
-//             // });
-
-//             uploadedImageUrls.forEach(url => {
-//                 formdata.append("Images", url);
-//             });
-
-//             console.log("image upload", uploadedImageUrls);
-//             console.log(uploadedImageUrls[0]);
-//             console.log("image upload", uploadedImageUrls); // Log uploadedImageUrls to verify the array of URLs
-//             console.log("First image URL:", uploadedImageUrls[0]); // Log the first image URL for debugging
-//             console.log("value before state update:", value);
-//             console.log("value", value);
-
-
-
-//             const res = await axios.post("https://localhost:44340/api/VendorEvent/AddVendorEvent.", formdata, {
-//                 headers: {
-//                     "Content-Type": "multipart/form-data"
-//                 }
-//             });
-//             console.log("Decoration Added Successfully...............", res.data);
-//             if (res.status === 200) {
-//                 console.log("response", res);
-//                 alert(res.data);
-//                 setValue({
-//                     eventId: "",
-//                     vendorId: "",
-//                     price: "",
-//                     DishName: "",
-//                     images: [],
-//                 });
-//             } else {
-//                 //500 error
-//                 alert(res.data);
-//             }
-
-
-
-//         } catch (error) {
-//             console.error("Error while uploading images:", error);
-//             alert("Failed to add Decoration value. Please try again later.");
-//         }
-//     }
-
-// const AddCatering = async () => {
-//     try {
-//         debugger
-//         var vendorId = await FetchVendor(User.user.userID);
-//         console.log("vendor ID:", vendorId);
-//         const formdata = new FormData();
-//         formdata.append("eventId", value.eventId);
-//         formdata.append("vendorId", vendorId);
-//         formdata.append("DishName", value.DishName);
-//         formdata.append("price", value.price);
-
-//         const cloudinaryUploadPromises = value.images.map(async (image) => {
-//             // const file = await fetch(imageURL).then(response => response.blob()); // Fetch file content from URL
-//             // console.log({file});
-//             console.log({image});
-
-
-//             formdata.append("file",image);
-//             formdata.append("upload_preset", "unsign_upload");
-//             formdata.append("cloud_name", "dqtsmfpvb");
-
-//             const response = await fetch(
-//                 "https://api.cloudinary.com/v1_1/dqtsmfpvb/image/upload",
-//                 {
-//                     method: "POST",
-//                     body: formdata,
-//                 }
-//             );
-//             if (!response.ok) {
-//                 throw new Error(`Failed to upload image: ${response.statusText}`);
-//             }
-//             const data = await response.json();
-//             console.log("data", data);
-//             return data.secure_url;
-//         });
-
-//         // Wait for all the Cloudinary upload promises to resolve
-//         const uploadedImageUrls = await Promise.all(cloudinaryUploadPromises);
-//         console.log("-------------", uploadedImageUrls);
-
-//         uploadedImageUrls.forEach(url => {
-//             formdata.append("Images", url);
-//         });
-
-//         console.log("image upload", uploadedImageUrls);
-//         console.log(uploadedImageUrls[0]);
-//         console.log("image upload", uploadedImageUrls);
-//         console.log("First image URL:", uploadedImageUrls[0]);
-//         console.log("value before state update:", value);
-//         console.log("value", value);
-
-//         console.log({formdata});
-
-
-//         const res = await axios.post("https://localhost:44340/api/VendorEvent/AddVendorEvent.", formdata, {
-//             headers: {
-//                 "Content-Type": "multipart/form-data"
-//             }
-//         });
-//         console.log("response",res);
-//         console.log("Caterer Added value Successfully...............", res.data);
-//         if (res.status === 200) {
-//             console.log("response", res);
-//             alert(res.data);
-//             setValue({
-//                 eventId:"",
-//                 vendorId:"",
-//                 DishName:"",
-//                 images: [],
-//                 price: ""
-//             });
-//         } else {
-//             // 500 error
-//             console.log("Error:", res.data);
-//             alert("Failed to add Decoration value. Please try again later.");
-//         }
-//     } catch (error) {
-//         console.error("Error while uploading images:", error);
-//         alert("Failed to add Caterer value. Please try again later.");
-//     }
-// };
-//     const AddCatering = async () => {
-//         try {
-//             // Fetch vendorId
-//             debugger
-//             const vendorId = await FetchVendor(User.user.userID);
-//             console.log("vendorId",vendorId);
-
-
-//             // Prepare the data for the request
-//             const requestData = {
-//                 VendorId: vendorId,
-//                 EventId: value.eventId,
-//                 Price: value.price,
-//                 DishName: value.DishName,
-//                 Images: value.images // Assuming value.images is an array of image URLs
-//             };
-
-//             // Send the data to the backend
-//             const response = await axios.post("https://localhost:44340/api/VendorEvent/AddVendorEvent.", requestData);
-//             console.log("response",response);
-
-//             // Handle the response from the backend
-//             if (response.status === 200) {
-//                 // Reset form values after successful submission
-//                 setValue({
-//                     eventId: "",
-//                     vendorId: "",
-//                     price: "",
-//                     DishName: "",
-//                     images: [],
-//                 });
-//                 alert("Catering added successfully!");
-//             } else {
-//                 alert("Failed to add catering. Please try again later.");
-//             }
-//         } catch (error) {
-//             console.error("Error while adding catering:", error);
-//             alert("Failed to add catering. Please try again later.");
-//         }
-//     };
-
-//     return (
-//         <div>
-//             <p className={style.left}>
-//                 <button className={style.b2} onClick={handleClickOpen}>AddCatering</button>
-//                 <Dialog className={style.bg}
-//                     open={open}
-//                     onClose={handleClose}
-//                     PaperProps={{
-//                         component: 'form',
-//                         // onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-//                         //     event.preventDefault();
-//                         //     const formData = new FormData(event.currentTarget);
-//                         //     const formJson = Object.fromEntries((formData as any).entries());
-//                         //     const email = formJson.email;
-//                         //     console.log(email);
-//                         //     handleClose();
-//                         // },
-//                     }}
-//                 >
-//                     <DialogTitle className={style.heading} >AddCatering</DialogTitle>
-//                     <DialogContent className={style.bg1}>
-//                         <DialogContentText>
-//                             {/* To subscribe to this website, please enter your email address here. We
-//                             will send updates occasionally. */}
-//                         </DialogContentText>
-//                         <label>SelectEvent</label>
-//                         <select
-//                             autoFocus
-//                             required
-//                             id="name"
-//                             name="event"
-
-//                             onChange={selectChange}
-//                             style={{ width: '40%' }}
-//                         // eslint-disable-next-line react/jsx-no-duplicate-props
-
-//                         >
-//                             <option value="">Select Event:</option>
-//                             {Loading ? (
-//                                 <option disabled>Loading...</option>
-//                             ) : (
-//                                 events.map((event) => (
-//                                     <option key={event.eventId} value={event.eventId}>
-//                                         {event.eventName}
-//                                     </option>
-//                                 ))
-//                             )}
-//                         </select>
-//                         <TextField
-//                             autoFocus
-//                             required
-//                             margin="dense"
-//                             id="DishName"
-//                             name="DishName"
-//                             label="DishName"
-//                             type="text"
-//                             fullWidth
-//                             variant="standard"
-//                             value={value.DishName}
-//                             onChange={(e) => setValue((prevalue) => ({ ...prevalue, DishName: e.target.value }))}
-//                         />
-//                         <TextField
-//                             autoFocus
-//                             required
-//                             margin="dense"
-//                             id="UploadImage"
-//                             name="UploadImage"
-//                             label="UploadImage"
-//                             type="file"
-//                             fullWidth
-//                             variant="standard"
-//                             onChange={selectFile}
-//                         />
-//                         {/* <div>
-//                             <label htmlFor="ImageUrl">UploadImage:</label>
-//                             <input type="file" name="images" multiple onChange={selectFile} />
-//                         </div> */}
-//                         <TextField
-//                             autoFocus
-//                             required
-//                             margin="dense"
-//                             id="DishPrice"
-//                             name="DishPrice"
-//                             label="DishPrice"
-//                             type="text"
-//                             fullWidth
-//                             variant="standard"
-//                             value={value.price}
-//                             onChange={(e) => setValue((prevalue) => ({ ...prevalue, price: e.target.value }))}
-//                         />
-//                     </DialogContent>
-//                     <DialogActions className={style.bg1} >
-//                         <Button onClick={handleClose}>Cancel</Button>
-//                         <Button type="submit" onClick={AddCatering}>Add</Button>
-//                     </DialogActions>
-//                 </Dialog>
-//                 <button className={style.b2} >CateringList</button>
-//             </p>
-
-//         </div>
-//     )
-// }
-
-// export default Caterer;
-
 
 
 import { Grid, Card, CardContent, Typography } from '@mui/material';
@@ -444,16 +20,20 @@ import Loader from "../../Loader"
 import { error } from "console";
 import { useRouter } from "next/navigation";
 import { logout } from "@/Redux/authslice/authslice";
+import { removeToken } from "@/lib/AuthToken";
 
 interface Caterer {
     images: any;
     dishName: string;
     price: string;
+    eventId: string;
+    vendorId: string;
+
 }
 
 interface vendorCatererModel {
-    eventId: string;
-    vendorId: string;
+    eventId: "";
+    vendorId: "";
 
     images: any;
     id: "",
@@ -473,14 +53,16 @@ const Caterer = () => {
     const [loading, setLoading] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState<any>(null);
     const [caterers, setCaterer] = useState<Caterer[]>([]);
-    const [updateopen, setUpdateOpen] = useState(false);
-    const [value, setValue] = useState({
+    const [updateopen,setUpdateOpen] = useState(false);
+    const [value, setValue] = useState<VendorEvent>({
         eventId: "",
         vendorId: "",
         price: "",
         dishName: "",
         images: [] as string[],
     });
+
+
 
 
     const [open, setOpen] = React.useState(false);
@@ -497,13 +79,13 @@ const Caterer = () => {
     //     setUpdateOpen(true);
     // }
 
-    interface Caterer {
-        images: string[];
-        dishName: string;
-        price: string;
-        eventId: string;
-        vendorId:string
-    }
+    // interface Caterer {
+    //     images: string[];
+    //     dishName: string;
+    //     price: string;
+    //     eventId: string;
+    //     vendorId:string
+    // }
 
     const selectFile1 = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
@@ -752,7 +334,9 @@ const Caterer = () => {
     const [dishName, setDishName] = useState("");
     const [price, setPrice] = useState("");
     const [images, setImages] = useState<File[]>([]);
-    const[vendorId,setVendorId]=useState("");
+    const [vendorId, setVendorId] = useState("");
+    const [eventId, setEventId] = useState("");
+    const [id, setId] = useState("");
 
     const FetchVendorId = async (userId: any) => {
 
@@ -760,6 +344,9 @@ const Caterer = () => {
             var res = await axios.get(`https://localhost:44340/Api/Vendor/getByUserId/${userId}`)
             console.log("res..", res);
             console.log("vendorid", res.data.vendorId);
+
+
+            console.log("vendoreventid", res.data.id);
 
             return res.data.vendorId;
 
@@ -773,7 +360,6 @@ const Caterer = () => {
 
     const fetchCaterer = async (vendorId: string) => {
         try {
-
             setLoading(true);
             const vendorId = await FetchVendorId(User.user.userID);
             const res = await axios.get(`https://localhost:44340/api/VendorEvent/GetAllByVendorId?vendorId=${vendorId}`);
@@ -788,7 +374,6 @@ const Caterer = () => {
         }
     }
     const onClick1 = async (e) => {
-
         setLoading(true)
         setEvents(e.target.event);
         setTimeout(async () => {
@@ -808,7 +393,7 @@ const Caterer = () => {
     }
 
     //delete  details api
-    const DeleteDetails = async (Id: string,vendorId: string) => {
+    const DeleteDetails = async (Id: string, vendorId: string) => {
         if (window.confirm("Are you sure you want to delete this Vendor Decoration?")) {
             try {
                 const res = await axios.delete(`https://localhost:44340/api/VendorEvent/Delete/${Id}`);
@@ -837,11 +422,14 @@ const Caterer = () => {
         alert(id);
         const caterer = vendorCaterer.find(e => e.id == id);
         if (caterer) {
-            const { dishName, price, images } = caterer;
-            alert(`dishaname:${dishName},price:${price},images:${images}`);
+            const { dishName, price, images, eventId, vendorId, id } = caterer;
+            alert(`dishaname:${dishName},price:${price},images:${images} ,eventid:${eventId},vendorId ${vendorId} ,id:${id}`);
+            setId(id);
+            setEventId(eventId);
             setDishName(dishName || '');
             setPrice(price || '');
             setImages(images || []);
+            setVendorId(vendorId);
             setUpdateOpen(true);
 
             handleUpdateClick(id);
@@ -860,33 +448,165 @@ const Caterer = () => {
         }
     };
 
+    
+
     const handleUpdateClick = async (id: String) => {
         try {
-            debugger
+
             // Make the PUT request to update the vendor event
-            const url = `https://localhost:44340/api/VendorEvent/${id}`;
-            const response = await axios.put(url, {
-                //EventId:eventId,
-                VendorId:vendorId,
-                Price:price,
-                DishName:dishName,
-                images:images || [],
+           
+            //alert(id)
+
+            const cloudinaryUploadPromises = value.images.map(async (image) => {
+                const formData = new FormData();
+                formData.append("file", image);
+                formData.append("upload_preset", "unsign_upload");
+                formData.append("cloud_name", "dqtsmfpvb");
+
+                const response = await fetch(
+                    "https://api.cloudinary.com/v1_1/dqtsmfpvb/image/upload",
+                    {
+                        method: "POST",
+                        body: formData,
+                    }
+                );
+                const data = await response.json();
+                return data.secure_url;
             });
-            console.log("response",response);
+
+            const uploadedImageUrls = await Promise.all(cloudinaryUploadPromises);
+            console.log("Updated images:", uploadedImageUrls);
+
+            // Prepare updated data
+            const updatedValue = {
+                ...value,
+                images: uploadedImageUrls
+            };
+            //alert("image upload sucessfully...!");
+
+            const url = `https://localhost:44340/api/VendorEvent/${id}`;
+            const response = await axios.put(url,{
+                Id: id,
+                VendorId: vendorId,
+                EventId: eventId,
+                Price: price,
+                DishName: dishName,
+                images: uploadedImageUrls,
+                //images:updatedValue,
+                //images: images || [],
+            });
+            console.log("response", response);
             // Handle success response
             console.log('Update successful:', response.data);
+            alert("update Value successfully...!")
+            setValue({
+                eventId:"",
+                vendorId:"",
+                dishName:"",
+                price: "",
+                images: []
+            })
+            //await fetchCaterer(vendorId);
+          
         } catch (error) {
             console.log("error");
             alert("error coming");
 
         }
     }
-    const dispatch=useDispatch();
-    const route =useRouter();
+    interface VendorEvent {
+        id: string
+        eventId: string;
+        vendorId: string;
+        dishName: string;
+        price: string;
+        images: File[];
+    }
 
-    const handlelogout=()=>{
-            dispatch(logout());
-            route.push("/landingpage");  
+    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            setValue({ ...value, images: Array.from(e.target.files) });
+        }
+    };
+
+    // const handleUpdateClick = async (id: string) => {
+    //     try {
+    //         alert(id);
+    //         // Upload images to Cloudinary and get their URLs
+    //         debugger
+
+
+    //         const cloudinaryUploadPromises = value.images.map(async (image) => {
+    //             const formData = new FormData();
+    //             formData.append("file", image);
+    //             formData.append("upload_preset", "unsign_upload");
+    //             formData.append("cloud_name", "dqtsmfpvb");
+
+    //             const response = await fetch(
+    //                 "https://api.cloudinary.com/v1_1/dqtsmfpvb/image/upload",
+    //                 {
+    //                     method: "POST",
+    //                     body: formData,
+    //                 }
+    //             );
+    //             const data = await response.json();
+    //             return data.secure_url;
+    //         });
+
+    //         const uploadedImageUrls = await Promise.all(cloudinaryUploadPromises);
+    //         console.log("Updated images:", uploadedImageUrls);
+
+    //         // Prepare updated data
+    //         const updatedValue = {
+    //             ...value,
+    //             images: uploadedImageUrls
+    //         };
+
+    //         const updatedFormData = new FormData();
+    //         updatedFormData.append("Id", id);
+    //         updatedFormData.append("VendorId", vendorId);
+    //         updatedFormData.append("EventId", eventId);
+    //         updatedFormData.append("Price", price);
+    //         updatedFormData.append("DishName", dishName);
+
+    //         updatedValue.images.forEach((url) => {
+    //             updatedFormData.append("Images", url);
+    //         });
+
+    //         const url = `https://localhost:44340/api/VendorEvent/${id}`;
+    //         const response = await axios.put(url, updatedFormData,
+    //         {
+    //             headers: {
+    //                 "Content-Type": "multipart/form-data"
+    //             }
+    //         });
+
+    //         if (response.status === 200) {
+    //             console.log("Update successful:", response.data);
+    //             alert("Updated value successfully...!");
+    //             setValue({
+    //                 eventId: "",
+    //                 vendorId: "",
+    //                 dishName: "",
+    //                 price: "",
+    //                 images: []
+    //             });
+    //         } else {
+    //             alert("Failed to update value. Please try again later.");
+    //         }
+    //     } catch (error) {
+    //         console.error("Error while updating images:", error);
+    //         alert("An error occurred during updating value.");
+    //     }
+    // };
+
+    const dispatch = useDispatch();
+    const route = useRouter();
+
+    const handlelogout = async () => {
+        await removeToken();
+        dispatch(logout());
+        route.push("/landingpage");
     }
 
     return (
@@ -1061,7 +781,8 @@ const Caterer = () => {
                                                     type="file"
                                                     name="images"
                                                     multiple
-                                                    onChange={selectFile2}
+                                                    // onChange={selectFile2}
+                                                    onChange={handleFileChange}
                                                     accept="image/*"
                                                 />
 
@@ -1072,7 +793,7 @@ const Caterer = () => {
                                         </DialogContent>
                                         <DialogActions>
                                             <Button onClick={handleupdateClose}>Cancel</Button>
-                                            <Button type="submit" onClick={handleUpdateClick}>Update</Button>
+                                            <Button type="submit" onClick={() => handleUpdateClick(event.id)}>Update</Button>
                                         </DialogActions>
                                     </Dialog>
 

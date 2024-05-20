@@ -197,6 +197,7 @@ import Link from "next/link";
 import { logout } from "@/Redux/authslice/authslice";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from 'react-redux';
+import { removeToken } from "@/lib/AuthToken";
 const SideBar: React.FC = () => {
 
 
@@ -244,7 +245,8 @@ export const Searching = () => {
     const route = useRouter();
     const dispatch = useDispatch();
 
-    const handleLogout = () => {
+    const handleLogout = async() => {
+        await removeToken();
         dispatch(logout());
         route.push("/landingpage");
     }

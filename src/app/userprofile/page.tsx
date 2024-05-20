@@ -38,13 +38,13 @@ import { useSelector } from "react-redux";
 //     };
 
 //     return (
-       
+
 //         <div>
 
-        
-       
+
+
 //         <div className={style.bguser}>
-           
+
 //             <table className={style.table1}>
 //                 <thead className={style.th1} >
 
@@ -183,39 +183,59 @@ import { useSelector } from "react-redux";
 // export default Profile;
 
 
-interface BookingData{
-    id:"",
-    payment:"",
-    eventName:"",
-    dishName:"",
-    bookingEventDate:"",
-    finalPayment:""
+interface BookingData {
+    bookingId: "";
+    id: "",
+    payment: "",
+    eventName: "",
+    dishName: "",
+    bookingEventDate: "",
+    finalPayment: ""
 
 
 }
-const Profile=()=>{
+const Profile = () => {
 
     const User = useSelector((state) => state.auth.user)
     const userId = User.user.userID;
     console.log(userId);
-    const[bookings,setBookings]=useState<BookingData[]>([]);
-   
-    const handleBookingAll=async()=>{
-        try{
-            const res=await axios.get(`https://localhost:44340/api/Booking/AllUserId?userId=${userId}`);
-            console.log("res",res);
-            setBookings(res.data); 
-          
-        
-        }catch(error){
+    const [bookings, setBookings] = useState<BookingData[]>([]);
+
+    const handleBookingAll = async () => {
+        try {
+            const res = await axios.get(`https://localhost:44340/api/Booking/AllUserId?userId=${userId}`);
+            console.log("res", res);
+            setBookings(res.data);
+        } catch (error) {
             alert("fail to fetch booking event list");
         }
     }
 
     // const handleDeleteBook=()=>{
-        
+
     // }
-    return(
+    const BookingCancel = async (bookingId: string) => {
+        if ((window.confirm("Are you sure to cancel Booking ?")))
+            try {
+                alert(bookingId);
+                debugger
+                const res = await axios.delete(`https://localhost:44340/api/Booking/Delete?Id=${bookingId}`)
+                if (res.status == 200) {
+                    alert(res.data.message)
+                    alert("Booking Cancel Sucessfully...!")
+                    await handleBookingAll();
+
+                }
+                else {
+                    alert("Fail to cancel booking pls try again letter.")
+                }
+            }
+            catch (error) {
+                //console.log("error occure fail to cancel booking ",error);
+                alert("An Error occure fail to Cancel Booking");
+            }
+    }
+    return (
         <div className={style.bg3}>
             <div className="max-w-xl mx-auto p-6 bg-gray-100 rounded-lg shadow-md">
                 <h2 className="text-2xl mb-4 text-center">Welcome to Profile Page</h2>
@@ -226,17 +246,26 @@ const Profile=()=>{
                         <tbody>
                             {bookings.map((booking, index) => (
                                 <tr key={index} className="border-b border-gray-200">
-                                   
-                                    <td className="py-2">Event Name: {booking.eventName}</td>
-                                    {/* <td className="py-2">Dish Name: {booking.dishName}</td> */}
-                                   
-                                    <td className="py-2">Payment: {booking.finalPayment}</td>
-                                    <td className="py-2">Date: {booking.bookingEventDate}</td>
-                                    <button>Cancel</button>
+                                    {booking && booking.bookingId && (
+                                        <td className="py-2">Id: {booking.bookingId}</td>
+                                    )}
+                                    {booking && booking.eventName && (
+                                        <td className="py-2">Event Name: {booking.eventName}</td>
+                                    )}
+                                    {booking && booking.payment && (
 
-                                
+                                        <td className="py-2">Payment: {booking.finalPayment}</td>
+                                    )}
+                                    {/* <td className="py-2">Dish Name: {booking.dishName}</td> */}
+
+                                    {booking && booking.bookingEventDate && (
+                                        <td className="py-2">Date: {booking.bookingEventDate}</td>
+                                    )}
+
+                                    <button onClick={() => BookingCancel(booking.bookingId)}>Cancel</button>
                                 </tr>
                             ))}
+
                         </tbody>
                     </table>
                 </div>

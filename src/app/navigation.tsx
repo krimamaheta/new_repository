@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
  import { UseSelector } from 'react-redux';
 import { RootState } from '@/Redux/store';
 import { useRouter } from 'next/navigation';
+import { removeToken } from '@/lib/AuthToken';
 // const LogoutButton = () => {
 //   const dispatch = useDispatch();
   //  dispatch(logout());
@@ -51,7 +52,8 @@ const NavBar =() => {
  
 
 
- const handleLogout=()=>{
+ const handleLogout=async()=>{
+  await removeToken();
   dispatch(logout());
   route.push("/landingpage");
  }

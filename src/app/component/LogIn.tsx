@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link"
 import { login } from "@/Redux/authslice/authslice";
 import setToken from "@/store/token";
+import {setToken as authTokenSetToken} from "@/lib/AuthToken";
 
 
 // const initialValues={
@@ -67,7 +68,10 @@ const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       await alert("login successfully");
 
      //localStorage.setItem("user", JSON.stringify(current_user));
-      console.log(res);
+      console.log("data.token",data.token);
+      await authTokenSetToken(data.token); 
+      
+     // AuthToken.set(res?.data?.token);
       dispatch(login({ user: current_user }));
 
       
@@ -75,7 +79,7 @@ const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       // document.cookie = `access_token=${current_user.token}; path=/; HttpOnly; Secure; SameSite=none; max-age=${3 * 60 * 60}`;
       // console.log("token",`${current_user.token}`);
       
-      
+
       if(current_user.roles=="User"){
         window.location.href = "/home";
       }else if(current_user.roles=="Admin"){

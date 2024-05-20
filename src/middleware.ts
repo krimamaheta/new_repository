@@ -9,12 +9,66 @@ import { URL } from 'url';
 
 
 
-export const Middleware = () =>{
-const User = useSelector((state) => state.auth.user);
-console.log("middleware",User);
-}
+// export const Middleware = () =>{
+// const User = useSelector((state) => state.auth.user);
+// console.log("middleware",User);
+// }
 
 // Middleware configuration to specify the paths that should be handled
+
+
+import { getToken} from '@/lib/AuthToken';
+
+const unauthenticatedPaths=['http://localhost:3000/landingpage','http://localhost:3000/login','http://localhost:3000/signup']
+
+// Middleware function to handle authentication
+export async  function middleware(request: NextRequest) {
+    const token = await  getToken();
+    const isLoggedIn = token !== null;
+    const { pathname } = request.nextUrl;
+
+    const publicPaths = ['/login', '/signup'];
+
+    // Check if the user is accessing a public path
+
+    console.log("token",token)
+
+    const isPublicPath = publicPaths.includes(pathname);
+    if(!token){
+      if(unauthenticatedPaths.includes(request.url))
+      return NextResponse.next();
+      return NextResponse.redirect('http://localhost:3000/login') // Redirect to home page or another appropriate URL
+    }else{
+      
+      if(unauthenticatedPaths.includes(request.url))
+      return NextResponse.redirect('http://localhost:3000/home');
+      return NextResponse.next();
+    }
+
+    if (isPublicPath) {
+        // If accessing a public path
+        if (isLoggedIn) {
+            // Redirect logged-in users away from public paths
+            return NextResponse.redirect(new URL("/")); // Redirect to home page or another appropriate URL
+        }
+    } else {
+        // If accessing a protected path
+        if (!isLoggedIn) {
+            // Redirect users to login page if not logged in
+            return NextResponse.redirect(new URL("/login")); // Redirect to login page
+        }
+    }
+
+    // If no redirection needed, allow the request to proceed
+    return NextResponse.next();
+}
+
+// Configuration for the middleware
+// export const config = {
+//     // Define the matcher for the paths where the middleware should be applied
+//     matcher: ['/page','/quickNote']
+// };
+
 export const config = {
   matcher: [
     '/login',
@@ -35,6 +89,8 @@ export const config = {
     '/vendor/caterer'
   ],
 };
+
+
 
 // export const getTokenFromCookie = () => {
 //   const cookies = document.cookie.split(';').map(cookie => cookie.trim());

@@ -21,6 +21,7 @@ import Loader from "../Loader";
 import { debug } from "console";
 import { logout } from "@/Redux/authslice/authslice";
 import { useDecorationPrice } from "@/context/DecorationPrice";
+import { removeToken } from "@/lib/AuthToken";
 
 
 
@@ -29,6 +30,7 @@ const VendorForm: React.FC = () => {
 
     // const user = useSelector((state)=>state.auth.user)
     // const UserId=user.UserId;
+
     // console.log(UserId);
     const route = useRouter();
     const [value, setValue] = useState({
@@ -43,6 +45,8 @@ const VendorForm: React.FC = () => {
     });
 
     const [open, setOpen] = React.useState(false);
+    const [vendorId, setVendorId] = useState(null);
+    const [typeOfVendor, setTypeOfVendor] = useState(null);
 
     const handleClickOpen1 = () => {
         setOpen(true);
@@ -66,11 +70,11 @@ const VendorForm: React.FC = () => {
     console.log(User);
 
     //add vendor
-   // const { isApproved } = useDecorationPrice();
+    // const { isApproved } = useDecorationPrice();
     const [isApproved, setIsApproved] = useState(false);
     const handleSubmit = async () => {
         try {
-            debugger
+
             const userId = User.user.userID;
             console.log(userId);
 
@@ -96,15 +100,22 @@ const VendorForm: React.FC = () => {
                 //await FinalApprove(data.vendorId);
 
                 //wait for approval
-                if(data.typeOfVendor=="Caterer" && isApproved){
-                    //route.push("vendor/caterer");
-                    startPolling(data.vendorId,data.typeOfVendor);
-                }else if (data.typeOfVendor=="Decorator" && isApproved){
-                    route.push("vendor/allvendor");
-                }
-                // else{
-                //     route.push("/landingpage");
+                setVendorId(data.vendorId);
+                console.log("vendorid", data.vendorId);
+
+                setTypeOfVendor(data.typeOfVendor);
+                console.log("typeofvendor", data.typeOfVendor);
+
+                // if(data.typeOfVendor=="Caterer" && isApproved){
+                //     //route.push("vendor/caterer");
+                //     startPolling(data.vendorId,data.typeOfVendor);
+                //     route.push("vendor/caterer");
+
+                // }else if (data.typeOfVendor=="Decorator" && isApproved){
+                //     startPolling(data.vendorId,data.typeOfVendor);
+                //     route.push("vendor/allvendor");
                 // }
+
             } else {
                 // Handle other HTTP errors
                 console.error("Failed to add value:", response.statusText);
@@ -149,28 +160,51 @@ const VendorForm: React.FC = () => {
         // }
     }
 
-    const fetchApprovalStatus = async (vendorId:string) => {
+    const fetchApprovalStatus = async (vendorId: string) => {
         try {
-          const response = await axios.get(`https://localhost:44340/api/Vendor/status/${vendorId}`);
-          setIsApproved(prevIsApproved => response.data.isApproved);
+            const response = await axios.get(`https://localhost:44340/api/Vendor/status/${vendorId}`);
+            setIsApproved(prevIsApproved => response.data.isApproved);
+
         } catch (error) {
-          console.error("Failed to fetch approval status:", error);
+            console.error("Failed to fetch approval status:", error);
         }
-      };
-    
-      const startPolling = (vendorId:string, typeOfVendor:string) => {
+    };
+
+
+    useEffect(() => {
+        if (!vendorId || !typeOfVendor) return;
+
         const interval = setInterval(async () => {
-          await fetchApprovalStatus(vendorId);
-          if (isApproved) {
+            await fetchApprovalStatus(vendorId);
+        }, 5000); // Poll every 5 seconds
+
+        // Clear the interval when isApproved becomes true and redirect
+        if (isApproved) {
             clearInterval(interval);
             if (typeOfVendor === "Caterer") {
-              route.push("vendor/caterer");
+                route.push("/vendor/caterer");
             } else if (typeOfVendor === "Decorator") {
-              route.push("vendor/allvendor");
+                route.push("/vendor/allvendor");
             }
-          }
-        }, 5000); // Poll every 5 seconds
-      };
+        }
+
+        // Cleanup the interval on component unmount
+        return () => clearInterval(interval);
+    }, [isApproved, vendorId, typeOfVendor]);
+
+    //   const startPolling = (vendorId:string, typeOfVendor:string) => {
+    //     const interval = setInterval(async () => {
+    //       await fetchApprovalStatus(vendorId);
+    //       if (isApproved) {
+    //         clearInterval(interval);
+    //         if (typeOfVendor === "Caterer") {
+    //           route.push("vendor/caterer");
+    //         } else if (typeOfVendor === "Decorator") {
+    //           route.push("vendor/allvendor");
+    //         }
+    //       }
+    //     }, 5000); // Poll every 5 seconds
+    //   };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -279,12 +313,30 @@ interface vendordecorationModel {
 
 }
 
+interface vendorDecoratorModel {
+    eventId: "";
+    vendorId: "";
+
+    images: any;
+    id: "",
+    price: "",
+    imageurl: string[]
+    eventName: "",
+    firmName: "",
+    cityName: "",
+    address: "",
+    websiteUrl: "",
+    district: "",
+    dishPrice: "",
+    dishName: ""
+}
+
 interface FormValue {
     eventId: string;
     vendorId: string;
     Price: string;
     images: string[]; // Assuming images will be stored as URLs
-  }
+}
 
 export const GetAllVendor: React.FC = () => {
     // const imageFilenames = [{imageurl:'https://img.freepik.com/premium-photo/display-desserts-including-strawberries-strawberries-strawberries_931576-18736.jpg?w=900',location:`surat`,price:400}, 
@@ -308,9 +360,31 @@ export const GetAllVendor: React.FC = () => {
 
 
     const [open, setOpen] = React.useState(false);
+    const [id, setId] = useState("");
+    const [eventId, setEventId] = useState("");
+    const [images, setImages] = useState("");
+    const [vendorId, setVendorId] = useState("");
 
-    const handleClickOpen1 = () => {
+
+
+    const [vendorDecorator, setVendorDecorator] = useState<vendorDecoratorModel[]>([]);
+    const handleClickOpen1 = (id: string) => {
         setOpen(true);
+        alert(id);
+        const decorator = vendorDecorator.find(e => e.id == id);
+        if (decorator) {
+            const { price, images, eventId, vendorId, id } = decorator;
+            alert(`price:${price},images:${images} ,eventid:${eventId},vendorId ${vendorId} ,id:${id}`);
+            setId(id);
+            setEventId(eventId);
+            setPrice(price || '');
+            setImages(images || []);
+            setVendorId(vendorId);
+            setOpen(true);
+
+            handleUpdateClick(id);
+        }
+
     };
     const handleClose = () => {
         setOpen(false);
@@ -349,6 +423,7 @@ export const GetAllVendor: React.FC = () => {
             console.log("vendor id", vendorId);
             console.log("response", res);
             setvendorDecoration(res.data);
+            setVendorDecorator(res.data);
         } catch (error) {
             console.error("error fetching vendor decoration");
             alert("error to fetch list");
@@ -396,7 +471,7 @@ export const GetAllVendor: React.FC = () => {
     const DeleteDetails = async (Id: string, vendorId: string) => {
         if (window.confirm("Are you sure you want to delete this Vendor Decoration?")) {
             try {
-                debugger
+
                 const res = await axios.delete(`https://localhost:44340/api/VendorEvent/Delete/${Id}`);
                 console.log("response", res);
                 if (res.status === 200) {
@@ -420,41 +495,113 @@ export const GetAllVendor: React.FC = () => {
 
     const [events, setEvents] = useState([]);
     //const [loading, setLoading] = useState(false);
-  
+
     const fetchEvent = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get("https://localhost:44340/Api/Event/AllEvent");
-        setEvents(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching events:", error);
-        setLoading(false);
-      }
+        try {
+            setLoading(true);
+            const response = await axios.get("https://localhost:44340/Api/Event/AllEvent");
+            setEvents(response.data);
+            setLoading(false);
+        } catch (error) {
+            console.error("Error fetching events:", error);
+            setLoading(false);
+        }
     };
     const [value, setValue] = useState<FormValue>({
         eventId: "",
         vendorId: "",
         Price: "",
         images: [],
-      });
-  
+    });
+
     useEffect(() => {
-      fetchEvent();
+        fetchEvent();
     }, []);
 
     const selectchange = (e: { target: { value: any; }; }) => {
         const { value } = e.target;
         setValue((prevValue) => ({ ...prevValue, eventId: value }));
-      };
+    };
 
-      const dispatch=useDispatch();
+    const dispatch = useDispatch();
+
+
+    const handlelogout =async () => {
+        await removeToken();
+        dispatch(logout());
+        route.push("/landingpage");
+    }
+
+    const [price, setPrice] = useState("");
+   
+
+    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            setValue({ ...value, images: Array.from(e.target.files) });
+        }
+    };
     
-  
-      const handlelogout=()=>{
-              dispatch(logout());
-              route.push("/landingpage");  
-      }
+    const ResetValue = () => {
+        setValue({
+            eventId: "",
+            vendorId: "",
+            price: "",
+            images: []
+        });
+    };
+    const handleUpdateClick = async (Id: string) => {
+        try {
+            //alert(id)
+            const cloudinaryUploadPromises = value.images.map(async (image) => {
+                const formData = new FormData();
+                formData.append("file", image);
+                formData.append("upload_preset", "unsign_upload");
+                formData.append("cloud_name", "dqtsmfpvb");
+
+                const response = await fetch(
+                    "https://api.cloudinary.com/v1_1/dqtsmfpvb/image/upload",
+                    {
+                        method: "POST",
+                        body: formData,
+                    }
+                );
+                const data = await response.json();
+                return data.secure_url;
+            });
+
+            const uploadedImageUrls = await Promise.all(cloudinaryUploadPromises);
+            console.log("Updated images:", uploadedImageUrls);
+
+            // Prepare updated data
+            const updatedValue = {
+                ...value,
+                images: uploadedImageUrls
+            };
+            alert("image upload sucessfully...!");
+
+            const url = `https://localhost:44340/api/VendorEvent/${id}`;
+            const response = await axios.put(url, {
+                Id: id,
+                VendorId: vendorId,
+                EventId:value.eventId,
+                Price: price,
+                images: uploadedImageUrls,
+                //images:updatedValue,
+                //images: images || [],
+            });
+            console.log("response", response);
+            // Handle success response
+            console.log('Update successful:', response.data);
+            alert("update Value successfully...!")
+            await ResetValue();
+            //await fetchCaterer(vendorId);
+
+        } catch (error) {
+            console.log("error");
+            alert("error coming");
+
+        }
+    }
 
     return (
         <div>
@@ -492,18 +639,18 @@ export const GetAllVendor: React.FC = () => {
                                 <div className={style.details}>
 
                                     <div className={style.details1}>Id:{event.id}</div>
-                                    <div className={style.details1}>FirmName:{event.firmName}</div>
+                                    {/* <div className={style.details1}>FirmName:{event.firmName}</div>
                                     <div className={style.details1}>CityName:{event.cityName}</div>
                                     <div className={style.details1}>FirmAddress:{event.address}</div>
                                     <div className={style.details1}>District:{event.district}</div>
-                                    <div className={style.details1}>Websiteurl:{event.websiteUrl}</div>
+                                    <div className={style.details1}>Websiteurl:{event.websiteUrl}</div> */}
                                     <div className={style.details1}>EventName:{event.eventName}</div>
 
                                     <div className={style.details1}>DecorationPrice:{event.price}</div>
                                 </div>
 
                                 <div className={style.buttoncontainer}>
-                                    <button className={style.button} onClick={handleClickOpen1}>Update</button>
+                                    <button className={style.button} onClick={() => handleClickOpen1(event.id)}>Update</button>
 
                                     <Dialog
                                         className={style.bg3}
@@ -551,6 +698,7 @@ export const GetAllVendor: React.FC = () => {
                                                     ))
                                                 )}
                                             </select>
+
                                             <TextField
                                                 autoFocus
                                                 required
@@ -561,19 +709,34 @@ export const GetAllVendor: React.FC = () => {
                                                 type="text"
                                                 fullWidth
                                                 variant="standard"
+                                                value={price}
+                                                onChange={(e) => setPrice(e.target.value)}
                                             />
                                             <input
                                                 type="file"
                                                 name="images"
                                                 multiple
-
+                                                onChange={handleFileChange}
                                                 accept="image/*"
                                             />
+
+                                            <div>
+                                                {images.length > 0 && (
+                                                    <div>
+                                                        <h3>Selected Images:</h3>
+                                                        <ul>
+                                                            {Array.from(images).map((image, index) => (
+                                                                <li key={index}>{image.name}</li>
+                                                            ))}
+                                                        </ul>
+                                                    </div>
+                                                )}
+                                            </div>
 
                                         </DialogContent>
                                         <DialogActions>
                                             <Button onClick={handleClose}>Cancel</Button>
-                                            <Button type="submit">Update</Button>
+                                            <Button type="submit" onClick={handleUpdateClick}>Update</Button>
                                         </DialogActions>
                                     </Dialog>
                                     <button onClick={() => DeleteDetails(event.id)} className={style.button}>Remove</button>

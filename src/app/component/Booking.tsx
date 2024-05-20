@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useEffect, useState } from "react"
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import RateReviewIcon from '@mui/icons-material/RateReview';
@@ -13,7 +13,9 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import axios from "axios";
 const Booking = () => {
+  const[bookings,setBookings]=useState([]);
     const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
     const [openEditDialog, setOpenEditDialog] = React.useState(false);
   
@@ -32,10 +34,50 @@ const Booking = () => {
     const handleCloseEditDialog = () => {
       setOpenEditDialog(false);
     };
+
+    useEffect(()=>{
+      const fetchBooking=async()=>{
+        try {
+          const response = await axios.get('your_api_endpoint_here');
+          setBookings(response.data);
+      } catch (error) {
+          console.error('Error fetching bookings:', error);
+          alert('Failed to fetch bookings. Please try again later.');
+      }
+      }
+      fetchBooking();
+    },[])
+   
     return (
         <div className="flex justify-center items-center h-full">
+
+<h2>Booking List</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Event ID</th>
+                        <th>Payment</th>
+                        <th>Event Location</th>
+                        <th>Event Date</th>
+                        <th>Is Booked</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {bookings.map((booking, index) => (
+                        <tr key={index}>
+                            <td>{booking.userId}</td>
+                            <td>{booking.eventId}</td>
+                            <td>{booking.payment}</td>
+                            <td>{booking.eventLocation}</td>
+                            <td>{booking.eventDate}</td>
+                            <td>{booking.isBooked.toString()}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
             {/* <h2 className="text-lg font-semibold mb-4">Booking</h2> */}
-            <table className="table-auto">
+            {/* <table className="table-auto">
                 <thead>
                     <th className="px-4 py-2">Email</th>
                     <th className="px-4 py-2">EventName</th>
@@ -122,8 +164,8 @@ const Booking = () => {
 
 
                 </tbody>
-            </table>
-            <Dialog
+            </table> */}
+            {/* <Dialog
         open={openEditDialog}
         onClose={handleCloseEditDialog}
         PaperProps={{
@@ -222,7 +264,7 @@ const Booking = () => {
           </Button>
           
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
 
 
       {/* <Dialog
