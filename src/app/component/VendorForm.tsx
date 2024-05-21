@@ -383,6 +383,7 @@ export const GetAllVendor: React.FC = () => {
             setOpen(true);
 
             handleUpdateClick(id);
+            
         }
 
     };
@@ -473,7 +474,7 @@ export const GetAllVendor: React.FC = () => {
             try {
 
                 const res = await axios.delete(`https://localhost:44340/api/VendorEvent/Delete/${Id}`);
-                console.log("response", res);
+                console.log("response",res);
                 if (res.status === 200) {
                     console.log("response", res.data);
                     alert("Vendor Event deleted successfully");

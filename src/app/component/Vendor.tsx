@@ -226,7 +226,7 @@ const Vendor = () => {
 
 
     const AllVendor = async () => {
-        //e.preventDefault();
+       // e.preventDefault();
         setLoading(true)
         try {
             const res = await axios.get("https://localhost:44340/Api/vendor/All");
@@ -277,8 +277,8 @@ const Vendor = () => {
                 console.log("----id", Id);
                 const res = await axios.put(`https://localhost:44340/api/Vendor/approve/${Id}`);
                 console.log("response", res);
-                console.log("approve",res.data.isApprove);
-                
+                console.log("approve", res.data.isApprove);
+
                 if (res.status === 200) {
                     alert("Approval Confirmation Done");
                     setApprovalStatus(true);
@@ -300,7 +300,7 @@ const Vendor = () => {
     return (
 
         <div>
-            <div >
+            <div>
 
                 <div className={style.button1}><button onClick={handleClickOpen}>+AddVendor</button>
 

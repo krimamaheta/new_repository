@@ -14,158 +14,423 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import axios from "axios";
+import style from "./../admin/style.module.css"
+import style1 from "@/app/admin/style.module.css"
+
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { useSelector } from "react-redux";
+
+
+interface BookingModel {
+  Id:"",
+  bookingId: "",
+  userId: "",
+  eventId: "",
+  payment: "",
+  eventLocation: "",
+  eventDate: "",
+  eventName:"",
+}
 const Booking = () => {
-  const[bookings,setBookings]=useState([]);
-    const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
-    const [openEditDialog, setOpenEditDialog] = React.useState(false);
-  
-    const handleOpenDeleteDialog = () => {
-      setOpenDeleteDialog(true);
-    };
-  
-    const handleCloseDeleteDialog = () => {
-      setOpenDeleteDialog(false);
-    };
-  
-    const handleOpenEditDialog = () => {
-      setOpenEditDialog(true);
-    };
-  
-    const handleCloseEditDialog = () => {
-      setOpenEditDialog(false);
-    };
+  const [bookings, setBookings] = useState<BookingModel[]>([]);
+  // const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
+  const [openEditDialog, setOpenEditDialog] = React.useState(false);
+  const [eventDate, setEventDate] = useState<Date | null>(null);
+  const[bookingId,setBookingId]=useState("");
+  // const handleOpenDeleteDialog = () => {
+  //   setOpenDeleteDialog(true);
+  // };
 
-    useEffect(()=>{
-      const fetchBooking=async()=>{
-        try {
-          const response = await axios.get('your_api_endpoint_here');
-          setBookings(response.data);
-      } catch (error) {
-          console.error('Error fetching bookings:', error);
-          alert('Failed to fetch bookings. Please try again later.');
-      }
-      }
-      fetchBooking();
-    },[])
+  // const handleCloseDeleteDialog = () => {
+  //   setOpenDeleteDialog(false);
+  // };
+
+  const handleOpenEditDialog = async(bookingId:string) => {
+    setOpenEditDialog(true);
+    alert(bookingId);
+    const booking=bookings.find(x=>x.bookingId==bookingId);
+    if(booking){
+      const{eventId,eventLocation,payment,eventDate}=booking
+      alert(`payment:${payment},eventDate:${eventDate},eventLocation:${eventLocation},eventid:${eventId}`);
+      setSelectedEventId(eventId);
+      setPayment(payment);
+      setBookingId(bookingId);
+      //setEventDate(eventDate === "" ? null : new Date(eventDate));
+      setEventLocation(eventLocation);
+      // await updatebookings(bookingId);
+    }
+  };
+
+  const updatebookings=async()=>{
+   try{
+    debugger
+     const userId = User.user.userID;
+     console.log(userId);
+     console.log("userid",userId);
+     const formattedEventDate = eventDate?.toISOString(); 
+     const updatebooking=await axios.put(`https://localhost:44340/api/Booking/update/${bookingId}`,{
+       bookingId,
+       userId,
+       eventId:selectedEventId,
+       eventLocation:eventLocation,
+       payment:payment,
+       eventDate:formattedEventDate,
+       isBooked:true
+     });
+     console.log('Updated booking:', updatebooking);
+     if(updatebooking.status==200){
+       alert("update success.")
+       await fetchBooking();
+     }
+     else{
+      //400
+       alert('update fail');
+     }
+
+   }catch(error){
+    alert("fail to update");
+    throw error;
+   }
+
+  }
+
+  const handleCloseEditDialog = () => {
    
-    return (
-        <div className="flex justify-center items-center h-full">
+    setOpenEditDialog(false);
+  };
+  const [payment, setPayment] = useState("");
+  
+  const [eventLocation, setEventLocation] = useState("");
+  const [selectedEventId, setSelectedEventId] = useState('');
+  const [eventId, setEventId] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [events, setEvents] = useState([]);
+  const[isBooked,setIsBooked]=useState<boolean>(false);
 
-<h2>Booking List</h2>
-            <table>
+  const fetchBooking = async () => {
+    //e.preventDefaut();
+    setLoading(true);
+    try {
+      const response = await axios.get('https://localhost:44340/api/Booking/AllBooking');
+      setBookings(response.data);
+
+    } catch (error) {
+      console.error('Error fetching bookings:', error);
+      alert('Failed to fetch bookings. Please try again later.');
+      //setError('Failed to fetch bookings. Please try again later.');
+      setLoading(true);
+    }
+    finally {
+      setLoading(false);
+    }
+  }
+
+
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+    
+  }
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+
+  //event all
+  const fetchEvent = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get("https://localhost:44340/Api/Event/AllEvent");
+      setEvents(response.data);
+      setSelectedEventId(response.data.eventId);
+      console.log("eve",eventId);
+      console.log("response", response);
+      console.log("responseprice", response.data.price);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching events:", error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchEvent();
+  }, [])
+
+
+  const selectChange = (e) => {
+    const { value } = e.target;
+    setSelectedEventId(value);
+  };
+
+  const handleDateChange = (newValue: Date | null) => {
+    setEventDate(newValue);
+  };
+
+//init date was not coming
+  const handleUpdateDateChange = (newValue: Date | null, initialValue: Date | null) => {
+    // Check if the new value is null or empty string
+    if (newValue === null) {
+      // If newValue is null, set eventDate to null
+      setEventDate(null);
+    } else if (initialValue === null) {
+      // If the initialValue is null, set eventDate to the new value
+      setEventDate(newValue);
+    } else {
+      // Otherwise, keep the initial value
+      setEventDate(initialValue);
+    }
+  };
+
+
+  const User = useSelector((state) => state.auth.user);
+  console.log(User);
+  const AddBooking=async(userId:string)=>{
+    try{
+      debugger
+      const userId = User.user.userID;
+      console.log(userId);
+      console.log("userid",userId);
+      
+      const res=await axios.post(`https://localhost:44340/api/Booking/AddBookingAdmin?UserId=${userId}`,{
+        userId,
+        eventId:selectedEventId,
+        payment,
+        eventDate,
+        eventLocation,
+        isBooked:true
+      })
+      console.log("response",res);
+      console.log("res data",res.data);
+      if(res.status==200){
+        alert(res.data)
+       
+        setSelectedEventId('');
+        setPayment('');
+        setEventDate(null); // Assuming this is a date object
+        setEventLocation('');
+        setIsBooked(true); 
+        //alert("Booking Add Successfully...1")
+      }
+      else{
+        alert("fail to add Booking value pls try again letter.")
+      }
+    }catch(error){
+      alert("fail to add value");
+    } 
+  }
+
+
+  //delete booking
+  // const DeleteDetails=async(id:string)=>{
+  //   if(window.confirm("Are you sure to Delete booking ?"))
+  //   try{
+  // alert(id)
+  //     var res=await axios.delete(`https://localhost:44340/api/Booking/Delete?Id=${id}`);
+  //     console.log("res",res);
+  //     if(res.status==200){
+  //       alert("Delete Suceess...!")
+  //       await fetchBooking();
+  //       return res.data;
+  //     }
+  //     else{
+  //       alert("fail to delete try again letter")
+  //     }
+      
+  //   }catch(error){
+  //     console.log("error",error);
+  //     alert("fail to delete try again letter.......");
+  //     throw error;
+  // }
+  const DeleteDetails=async(bookingId:string)=>{
+    if(window.confirm("Are you sure to delete booking ?"))
+    try{
+      alert(bookingId)
+      var res=await axios.delete(`https://localhost:44340/api/Booking/Delete?Id=${bookingId}`)
+      if(res.status==200){
+        alert(res.data)
+        await fetchBooking();
+        return res.data;
+      }
+      else{
+        alert("fail to delete try again letter");
+        alert(res.data);
+      }
+    }catch(error){
+      alert("fail to delete get error");
+      throw error;
+    }
+  }
+
+
+  return (
+    <div>
+      <div>
+        <div className={style.button1}><button onClick={handleClickOpen}>+AddBooking</button>
+
+          <Dialog
+            open={open}
+            onClose={handleClose}
+          >
+            <DialogTitle>VendorDetails</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+
+              </DialogContentText>
+              {/* <TextField
+            autoFocus
+            required
+            margin="dense"
+            id="name"
+            name="eventId"
+            label="SelectEvent"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={eventId}
+            onChange={(e) => setEventId(e.target.value)}
+        /> */}
+              <label htmlFor="events">Select Event:</label>
+              <select
+                className={style1.s1}
+                name="events"
+                id="events"
+                value={selectedEventId}
+                onChange={selectChange}
+              >
+                {loading ? (
+                  <option value="">Loading.....</option>
+                ) : error ? (
+                  <option value="">{error}</option>
+                ) : (
+                  events.map((event) => (
+                    <option key={event.eventId} value={event.eventId}>
+                      {event.eventName}
+                    </option>
+                  ))
+                )}
+              </select>
+              <TextField
+                autoFocus
+                required
+                margin="dense"
+                id="payment"
+                name="payment"
+                label="Payment"
+                type="text"
+                fullWidth
+                variant="standard"
+                value={payment}
+                onChange={(e) => setPayment(e.target.value)}
+              />
+              {/* <TextField
+            autoFocus
+            required
+            margin="dense"
+            id="eventDate"
+            name="eventDate"
+            label="EventDate"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={eventDate}
+            onChange={(e) => setEventDate(e.target.value)}
+        /> */}
+              <LocalizationProvider dateAdapter={AdapterDayjs} locale="en">
+                <DatePicker
+                  value={eventDate}
+                  onChange={handleDateChange}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params.inputProps}
+                      autoFocus
+                      required
+                      margin="dense"
+                      id="EventDate"
+                      name="EventDate"
+                      label="EventDate"
+                      fullWidth
+                      variant="standard"
+                    />
+                  )}
+                />
+
+              </LocalizationProvider>
+              <TextField
+                autoFocus
+                required
+                margin="dense"
+                id="eventLocation"
+                name="eventLocationt"
+                label="EventLocation"
+                type="text"
+                fullWidth
+                variant="standard"
+                value={eventLocation}
+                onChange={(e) => setEventLocation(e.target.value)}
+              />
+
+
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button type="submit" onClick={() => AddBooking(User.userId)}>Add</Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+
+        <div className={style.button1} onClick={fetchBooking}><button>BookingList</button></div>
+        <div className={style1.eventList}>
+          {loading ? (
+            <p>Loading....!</p>
+          ) : error ? (
+            <p>Error... {error}</p>
+          ) : bookings.length > 0 ? (
+            <>
+              <div className={style1.head}>Booking List</div>
+              <table className={style1.eventTable}>
                 <thead>
-                    <tr>
-                        <th>User ID</th>
-                        <th>Event ID</th>
-                        <th>Payment</th>
-                        <th>Event Location</th>
-                        <th>Event Date</th>
-                        <th>Is Booked</th>
-                    </tr>
+                  <tr>
+                    <th>Booking ID</th>
+                    <th>Payment</th>
+                    <th>Event Location</th>
+                    <th>Event Date</th>
+                    <th>Is Booked</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                  </tr>
                 </thead>
                 <tbody>
-                    {bookings.map((booking, index) => (
-                        <tr key={index}>
-                            <td>{booking.userId}</td>
-                            <td>{booking.eventId}</td>
-                            <td>{booking.payment}</td>
-                            <td>{booking.eventLocation}</td>
-                            <td>{booking.eventDate}</td>
-                            <td>{booking.isBooked.toString()}</td>
-                        </tr>
-                    ))}
+                  {bookings.map((booking, index) => (
+                    <tr key={index}>
+                     
+                      <td>{booking.bookingId}</td>
+                      <td>{booking.payment}</td>
+                      <td>{booking.eventLocation}</td>
+                      <td>{booking.eventDate}</td>
+                      <td>{booking.isBooked.toString()}</td>
+                      <td>
+                        <button onClick={()=>handleOpenEditDialog(booking.bookingId)}><EditIcon /></button>
+                      </td>
+                      <td>
+                        <button onClick={()=>DeleteDetails(booking.bookingId)}><DeleteIcon/></button>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
-            </table>
-            {/* <h2 className="text-lg font-semibold mb-4">Booking</h2> */}
-            {/* <table className="table-auto">
-                <thead>
-                    <th className="px-4 py-2">Email</th>
-                    <th className="px-4 py-2">EventName</th>
-                    <th className="px-4 py-2">Payment</th>
-                    <th className="px-4 py-2">BookingStatus</th>
-                    <th className="px-4 py-2">Action</th>
-                </thead>
-
-                <tbody>
-                    <tr>
-                        <td className="border px-4 py-2">laxman@1gmail.com</td>
-                        <td className="border px-4 py-2">RingCeremony</td>
-                        <td className="border px-4 py-2">46000</td>
-                        <td className="border px-4 py-2">Confirm!</td>
-                        <td>
-                            
-                                <button className="border px-4 py-2" onClick={handleOpenEditDialog}><LibraryAddIcon /></button>
-                                <button className="border px-4 py-2" onClick={handleOpenEditDialog}><EditIcon /></button>
-                                <button className="border px-4 py-2" onClick={handleOpenEditDialog}><RateReviewIcon /></button>
-                                <button className="border px-4 py-2" onClick={handleOpenDeleteDialog}><DeleteIcon /></button>
-                            
-                        </td>
-                    </tr>
-
-
-                    <tr>
-                        <td className="border px-4 py-2">sita@1gmail.com</td>
-                        <td className="border px-4 py-2">AwardCeremony</td>
-                        <td className="border px-4 py-2">36000</td>
-                        <td className="border px-4 py-2">Confirm!</td>
-                        <td>
-                        <button className="border px-4 py-2"><LibraryAddIcon /></button>
-                                <button className="border px-4 py-2"><EditIcon /></button>
-                                <button className="border px-4 py-2"><RateReviewIcon /></button>
-                                <button className="border px-4 py-2"><DeleteIcon /></button>
-                        </td>
-                           
-                    </tr>
-
-
-                    <tr>
-                        <td className="border px-4 py-2">gita@1gmail.com</td>
-                        <td className="border px-4 py-2">RingCeremony</td>
-                        <td className="border px-4 py-2">40,000</td>
-                        <td className="border px-4 py-2">Confirm!</td>
-                        <td>
-                        <button className="border px-4 py-2"><LibraryAddIcon /></button>
-                                <button className="border px-4 py-2"><EditIcon /></button>
-                                <button className="border px-4 py-2"><RateReviewIcon /></button>
-                                <button className="border px-4 py-2"><DeleteIcon /></button>
-                        </td>
-                         
-                    </tr>
-                    <tr>
-                        <td className="border px-4 py-2">krishna@1gmail.com</td>
-                        <td className="border px-4 py-2">AnnyversaryCelebration</td>
-                        <td className="border px-4 py-2">30,000</td>
-                        <td className="border px-4 py-2">Confirm!</td>
-                        <td>
-                        <button className="border px-4 py-2"><LibraryAddIcon /></button>
-                                <button className="border px-4 py-2"><EditIcon /></button>
-                                <button className="border px-4 py-2"><RateReviewIcon /></button>
-                                <button className="border px-4 py-2"><DeleteIcon /></button>
-                        </td>
-                           
-                       
-                    </tr>
-
-                    <tr>
-                        <td className="border px-4 py-2">kishan@1gmail.com</td>
-                        <td className="border px-4 py-2">Haldi</td>
-                        <td className="border px-4 py-2">35,000</td>
-                        <td className="border px-4 py-2">Confirm!</td>
-                        <tr>
-                        <button className="border px-4 py-2"><LibraryAddIcon /></button>
-                                <button className="border px-4 py-2"><EditIcon /></button>
-                                <button className="border px-4 py-2"><RateReviewIcon /></button>
-                                <button className="border px-4 py-2"><DeleteIcon /></button>
-                        </tr>
-                           
-                       
-                    </tr>
+              </table>
+            </>
+          ) : (
+            <p>No bookings available</p>
+          )}
+        </div>
 
 
 
-                </tbody>
-            </table> */}
-            {/* <Dialog
+            <Dialog
         open={openEditDialog}
         onClose={handleCloseEditDialog}
         PaperProps={{
@@ -180,226 +445,94 @@ const Booking = () => {
           },
         }}
       >
-        <DialogTitle>ViewBookingDetails</DialogTitle>
+
+
+        <DialogTitle>EditBooking</DialogTitle>
         <DialogContent>
           <DialogContentText>
 
           </DialogContentText>
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="name"
-            label="Email:laxman@1gmail.com"
-            type="text"
-            fullWidth
-            variant="standard"
-            disabled
-          />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="email"
-            label="EventName:RingCeremony"
-            type="email"
-            fullWidth
-            variant="standard"
-            disabled
-          />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="password"
-            name="password"
-            label="Payment:46000"
-            type="text"
-            fullWidth
-            variant="standard"
-            disabled
-          />
-            <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="password"
-            name="password"
-            label="Booking Status:Confirm!"
-            type="text"
-            fullWidth
-            variant="standard"
-            disabled
-          />
+          <label htmlFor="events">Select Event:</label>
+              <select
+                className={style1.s1}
+                name="events"
+                id="events"
+                value={selectedEventId}
+                onChange={selectChange}
+              >
+                {loading ? (
+                  <option value="">Loading.....</option>
+                ) : error ? (
+                  <option value="">{error}</option>
+                ) : (
+                  events.map((event) => (
+                    <option key={event.eventId} value={event.eventId}>
+                      {event.eventName}
+                    </option>
+                  ))
+                )}
+              </select>
+              <TextField
+                autoFocus
+                required
+                margin="dense"
+                id="payment"
+                name="payment"
+                label="Payment"
+                type="text"
+                fullWidth
+                variant="standard"
+                value={payment}
+                onChange={(e) => setPayment(e.target.value)}
+              />
+
+         <LocalizationProvider dateAdapter={AdapterDayjs} locale="en">
+                <DatePicker
+                  value={eventDate}
+                  onChange={handleDateChange}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params.inputProps}
+                      autoFocus
+                      required
+                      margin="dense"
+                      id="EventDate"
+                      name="EventDate"
+                      label="EventDate"
+                      fullWidth
+                      variant="standard"
+                    />
+                  )}
+                />
+
+              </LocalizationProvider>
+              <TextField
+                autoFocus
+                required
+                margin="dense"
+                id="eventLocation"
+                name="eventLocationt"
+                label="EventLocation"
+                type="text"
+                fullWidth
+                variant="standard"
+                value={eventLocation}
+                onChange={(e) => setEventLocation(e.target.value)}
+              />
+
 
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseEditDialog}>Cancel</Button>
-          <Button type="submit">View</Button>
+          <Button type="submit" onClick={updatebookings}>Edit</Button>
         </DialogActions>
       </Dialog>
 
+      </div>
+    </div>
 
-      
-
-
-      <Dialog
-        open={openDeleteDialog}
-        onClose={handleCloseDeleteDialog}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">Delete Confirmation</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete this Booking?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
-          <Button onClick={handleCloseDeleteDialog} autoFocus>
-            Delete
-          </Button>
-          
-        </DialogActions>
-      </Dialog> */}
-
-
-      {/* <Dialog
-        open={openEditDialog}
-        onClose={handleCloseEditDialog}
-        PaperProps={{
-          component: 'form',
-          onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-            event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries((formData as any).entries());
-            const email = formJson.email;
-            console.log(email);
-            handleCloseEditDialog();
-          },
-        }}
-      >
-
-
-        <DialogTitle>EditUser</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-
-          </DialogContentText>
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="name"
-            label="UserName"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="email"
-            label="Email Address"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="password"
-            name="password"
-            label="Password"
-            type="password"
-            fullWidth
-            variant="standard"
-          />
-
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseEditDialog}>Cancel</Button>
-          <Button type="submit">Edit</Button>
-        </DialogActions>
-      </Dialog> */}
-
-
-
-
-      {/* <Dialog
-        open={openEditDialog}
-        onClose={handleCloseEditDialog}
-        PaperProps={{
-          component: 'form',
-          onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-            event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries((formData as any).entries());
-            const email = formJson.email;
-            console.log(email);
-            handleCloseEditDialog();
-          },
-        }}
-      >
-
-      <DialogTitle>ViewUser</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-
-          </DialogContentText>
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="name"
-            label="UserName:Hanuman"
-            type="text"
-            fullWidth
-            variant="standard"
-            disabled
-          />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="email"
-            label="EmailAddress:Hanuman@gmail.com"
-            type="email"
-            fullWidth
-            variant="standard"
-            disabled
-          />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="password"
-            name="password"
-            label="hanuman@123"
-            type="password"
-            fullWidth
-            variant="standard"
-            disabled
-          />
-
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseEditDialog}>Cancel</Button>
-          <Button type="submit">View</Button>
-        </DialogActions>
-      </Dialog> */}
-
-        </div>
-    )
+  )
 }
+
 
 export default Booking;

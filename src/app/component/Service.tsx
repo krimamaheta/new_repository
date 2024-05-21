@@ -185,8 +185,6 @@ import { useSelector } from 'react-redux';
         setEvents(response.data);
         console.log("response", response);
         console.log("responseprice",response.data.price);
-        
-
         setLoading(false);
       } catch (error) {
         console.error("Error fetching events:", error);
@@ -418,7 +416,7 @@ import { useSelector } from 'react-redux';
 
               <div className={style1.input1}>
                 <div className={style1.heading2}>
-                  <label htmlFor="Event">Select Event:</label></div>
+               <label htmlFor="Event">Select Event:</label></div>
 
                 <select className={style1.s1} name="events" id="events" value={value.eventId} onChange={selectchange}>
                   {loading ? (<option value="">Loading.....</option>) :

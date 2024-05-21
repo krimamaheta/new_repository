@@ -1,7 +1,7 @@
 "use client"
 
-import React from "react"
-import style from "./../vendor/vendorStyle.module.css"
+import React, { useState } from "react"
+//import style from "./../vendor/vendorStyle.module.css"
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import RateReviewIcon from '@mui/icons-material/RateReview';
@@ -14,116 +14,83 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import axios from "axios";
+import style1 from "@/app/admin/style.module.css"
+import style from "./../admin/style.module.css"
 
+interface UserModel{
+  id:"",
+  userName:"",
+  email:"",
+  password:"",
+  eventName:"",
+  payment:"",
+}
 const User = () => {
-  const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
-  const [openEditDialog, setOpenEditDialog] = React.useState(false);
-
-  const handleOpenDeleteDialog = () => {
-    setOpenDeleteDialog(true);
+  const [open, setOpen] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
   };
 
-  const handleCloseDeleteDialog = () => {
-    setOpenDeleteDialog(false);
+  const handleClose = () => {
+    setOpen(false);
   };
 
-  const handleOpenEditDialog = () => {
-    setOpenEditDialog(true);
-  };
+  // const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
+  // const [openEditDialog, setOpenEditDialog] = React.useState(false);
 
-  const handleCloseEditDialog = () => {
-    setOpenEditDialog(false);
-  };
+  // const handleOpenDeleteDialog = () => {
+  //   setOpenDeleteDialog(true);
+  // };
+
+  // const handleCloseDeleteDialog = () => {
+  //   setOpenDeleteDialog(false);
+  // };
+
+  // const handleOpenEditDialog = () => {
+  //   setOpenEditDialog(true);
+  // };
+
+  // const handleCloseEditDialog = () => {
+  //   setOpenEditDialog(false);
+  // };
+
+  const[loading,setLoading]=useState(false);
+  const[users,setUsers]=useState<UserModel[]>([]);
+
+  const fetchAllUser=async()=>{
+    setLoading(true);
+    try{
+      var res=await axios.get(`https://localhost:44340/api/User/GetAllUser`);
+      setUsers(res.data);
+    }catch(error){  
+      alert("fail to show list")
+      setLoading(true);
+    }
+    finally{
+      setLoading(false);
+    }
+  }
+
+
+  const AddUser=async()=>{
+    try{
+      const userId = User.user.userID;
+      console.log(userId);
+      const res=await axios.post(`https://localhost:44340/api/User/${userId}`);
+      
+    }catch(error){
+
+    }
+  }
+
   return (
-    <div className="flex justify-center items-center h-full">
-      <div className={style.user1}>
-
-      </div>
-      <table className="table-auto">
-        <thead>
-          <tr>
-            <th className="px-4 py-2">UserName</th>
-            <th className="px-4 py-2">Email</th>
-            <th className="px-4 py-2">SelectedEvent</th>
-
-            <th className="px-4 py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className="border px-4 py-2">Hanuman</td>
-            <td className="border px-4 py-2">Hanuman@gmail.com</td>
-            <td className="border px-4 py-2">WeddingCeremony</td>
-            <td>
-              <button className="border px-4 py-2" onClick={handleOpenEditDialog}><LibraryAddIcon /></button>
-              <button className="border px-4 py-2" onClick={handleOpenEditDialog}><EditIcon /></button>
-              <button className="border px-4 py-2" onClick={handleOpenEditDialog}><RateReviewIcon /></button>
-              <button className="border px-4 py-2" onClick={handleOpenDeleteDialog}><DeleteIcon /></button>
-            </td>
-          </tr>
-          <tr>
-            <td className="border px-4 py-2">Bhim</td>
-            <td className="border px-4 py-2">Bhim@gmail.com</td>
-            <td className="border px-4 py-2">BirthdayCelebration</td>
-            <td>
-              <button className="border px-4 py-2"><LibraryAddIcon /></button>
-              <button className="border px-4 py-2"><EditIcon /></button>
-              <button className="border px-4 py-2"><RateReviewIcon /></button>
-              <button className="border px-4 py-2"><DeleteIcon /></button>
-            </td>
-          </tr>
-          <tr>
-            <td className="border px-4 py-2">Arjun</td>
-            <td className="border px-4 py-2">Arjun@gmail.com</td>
-            <td className="border px-4 py-2">BirthdayCelebration</td>
-            <td>
-              <button className="border px-4 py-2"><LibraryAddIcon /></button>
-              <button className="border px-4 py-2"><EditIcon /></button>
-              <button className="border px-4 py-2"><RateReviewIcon /></button>
-              <button className="border px-4 py-2"><DeleteIcon /></button>
-            </td>
-          </tr>
-
-          <tr>
-            <td className="border px-4 py-2">gita</td>
-            <td className="border px-4 py-2">gita@gmail.com</td>
-            <td className="border px-4 py-2">RingCeremony</td>
-            <td>
-              <button className="border px-4 py-2"><LibraryAddIcon /></button>
-              <button className="border px-4 py-2"><EditIcon /></button>
-              <button className="border px-4 py-2"><RateReviewIcon /></button>
-              <button className="border px-4 py-2"><DeleteIcon /></button>
-            </td>
-          </tr>
-          <tr>
-            <td className="border px-4 py-2">Laxmi</td>
-            <td className="border px-4 py-2">Laxmi@gmail.com</td>
-            <td className="border px-4 py-2">MarrigeAnnyversary</td>
-            <td>
-              <button className="border px-4 py-2"><LibraryAddIcon /></button>
-              <button className="border px-4 py-2"><EditIcon /></button>
-              <button className="border px-4 py-2"><RateReviewIcon /></button>
-              <button className="border px-4 py-2"><DeleteIcon /></button>
-            </td>
-          </tr>
-
-
-          <tr>
-            <td className="border px-4 py-2">Laxman</td>
-            <td className="border px-4 py-2">Laxman@1gmail.com</td>
-            <td className="border px-4 py-2">RingCeremony</td>
-            <td>
-              <button className="border px-4 py-2"><LibraryAddIcon /></button>
-              <button className="border px-4 py-2"><EditIcon /></button>
-              <button className="border px-4 py-2"><RateReviewIcon /></button>
-              <button className="border px-4 py-2"><DeleteIcon /></button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <Dialog
-        open={openEditDialog}
-        onClose={handleCloseEditDialog}
+    <div>
+       <div className={style.button1} onClick={handleClickOpen}><button>+AddUser</button></div>
+       <div className={style.button1} onClick={handleClickOpen}><button>UserList</button></div>
+       <Dialog
+        open={open}
+        onClose={handleClose}
         PaperProps={{
           component: 'form',
           onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
@@ -132,21 +99,21 @@ const User = () => {
             const formJson = Object.fromEntries((formData as any).entries());
             const email = formJson.email;
             console.log(email);
-            handleCloseEditDialog();
+            handleClose();
           },
         }}
       >
-        <DialogTitle>AddUser</DialogTitle>
+        <DialogTitle>+AddUser</DialogTitle>
         <DialogContent>
           <DialogContentText>
-
+           
           </DialogContentText>
           <TextField
             autoFocus
             required
             margin="dense"
-            id="name"
-            name="name"
+            id="userName"
+            name="userName"
             label="UserName"
             type="text"
             fullWidth
@@ -170,178 +137,57 @@ const User = () => {
             id="password"
             name="password"
             label="Password"
-            type="password"
-            fullWidth
-            variant="standard"
-          />
-
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseEditDialog}>Cancel</Button>
-          <Button type="submit">Add</Button>
-        </DialogActions>
-      </Dialog>
-
-
-      
-
-
-      <Dialog
-        open={openDeleteDialog}
-        onClose={handleCloseDeleteDialog}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">Delete Confirmation</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete this user?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
-          <Button onClick={handleCloseDeleteDialog} autoFocus>
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-
-      <Dialog
-        open={openEditDialog}
-        onClose={handleCloseEditDialog}
-        PaperProps={{
-          component: 'form',
-          onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-            event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries((formData as any).entries());
-            const email = formJson.email;
-            console.log(email);
-            handleCloseEditDialog();
-          },
-        }}
-      >
-
-
-        <DialogTitle>EditUser</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-
-          </DialogContentText>
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="name"
-            label="UserName"
             type="text"
             fullWidth
             variant="standard"
           />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="email"
-            label="Email Address"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="password"
-            name="password"
-            label="Password"
-            type="password"
-            fullWidth
-            variant="standard"
-          />
-
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseEditDialog}>Cancel</Button>
-          <Button type="submit">Edit</Button>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button type="submit" onClick={AddUser}>Add</Button>
         </DialogActions>
       </Dialog>
+      <div className={style.button1} onClick={fetchAllUser}><button>BookedUserList</button></div>
+        
+        <div>
+        {loading ? (
+        <p>Loading...</p>
+      ) : users.length > 0 ? (
+        <>
+          <div className={style1.head}>User EventBook List</div>
+          <table className={style1.userTable}>
+            <thead>
+              <tr>
+                <th>UserId</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>EventName</th>
+                <th>Payment</th>
+                {/* <th>Password</th> */}
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user, index) => (
+                <tr key={index}>
+                  <td className="p-3">{user.id}</td>
+                  <td className="p-3">{user.userName}</td>
+                  <td className="p-3">{user.email}</td>
+                  <td className="p-3">{user.eventName}</td>
+                  <td className="p-3">{user.payment}</td>
+                  {/* <td>{user.password}</td> */}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      ) : (
+        <p>No users available</p>
+      )}
+    </div>
 
-
-
-
-      <Dialog
-        open={openEditDialog}
-        onClose={handleCloseEditDialog}
-        PaperProps={{
-          component: 'form',
-          onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-            event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries((formData as any).entries());
-            const email = formJson.email;
-            console.log(email);
-            handleCloseEditDialog();
-          },
-        }}
-      >
-
-      <DialogTitle>ViewUser</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-
-          </DialogContentText>
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="name"
-            label="UserName:Hanuman"
-            type="text"
-            fullWidth
-            variant="standard"
-            disabled
-          />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="email"
-            label="EmailAddress:Hanuman@gmail.com"
-            type="email"
-            fullWidth
-            variant="standard"
-            disabled
-          />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="password"
-            name="password"
-            label="hanuman@123"
-            type="password"
-            fullWidth
-            variant="standard"
-            disabled
-          />
-
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseEditDialog}>Cancel</Button>
-          <Button type="submit">View</Button>
-        </DialogActions>
-      </Dialog>
-
-
-      
-
+        
     </div>
   )
 }
+
 export default User;

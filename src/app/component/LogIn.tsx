@@ -17,7 +17,6 @@ import { login } from "@/Redux/authslice/authslice";
 import setToken from "@/store/token";
 import {setToken as authTokenSetToken} from "@/lib/AuthToken";
 
-
 // const initialValues={
 //     email:"",
 //     password:""
@@ -31,7 +30,6 @@ import {setToken as authTokenSetToken} from "@/lib/AuthToken";
   email: "",
   password: "",
 });
-
 
 const [showForgotPassWord, setShowForgotPassword] = useState(false);
 
@@ -73,9 +71,6 @@ const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       
      // AuthToken.set(res?.data?.token);
       dispatch(login({ user: current_user }));
-
-      
-
       // document.cookie = `access_token=${current_user.token}; path=/; HttpOnly; Secure; SameSite=none; max-age=${3 * 60 * 60}`;
       // console.log("token",`${current_user.token}`);
       
@@ -99,13 +94,7 @@ const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   }
 };
 
-const handleForgotPasswordClick = () => {
-  setShowForgotPassword(true);
-};
 
-const closeForgotPasswordPopup = () => {
-  setShowForgotPassword(false);
-};
     // const[email,setemail]=useState("");
     // const[password,setpassword]=useState(""); 
   //   const dispatch=useDispatch();
@@ -177,6 +166,8 @@ const closeForgotPasswordPopup = () => {
                       <p className="form-error">{errors.email}</p>
                     ) : null} */}
                   </div>
+
+                  
                   <div className="input-block">
                     <label htmlFor="password" className="input-label">
                       Password
@@ -191,10 +182,17 @@ const closeForgotPasswordPopup = () => {
                       onChange={handleChange}
                       
                     />
+
+
+
+
+
                     {/* {errors.password && touched.password ? (
                       <p className="form-error">{errors.password}</p>
                     ) : null} */}
                   </div>
+
+                  
                  
                     
                   <div className="modal-buttons">
