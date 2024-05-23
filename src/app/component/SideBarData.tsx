@@ -20,48 +20,48 @@ interface SideBarItem{
 export const SideBarData:SideBarItem[]=[
     {
         title: "DashBoard",
-        icon: <DashboardIcon/>, // Replace Icon with your actual icon component
+        icon: <DashboardIcon/>, 
         link: "/admin/dashboard",
     },
     // {
     //     title: "Home",
-    //     icon: <HomeIcon/>, // Replace Icon with your actual icon component
+    //     icon: <HomeIcon/>, 
     //     link: "/home",
     // },
     {
         title: "User",
-        icon: <PersonIcon/>, // Replace Icon with your actual icon component
+        icon: <PersonIcon/>, 
         link: "/admin/user",
     },
     {
         title: "Event",
-        icon: <EventIcon/>, // Replace Icon with your actual icon component
+        icon: <EventIcon/>, 
         link: "/admin/event",
     },
     {
         title: "Vendors",
-        icon: <AutoAwesomeIcon/>, // Replace Icon with your actual icon component
+        icon: <AutoAwesomeIcon/>,
         link: "/admin/vendors",
     },
     // {
     //     title: "Caterer",
-    //     icon: <RestaurantMenuIcon/>, // Replace Icon with your actual icon component
+    //     icon: <RestaurantMenuIcon/>, 
     //     link: "/caterer",
     // },
     {
         title: "Booking",
-        icon: <BookmarkAddedIcon/>, // Replace Icon with your actual icon component
+        icon: <BookmarkAddedIcon/>, 
         link: "/admin/booking",
     },
     // {
     //     title: "Payment",
-    //     icon: <PaymentIcon/>, // Replace Icon with your actual icon component
+    //     icon: <PaymentIcon/>,
     //     link: "/payment",
     // },
 
     {
         title: "Mail",
-        icon: <EmailIcon/>, // Replace Icon with your actual icon component
+        icon: <EmailIcon/>, 
         link: "/mail",
     }
 

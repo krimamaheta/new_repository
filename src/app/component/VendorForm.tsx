@@ -23,15 +23,64 @@ import { logout } from "@/Redux/authslice/authslice";
 import { useDecorationPrice } from "@/context/DecorationPrice";
 import { removeToken } from "@/lib/AuthToken";
 
-
+import SignalRService from "./../../services/signalRService";
+import Connector from "./../../services/signalRService"
+import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
+import * as signalR from "@microsoft/signalr";
 
 //user side vendor
 const VendorForm: React.FC = () => {
+    
+    const [connection, setConnection] = useState<signalR.HubConnection|null>(null);
+    useEffect(() => {
+        // Create a SignalR connection
+        debugger
+        const newConnection = new signalR.HubConnectionBuilder()
+          .withUrl("https://localhost:44340/notificationhub")
+          .withAutomaticReconnect()
+          .build();
+    
+        setConnection(newConnection);
+      }, []);
+    
+      useEffect(() => {
+        if (connection) {
+          // Start the SignalR connection
+          connection.start().then(() => {
+            console.log("SignalR connected");
+          }).catch(err => console.error(err));
+    
+          // Listen for incoming notifications
+          connection.on("SendMessage", (notification: { message: string }) => {
+            console.log("Notification received:", notification);
+            // Display the notification to the user
+            alert(notification.message);
+            console.log("notification msg",notification.message);
+            
+          });
+        }
+      }, [connection]);
 
-    // const user = useSelector((state)=>state.auth.user)
-    // const UserId=user.UserId;
 
-    // console.log(UserId);
+
+    // const [message, setMessage] = useState("initial value"); 
+
+    // useEffect(() => {
+    //     const connector = Connector;
+
+    //     // Register the event handler for receiving messages
+    //     connector.onMessageReceived((username, newMessage) => {
+    //         setMessage(newMessage);
+    //         alert(message);
+    //         console.log(`Message received from ${username}: ${newMessage}`);
+    //     });
+
+    //     // Cleanup function to stop the connection when the component unmounts
+    //     return () => {
+    //         connector.stopConnection();
+    //     };
+    // }, []);
+   
     const route = useRouter();
     const [value, setValue] = useState({
         vendorId: "",
@@ -72,13 +121,107 @@ const VendorForm: React.FC = () => {
     //add vendor
     // const { isApproved } = useDecorationPrice();
     const [isApproved, setIsApproved] = useState(false);
+    // const signalRService = new SignalRService();
+    // useEffect(() => {
+    //     // Start the SignalR connection when the component mounts
+    //     signalRService.startConnection();
+
+    //     // Cleanup function to stop the connection when the component unmounts
+    //     return () => {
+    //         signalRService.stopConnection();
+    //         // You can optionally stop the SignalR connection here
+    //     };
+    // }, []);
+
+
+    // const handleSubmit = async () => {
+    //     try {
+    //         debugger
+    //         const userId = User.user.userID;
+    //         console.log(userId);
+    
+    //         const url = `https://localhost:44340/Api/Vendor/AddVendor/${userId}`;
+    //         setValue({ ...value, userId: userId })
+    //         const response = await axios.post(url, value, {
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //             },
+    //         });
+    
+    //         if (response.status >= 200 && response.status < 300) {
+    //             const data = response.data;
+    //             console.log("---------------", data);
+    //             alert("Vendor details added successfully.");
+    //             setVendorId(data.vendorId); // Store vendor ID for future reference
+    
+    //             // Call checkApproval function to check if vendor is approved
+    //             await checkApproval(data.vendorId);
+    //         }
+    //     } catch (error) {
+    //         console.error("Error in handleSubmit:", error);
+    //     }
+    // };
+    
+    // const checkApproval = async (vendorId:string) => {
+    //     try {
+    //         const url = `https://localhost:44340/Api/Vendor/CheckApproval/${vendorId}`;
+    //         const response = await axios.get(url);
+    //         const approvalStatus = response.data; // Assuming the API returns the approval status
+    
+    //         if (approvalStatus === 'approved') {
+    //             alert("Vendor approved by admin.");
+    //             // Proceed with further actions, if any
+    //         }
+    //     } catch (error) {
+    //         console.error("Error in checkApproval:", error);
+    //     }
+    // };
+
+    
+        //notification come from back end
+
+        const approveVendor = async () => {
+            try {
+               // const url = `https://localhost:44340/Api/Vendor/UpdateVendor/${vendorId}`;
+               const url=`https://localhost:44340/api/Notification`
+                const response = await axios.get(url);
+        
+                if (response.status >= 200 && response.status < 300) {
+                    const message = response.data;
+                    console.log("Approval message:", message);
+                    alert("approve");
+                    alert(message);
+                }
+            } catch (error) {
+                console.error("Error in approveVendor:", error);
+            }
+        };
+        const AdminApprove= async (vendorId:string) => {
+            try {
+                debugger    
+                const url = `https://localhost:44340/Api/Notification/ApproveVendor/${vendorId}`;
+              //const url=`https://localhost:44340/api/Notification`
+                const response = await axios.get(url);
+        
+                if (response.status >= 200 && response.status < 300) {
+                    const message = response.data;
+                    console.log("Approval message:", message);
+                    alert("approve");
+                    alert(message);
+                }
+            } catch (error) {
+                console.error("Error in approveVendor:", error);
+            }
+        };
+
     const handleSubmit = async () => {
         try {
-
+            debugger
             const userId = User.user.userID;
             console.log(userId);
 
-            const url = `https://localhost:44340/Api/Vendor/AddVendor/${userId}`;
+           const url = `https://localhost:44340/Api/Vendor/AddVendor/${userId}`;
+          //const url=`https://localhost:44340/Api/Notification/AddVendor/${userId}`
             setValue({ ...value, userId: userId })
             const response = await axios.post(url, value, {
                 headers: {
@@ -101,11 +244,18 @@ const VendorForm: React.FC = () => {
 
                 //wait for approval
                 setVendorId(data.vendorId);
-                console.log("vendorid", data.vendorId);
+                console.log("vendorid",data.vendorId);
 
                 setTypeOfVendor(data.typeOfVendor);
-                console.log("typeofvendor", data.typeOfVendor);
+                console.log("typeofvendor",data.typeOfVendor);
 
+                //await AdminApprove(data.vendorId);
+                //await approveVendor();
+                //await approveVendor(data.vendorId);
+              
+
+                
+                
                 // if(data.typeOfVendor=="Caterer" && isApproved){
                 //     //route.push("vendor/caterer");
                 //     startPolling(data.vendorId,data.typeOfVendor);
@@ -126,6 +276,29 @@ const VendorForm: React.FC = () => {
             console.error("Error:", error);
             alert("An error occurred during adding value.");
         }
+
+        
+
+        // const checkApproval = async (vendorId:string) => {
+        //     try {
+        //         const url = `https://localhost:44340/Api/Notification/CheckApproval/${vendorId}`;
+        //         const response = await axios.get(url);
+        //         const approvalStatus = response.data; // Assuming the API returns the approval status
+        
+        //         if (approvalStatus === 'approved') {
+        //             alert("Vendor approved by admin.");
+        //             // Proceed with further actions, if any
+        //         }
+        //     } catch (error) {
+        //         console.error("Error in checkApproval:", error);
+        //     }
+        // };
+
+
+
+
+
+
         // try{
         //     debugger
         //     console.log(User.user.userID);
@@ -160,37 +333,39 @@ const VendorForm: React.FC = () => {
         // }
     }
 
-    const fetchApprovalStatus = async (vendorId: string) => {
-        try {
-            const response = await axios.get(`https://localhost:44340/api/Vendor/status/${vendorId}`);
-            setIsApproved(prevIsApproved => response.data.isApproved);
+    // const fetchApprovalStatus = async (vendorId: string) => {
+    //     try {
+    //         const response = await axios.get(`https://localhost:44340/api/Vendor/status/${vendorId}`);
+    //         setIsApproved(prevIsApproved => response.data.isApproved);
 
-        } catch (error) {
-            console.error("Failed to fetch approval status:", error);
-        }
-    };
+    //     } catch (error) {
+    //         console.error("Failed to fetch approval status:", error);
+    //     }
+    // };
 
 
-    useEffect(() => {
-        if (!vendorId || !typeOfVendor) return;
+    // useEffect(() => {
+    //     if (!vendorId || !typeOfVendor) return;
 
-        const interval = setInterval(async () => {
-            await fetchApprovalStatus(vendorId);
-        }, 5000); // Poll every 5 seconds
+    //     const interval = setInterval(async () => {
+    //         await fetchApprovalStatus(vendorId);
+    //     }, 5000); // Poll every 5 seconds
 
-        // Clear the interval when isApproved becomes true and redirect
-        if (isApproved) {
-            clearInterval(interval);
-            if (typeOfVendor === "Caterer") {
-                route.push("/vendor/caterer");
-            } else if (typeOfVendor === "Decorator") {
-                route.push("/vendor/allvendor");
-            }
-        }
+    //     // Clear the interval when isApproved becomes true and redirect
+    //     if (isApproved) {
+    //         clearInterval(interval);
+    //         if (typeOfVendor === "Caterer") {
+    //             route.push("/vendor/caterer");
+    //         } else if (typeOfVendor === "Decorator") {
+    //             route.push("/vendor/allvendor");
+    //         }
+    //     }
 
-        // Cleanup the interval on component unmount
-        return () => clearInterval(interval);
-    }, [isApproved, vendorId, typeOfVendor]);
+    //     // Cleanup the interval on component unmount
+    //     return () => clearInterval(interval);
+    // }, [isApproved, vendorId, typeOfVendor]);
+
+
 
     //   const startPolling = (vendorId:string, typeOfVendor:string) => {
     //     const interval = setInterval(async () => {
@@ -290,6 +465,7 @@ const VendorForm: React.FC = () => {
                     </select>
                 </div>
                 <div className={Style.buttongroup}>
+                     
                     <button onClick={handleSubmit}>Submit</button>
                 </div>
             </div>
@@ -555,7 +731,7 @@ export const GetAllVendor: React.FC = () => {
             //alert(id)
             const cloudinaryUploadPromises = value.images.map(async (image) => {
                 const formData = new FormData();
-                formData.append("file", image);
+                formData.append("file",image);
                 formData.append("upload_preset", "unsign_upload");
                 formData.append("cloud_name", "dqtsmfpvb");
 
@@ -600,7 +776,6 @@ export const GetAllVendor: React.FC = () => {
         } catch (error) {
             console.log("error");
             alert("error coming");
-
         }
     }
 

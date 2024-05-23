@@ -86,14 +86,7 @@ export const Event: React.FC = () => {
       alert("Failed to add event");
     }
   };
-  // useEffect(() => {
-  //   // Fetch event list on component mount
-  //   console.log('jdfhgkdhgjkdfhg');
 
-  //   EventList();
-
-  // }, []);
-  //event list
   const FetchEventList = async () => {
     // e.preventDefault();
     setLoading(true)

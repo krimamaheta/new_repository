@@ -6,21 +6,15 @@ import styled from "styled-components";
 import { GlobalStyle } from "@/Styles/globalStyles";
 import { useFormik } from "formik";
 import { LogInSchema } from "../Schemas/page";
-//import LogInUserPage from "@/app/api/LogInUser"
 import homeImage from "./../../../public/chair.jpeg"
 import { useDispatch, useSelector } from "react-redux";
-//import  LogInUser  from "@/store/UserSlice";
 import { useRouter } from "next/navigation";
-
 import Link from "next/link"
 import { login } from "@/Redux/authslice/authslice";
 import setToken from "@/store/token";
 import {setToken as authTokenSetToken} from "@/lib/AuthToken";
 
-// const initialValues={
-//     email:"",
-//     password:""
-// }
+
   const LogIn:React.FC=()=>{
 
     const router = useRouter();
@@ -65,14 +59,12 @@ const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       console.log(current_user);
       await alert("login successfully");
 
-     //localStorage.setItem("user", JSON.stringify(current_user));
+     
       console.log("data.token",data.token);
       await authTokenSetToken(data.token); 
       
-     // AuthToken.set(res?.data?.token);
+    
       dispatch(login({ user: current_user }));
-      // document.cookie = `access_token=${current_user.token}; path=/; HttpOnly; Secure; SameSite=none; max-age=${3 * 60 * 60}`;
-      // console.log("token",`${current_user.token}`);
       
 
       if(current_user.roles=="User"){
@@ -95,44 +87,7 @@ const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 };
 
 
-    // const[email,setemail]=useState("");
-    // const[password,setpassword]=useState(""); 
-  //   const dispatch=useDispatch();
-  //   const navigate=useRouter();
-  //   //redux state
-  //   const{loading,error}=useSelector((state:any)=>state.user)
-  //   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
-  //   useFormik({
-  //     initialValues,
-  //     validationSchema: LogInSchema,
-  //     onSubmit: (values,action) => {
-  //       console.log(
-  //         "🚀 ~ file: Registration.jsx ~ line 11 ~ Registration ~ values",
-  //         values
-  //       );
-  //      dispatch(LogInUser(values));
-  //       console.log(values);
-
-        
-  //       //  dispatch(LogInUser(values)).then((result:any)=>{
-  //       //   if(result.payload){
-  //       //     navigate.push('/login');
-  //       //   }
-  //       //  })
-  //       // LogInUserPage(values);
-  //     //  action.resetForm();
-  //     },
-  //   });
-  //   console.log(values)
-  // console.log(
-  //   "🚀 ~ file: Registration.jsx ~ line 25 ~ Registration ~ errors",
-  //   errors
-  // );
-  // React.useEffect(() => {
-  //   if (!loading && !error) {
-  //     navigate.push('/home'); // Redirect to dashboard or any other page
-  //   } 
-  // }, [loading, error]);
+  
     return(
         <>
         <GlobalStyle />
@@ -161,10 +116,7 @@ const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                       value={formData.email}
                       onChange={handleChange}
                       
-                    />
-                    {/* {errors.email && touched.email ? (
-                      <p className="form-error">{errors.email}</p>
-                    ) : null} */}
+                    />   
                   </div>
 
                   
@@ -182,23 +134,9 @@ const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                       onChange={handleChange}
                       
                     />
-
-
-
-
-
-                    {/* {errors.password && touched.password ? (
-                      <p className="form-error">{errors.password}</p>
-                    ) : null} */}
                   </div>
-
-                  
-                 
-                    
                   <div className="modal-buttons">
-                    {/* <a href="#" className="">
-                      Want to register using Gmail?
-                    </a> */}
+                   
                     <p className="sign-up">
                   Already have an account? <Link href="/signup">Sign Up now</Link>
                 </p>
@@ -207,27 +145,13 @@ const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                 </p>
                 
                     <button className="input-button" type="submit">
-                      LogIn{/* {loading?'Loading...':'LogIn'} */}
+                      LogIn
                     </button>
-                    {/* {
-                      error && (
-                        <div className="alert">
-                          {error}
-                          </div>
-                      )
-                    } */}
                   </div>
                  
                 </form>
-                {/* <p className="sign-up">
-                  Already have an account? <a href="#">Sign In now</a>
-                </p> */}
               </div>
               <div className="modal-right">
-                {/* <img
-                  src="https://images.unsplash.com/photo-1512486130939-2c4f79935e4f?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=dfd2ec5a01006fd8c4d7592a381d3776&auto=format&fit=crop&w=1000&q=80"
-                  alt="image1"
-                /> */}
                 <Image src={homeImage} alt="home image"/>
               </div>
             </div>

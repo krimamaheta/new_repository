@@ -3,7 +3,8 @@
 import React from "react";
 import {LandingPage} from"../component/LandingPage"
 import NavBar from "../navigation";
-import Footer from "../componets/footer";
+import Footer from "./../component/footer"
+//import Footer from "../componets/footer";
 const LandingPage_main=()=>{
     return (
         <div>

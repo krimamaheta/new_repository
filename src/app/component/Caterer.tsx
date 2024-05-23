@@ -131,28 +131,7 @@ const Caterer = () => {
         AllCaterer();
     }, [])
 
-    // const handleOrderSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    //     event.preventDefault();
-    //     // Calculate final total payment
-    //     const finalTotalPayment = totalprice + Number(decorationPrice);
-    //     setFinalPayment(finalTotalPayment);
-    //     handleCloseOrderDialog();
-    // };
-
-    // const makepayment = async () => {
-    //     try {
-    //         var res = await axios.post("https://localhost:44340/api/Stripe/session");
-    //         console.log("response", res);
-    //         console.log("res", res.data.checkoutUrl);
-    //         const session = res.data.checkoutUrl;
-    //         window.location.href = session;
-
-    //     } catch (error) {
-    //         alert("fail to reach error")
-    //     }
-    // }
-    // const User = useSelector((state) => state.auth.user);
-    // console.log(User);
+   
 
     const User = useSelector((state) => state.auth.user);
     console.log("User", User);
@@ -283,7 +262,7 @@ const Caterer = () => {
                         <Grid item xs={2} sm={4} md={4} key={index} style={{ padding: '2rem 5rem', margin: '2rem 0' }}>
                             <Card>
                                 <CardContent>
-                                    {/* Render images if available */}
+                                   
 
                                     <div style={{ width: '400px', height: '300px', overflow: 'hidden' }}>
                                         {caterer.images && caterer.images.map((imageUrl: string | undefined, imgIndex: React.Key | null | undefined) => (
@@ -316,8 +295,7 @@ const Caterer = () => {
                                         <DialogTitle>Order Now</DialogTitle>
                                         <DialogContent>
                                             <DialogContentText>
-                                                {/* To subscribe to this website, please enter your email address here. We
-                              will send updates occasionally. */}
+                                               
                                             </DialogContentText>
                                             <TextField
                                                 autoFocus
@@ -406,20 +384,7 @@ const Caterer = () => {
                                                 />
 
                                             </LocalizationProvider>
-                                            {/* <InputLabel id="demo-simple-select-label">EventLocation</InputLabel>
-                                            <Select
-                                                labelId="demo-simple-select-label"
-                                                id="demo-simple-select"
-                                                value={eventLocation}
-                                                label="EventLocation"
-                                                onChange={handleEventChange}
-                                                className="w-30"
-                                            >
-                                                <MenuItem value="surat">surat</MenuItem>
-                                                <MenuItem value="bhavnagar">bhavnagar</MenuItem>
-                                                <MenuItem value="vapi">vapi</MenuItem>
-
-                                            </Select> */}
+                                            
                                             <TextField
                                                 autoFocus
                                                 required

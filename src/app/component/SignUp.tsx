@@ -1,4 +1,3 @@
-
 'use client'
 import React, { useState } from "react";
 import styled from "styled-components";
@@ -10,43 +9,41 @@ import Image from "next/image";
 import CreateUserPage from "./../api/CreateUser"
 import { useRouter } from "next/navigation";
 
-
 const initialValues = {
-    //here pass name
   username: "",
   email: "",
   password: "",
   confirmPassword: "",
-  userRole:""
+  userRole: ""
 };
 
 
 
- export const SignUp = () => {
-   const route = useRouter()
-  
+export const SignUp = () => {
+  const route = useRouter()
+
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
       initialValues,
       validationSchema: signUpSchema,
-      onSubmit: (values,action) => {
+      onSubmit: (values, action) => {
         console.log(
-          "🚀 ~ file: Registration.jsx ~ line 11 ~ Registration ~ values",
+          "file: Registration.jsx ~ line 11 ~ Registration ~ values",
           values
         );
-        console.log('Selected user role:',values.userRole);
+        console.log('Selected user role:', values.userRole);
         console.log(values);
         CreateUserPage(values);
         action.resetForm();
         route.push("/login");
       },
     });
-    
+
   console.log(
-    "🚀 ~ file: Registration.jsx ~ line 25 ~ Registration ~ errors",
+    "file: Registration.jsx ~ line 25 ~ Registration ~ errors",
     errors
   );
-   
+
   return (
     <>
       <GlobalStyle />
@@ -57,9 +54,9 @@ const initialValues = {
               <div className="modal-left">
                 <h1 className="modal-title">Sign Up </h1>
                 <p className="modal-desc">
-                Welcome! 
+                  Welcome!
                 </p>
-                
+
                 <form onSubmit={handleSubmit}>
                   <div className="input-block">
                     <label htmlFor="username" className="input-label">
@@ -149,7 +146,7 @@ const initialValues = {
                       <option value="User" style={{ fontSize: "16px", color: "#333" }}>User</option>
                       <option value="Decorator" style={{ fontSize: "16px", color: "#333" }}>Decorator</option>
                       <option value="Caterer" style={{ fontSize: "16px", color: "#333" }}>Caterer</option>
-                      
+
                     </select>
                     {errors.userRole && touched.userRole ? (
                       <p className="form-error">{errors.userRole}</p>
@@ -157,28 +154,21 @@ const initialValues = {
                   </div>
 
                   <div className="modal-buttons">
-                    {/* <a href="#" className="">
-                      Want to register using Gmail?
-                    </a> */}
+
                     <p className="sign-up">
-                  Already have an account? <a href="/login">Sign In now</a>
-                </p>
+                      Already have an account? <a href="/login">Sign In now</a>
+                    </p>
                     <button className="input-button" type="submit" >
                       Registration
                     </button>
                   </div>
-                 {/* //onClick={()=>Route.push('/login')} */}
+
                 </form>
-                {/* <p className="sign-up">
-                  Already have an account? <a href="#">Sign In now</a>
-                </p> */}
+
               </div>
               <div className="modal-right">
-                {/* <img
-                  src="https://images.unsplash.com/photo-1512486130939-2c4f79935e4f?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=dfd2ec5a01006fd8c4d7592a381d3776&auto=format&fit=crop&w=1000&q=80"
-                  alt="image1"
-                /> */}
-                <Image src={homeImage} alt="home image"/>
+
+                <Image src={homeImage} alt="home image" />
               </div>
             </div>
           </div>

@@ -77,34 +77,7 @@ console.log(Email);
           />
         </div>
 
-        {/* <div className={styles["input-container"]}>
-          <input
-            type="password"
-            name="confirmPassword"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="Confirm Password"
-          />
-        </div>
-
-        <div className={styles["input-container"]}>
-          <input
-            type="text"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-          />
-        </div>
-
-        <div className={styles["input-container"]}>
-          <input
-            type="text"
-            name="token"
-            value={token}
-            onChange={(e) => setToken(e.target.value)}
-            placeholder="OTP"
-          /> */}
+      
           <button className={styles.b1} onClick={Cancel}>cancel</button>
           <button className={styles.b1} onClick={HandleResetPass}>Send</button>
         </div>

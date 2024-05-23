@@ -3,9 +3,6 @@
 import React, { useEffect, useState } from "react"
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import RateReviewIcon from '@mui/icons-material/RateReview';
-import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
-
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -35,17 +32,11 @@ interface BookingModel {
 }
 const Booking = () => {
   const [bookings, setBookings] = useState<BookingModel[]>([]);
-  // const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
+  
   const [openEditDialog, setOpenEditDialog] = React.useState(false);
   const [eventDate, setEventDate] = useState<Date | null>(null);
   const[bookingId,setBookingId]=useState("");
-  // const handleOpenDeleteDialog = () => {
-  //   setOpenDeleteDialog(true);
-  // };
-
-  // const handleCloseDeleteDialog = () => {
-  //   setOpenDeleteDialog(false);
-  // };
+ 
 
   const handleOpenEditDialog = async(bookingId:string) => {
     setOpenEditDialog(true);
@@ -59,7 +50,7 @@ const Booking = () => {
       setBookingId(bookingId);
       //setEventDate(eventDate === "" ? null : new Date(eventDate));
       setEventLocation(eventLocation);
-      // await updatebookings(bookingId);
+      
     }
   };
 

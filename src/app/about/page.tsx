@@ -2,7 +2,7 @@
 import React from "react";
 import About from "../component/About";
 import NavBar from "../navigation";
-import Footer from "../componets/footer";
+import Footer from "./../component/footer"
 const AboutPage=()=>{
   return(
     <div>

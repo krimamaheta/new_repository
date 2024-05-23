@@ -16,16 +16,12 @@ import Styles from "./../home/card.module.css"
 import b1 from "./../../../public/b1.png"
 import annyversary from "./../../../public/anniversary.png"
 import yellow from "./../../../public/y1.png"
-//import Navbar from "./navigation"
-// const roboto = Roboto({
-//   weight: '400',
-//   subsets: ['latin'],
-// })
+
 
 interface HomeProps{
   children:React.ReactNode;
 }
-// const Home:({children:HomeProps}):JSX.Element = ()=>{
+
   export const Home = ():JSX.Element=>{
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
@@ -40,7 +36,7 @@ interface HomeProps{
   <div className="container px-5 py-24 mx-auto">
     <div className="text-center mb-20">
       <h1 className="sm:text-3xl text-2xl font-medium title-font text-gray-900 mb-4">Features</h1>
-      {/* <p className="text-base leading-relaxed xl:w-2/4 lg:w-3/4 mx-auto text-gray-500s">Blue bottle crucifix vinyl post-ironic four dollar toast vegan taxidermy. Gastropub indxgo juice poutine, ramps microdosing banh mi pug.</p> */}
+    
       <div className="flex mt-6 justify-center">
     
         <div className="w-16 h-1 rounded-full bg-yellow-700 inline-flex"></div>
@@ -95,7 +91,7 @@ From menu planning , allowing you to relax and enjoy your event while we take ca
        
       </div>
     </div>
-    {/* <button className="flex mx-auto mt-16 text-white bg-pink-500 border-0 py-2 px-8 focus:outline-none hover:bg-pink-600 rounded text-lg">Button</button> */}
+   
   </div>
 
 
@@ -237,88 +233,7 @@ From menu planning , allowing you to relax and enjoy your event while we take ca
 </div>   
 </section>
 
-      {/* <div className="i2 flex">
-        <div className="flex-1 p-8">
-          <h2>
-            We’re here to take the vision and goals you have for the most important day of your lives and transform that into reality. So you can focus on creating beautiful lasting memories with your fiance and loved ones.
-          </h2>
-        </div>
-        <div className="image2">
-          <Image src={Pro} alt="wed image" height={200} width={200} layout="responsive"/>
-        </div>
-      </div>
-
-
-
-      <div className="i2 flex">
-      <div className="image2">
-          <Image src={Home1} alt="wed image" layout="responsive" height={200} width={200}/>
-        </div>
-        <div className="flex-1 p-8">
-          <h2>
-            We’re here to take the vision and goals you have for the most important day of your lives and transform that into reality. So you can focus on creating beautiful lasting memories with your fiance and loved ones.
-          </h2>
-        </div>
-      </div>
-
-
-      <div className="i2 flex">
-        <div className="flex-1 p-8">
-          <h2>
-            We’re here to take the vision and goals you have for the most important day of your lives and transform that into reality. So you can focus on creating beautiful lasting memories with your fiance and loved ones.
-          </h2>
-        </div>
-        <div className="image2">
-          <Image src={About2} alt="wed image" layout="responsive" />
-        </div>
-      </div>
-
-
-
-      <div className="i2 flex">
-      <div className="image2">
-          <Image src={Birthday} alt="wed image" layout="responsive" />
-        </div>
-        <div className="flex-1 p-8">
-          <h2>
-            We’re here to take the vision and goals you have for the most important day of your lives and transform that into reality. So you can focus on creating beautiful lasting memories with your fiance and loved ones.
-          </h2>
-        </div>
-      </div>
-
-      <div className="i2 flex">
-        <div className="flex-1 p-8">
-          <h2>
-            We’re here to take the vision and goals you have for the most important day of your lives and transform that into reality. So you can focus on creating beautiful lasting memories with your fiance and loved ones.
-          </h2>
-        </div>
-        <div className="image2">
-          <Image src={Thread} alt="wed image" layout="responsive"/>
-        </div>
-      </div>
-
-      <div className="i2 flex">
-      <div className="image2">
-          <Image src={ring} alt="wed image" layout="responsive"/>
-        </div>
-        <div className="flex-1 p-8">
-          <h2>
-            We’re here to take the vision and goals you have for the most important day of your lives and transform that into reality. So you can focus on creating beautiful lasting memories with your fiance and loved ones.
-          </h2>
-        </div>
-      </div>
-
-
-      <div className="i2 flex">
-        <div className="flex-1 p-8">
-          <h2>
-            We’re here to take the vision and goals you have for the most important day of your lives and transform that into reality. So you can focus on creating beautiful lasting memories with your fiance and loved ones.
-          </h2>
-        </div>
-        <div className="image2">
-          <Image src={wed1} alt="wed image" layout="responsive"/>
-        </div>
-      </div> */}
+    
 
     
     </main>

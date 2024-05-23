@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from "react";
-import styles from "./../changepassword/style.module.css"; // Import your CSS file
+import styles from "./../changepassword/style.module.css"; 
 import axios from "axios";
 import { useRouter } from "next/navigation";
 interface prop{
@@ -66,10 +66,7 @@ const ChangePassword:React.FC<prop>=({
       alert("fail to reset password please try again letter.....!")
     }
   }
-  //const [password, setPassword] = useState("");
-  //const [confirmPassword, setConfirmPassword] = useState("");
-  //const [email, setEmail] = useState("");
-  //const [token, setToken] = useState("");
+
 
   return (
     <div className={styles["change-password-container"]}>
@@ -102,23 +99,7 @@ const ChangePassword:React.FC<prop>=({
             placeholder="Confirm Password"
           />
         </div>
-        {/* <div className={styles["input-container"]}>
-          <input
-            type="text"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-          />
-        </div>
-        <div className={styles["input-container"]}>
-          <input
-            type="text"
-            name="token"
-            value={token}
-            onChange={(e) => setToken(e.target.value)}
-            placeholder="OTP"
-          /> */}
+       
           <button className={styles.b1}>cancel</button>
           <button className={styles.b1} onClick={ResetPassword}>Reset</button>
         </div>

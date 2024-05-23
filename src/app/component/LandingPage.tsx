@@ -11,7 +11,7 @@ import b1 from "./../../../public/birthday1.png"
 import Thread from "./../../../public/thread1.png"
 import wed1 from "./../../../public/wed1.png"
 
-//import Ring from "./../../../public/ring1.png"
+
 
 export const LandingPage = (): JSX.Element => {
   return (

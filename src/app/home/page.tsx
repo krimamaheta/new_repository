@@ -4,7 +4,7 @@ import { Home } from "../component/home";
 import Loader from "../Loader";
 import NavBar from "../navigation";
 //import NavBar from "../navigation";
-import Footer from "../componets/footer";
+import Footer from "./../component/footer"
 
 
 const HomePage = () => {
