@@ -42,7 +42,8 @@ interface EventData {
     EventDate: Date
 }
 const Caterer = () => {
-    const { decorationPrice } = useDecorationPrice();
+    const {decorationPrice} = useDecorationPrice();
+    console.log("decorationPrice",decorationPrice);
     // const [value, setValue] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
     const [Loading, setLoading] = useState(false);
     const [caterers, setCaterer] = useState<Caterer[]>([]);

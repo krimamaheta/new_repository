@@ -14,7 +14,7 @@ import style1 from "./../../Styles/global.module.css"
 import Carousel from "@itseasy21/react-elastic-carousel";
 import chair from "./../../../public/chair.jpeg"
 import axios from 'axios';
-import { error } from 'console';
+import { debug, error } from 'console';
 import Loader from '../Loader';
 import { Grid, Card, CardContent, Typography } from '@mui/material';
 import style from "./../vendor/vendorStyle.module.css"
@@ -26,7 +26,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useRouter } from 'next/navigation';
-import { useDecorationPrice } from '@/context/DecorationPrice';
+import { DecorationPriceProvider, useDecorationPrice } from '@/context/DecorationPrice';
 import { useSelector } from 'react-redux';
 
 interface Decoration {
@@ -37,6 +37,8 @@ interface Decoration {
   district: string;
   cityName: string;
   imageUrls: string[];
+  page:number;
+  pagesize:number;
 }
 
 interface Caterer {
@@ -104,7 +106,15 @@ const Service = () => {
   const [decorations, setDecorations] = useState<Decoration[]>([]);
   const [caterers, setCaterer] = useState<Caterer[]>([]);
   const [showCaterers, setShowCaterers] = useState(false);
-  const [decorationPrice, setDecorationPrice] = useState("")
+  const [decorationPrice,setDecorationPrice] = useState("")
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(3);
+
+
+  useEffect(() => {
+    fetchDecorations();
+  }, [currentPage]); // Trigger fetchDecorations whenever currentPage changes
 
   const [open, setOpen] = React.useState(false);
 
@@ -207,8 +217,11 @@ const Service = () => {
 
   const fetchDecorations = async () => {
     try {
+      //const=`https://localhost:44340/api/VendorEvent/GetDecoration`
+      //const =`https://localhost:44340/api/VendorEvent/GetDecoration?page=${currentPage}&pageSize=6`
+    
       setLoading(true)
-      const res = await axios.post(`https://localhost:44340/api/VendorEvent/GetDecoration`, {
+      const res = await axios.post(`https://localhost:44340/api/VendorEvent/GetDecoration?page=${currentPage}&pageSize=6`, {
         district: selectedDistrict,
         cityName: selectedCity,
         price: selectedPrice,
@@ -216,16 +229,28 @@ const Service = () => {
       })
 
       console.log("user iD", userId);
-      setDecorations(res.data);
-      console.log("decorationprice", res.data[0].price);
-      setDecorationPrice(res.data[0].price)
-      console.log("response", res);
-      const prices = res.data[0].price;
+      console.log("response",res);
+      
+      //setDecorations(res.data);
+      setDecorations(res.data.decorations);
+      //console.log("decorationprice", res.data[0].price);
+      //setDecorationPrice(res.data[0].price)
+      setDecorationPrice(res.data.decorations[0].price)
+      console.log("gsadbasbvresponse",res);
+      //const prices = res.data[0].price;
+      console.log("decorations",res.data.decorations);
+      
+      const prices=res.data.decorations[0].price;
+      console.log("prices",prices);
+      
       setPrices(prices)
-      console.log("prices", price);
 
-      console.log("eventid", res.data[0].eventId);
+      //console.log("prices", price);
+
+      //console.log("eventid", res.data[0].eventId);
       setEventID(res.data[0].eventID)
+      setTotalPages(res.data.totalPages);
+
 
       setLoading(false)
     } catch (error) {
@@ -239,6 +264,28 @@ const Service = () => {
       fetchDecorations()
     }
   }, [selectedCity, selectedDistrict, selectedEventId, selectedPrice])
+
+
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      const nextPage = currentPage + 1;
+      setCurrentPage(nextPage);
+      fetchDecorations();
+      console.log("Next page:", nextPage);
+    }
+   
+  };
+
+  const handlePreviousPage = () => {
+  
+    if (currentPage > 1) {
+      const previousPage = currentPage - 1;
+      setCurrentPage(previousPage);
+      fetchDecorations();
+      console.log("Previous page:", previousPage);
+    }
+  };
 
 
   const AllCaterer = async () => {
@@ -420,10 +467,8 @@ const Service = () => {
                 }
 
               </select>
+             
             </div>
-
-
-
 
             <Grid container spacing={{ xs: 2, md: 4 }} columns={{ xs: 4, sm: 8, md: 12 }} style={{ marginTop: '2rem', marginBottom: '2rem' }}>
               {decorations && decorations.map((decoration: Decoration, index: number) => (
@@ -434,18 +479,12 @@ const Service = () => {
                         <img key={imageIndex} src={imageUrl} alt="vendorDecorationImage" style={{ width: '700px', height: '300px', objectFit: 'cover' }} />
                       ))}
                       <div className={style.details}>
-                        {/* <div className={style.details1}>EventName: {decoration.eventName}</div> */}
+                       <div  className={style.details1}>Event:{decoration.eventName}</div>
                         <div className={style.details1}>DecorationPrice: {decoration.price}</div>
-                        {/* <div className={style.details1}>CityName: {decoration.cityName}</div>
-                          <div className={style.details1}>District: {decoration.district}</div> */}
+                       
                       </div>
                       <div className={style.buttoncontainer}>
                         <button className={style.button} onClick={CtaringPage}>Continue</button>
-
-
-
-
-
 
                       </div>
                     </CardContent>
@@ -456,8 +495,11 @@ const Service = () => {
               ))}
             </Grid>
 
-
-
+            <div className={Styles.main12}>
+            <button className={Styles.b1} onClick={handlePreviousPage} disabled={currentPage === 1}>Previous Page</button>
+            <button className={Styles.b1} onClick={handleNextPage} disabled={currentPage === totalPages}>Next Page</button>  
+            </div>
+                     
             <Dialog
               open={open}
               onClose={handleClose}

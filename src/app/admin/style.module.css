@@ -271,5 +271,51 @@
   border-radius: 12px;
 }
 
+.main_container{
+    margin-left: 2rem;
+    margin-right: 3rem;
+    max-width: 80vw;
+}
 
 
+
+.button2{
+    
+    margin-top: 2rem;
+    font-size: large;
+    color: #8b4e2b;
+    border: none;
+    background-color: antiquewhite;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 2px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+    
+  }
+
+  .main1{
+    margin-left:400px;
+    display: flex;
+  }
+
+  .font1{
+    margin-top: 0.5rem;
+    color: #8b4e2b;
+
+  }
+
+
+  .main2{
+    margin-left:550px;
+    display: flex;
+  }
+
+  .font1{
+    margin-top: 0.5rem;
+    color: #8b4e2b;
+
+  }

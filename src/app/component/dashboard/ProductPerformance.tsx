@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Typography,
   Box,
@@ -11,6 +11,7 @@ import {
   TableContainer,
 } from "@mui/material";
 import BaseCard from "../shared/DashboardCard";
+import axios from "axios";
 
 const products = [
   {
@@ -51,9 +52,45 @@ const products = [
   },
 ];
 
+interface BookingModel{
+  bookingId:"",
+  payment:"",
+  eventLocation:"",
+  eventDate:"",
+  isBooked:"",
+}
 const ProductPerfomance = () => {
+  const[loading,setLoading]=useState<boolean>(false)
+  const[booking,setBooking]=useState<BookingModel[]>([])
+  const[error,setError]=useState(null);
+  const fetchBooking = async () => {
+    setLoading(true);
+    setError(null); // Reset any previous error
+    try {
+      const response = await axios.get('https://localhost:44340/api/Booking/AllBooking');
+      setBooking(response.data);
+    } catch (error) {
+      console.error('Error fetching bookings:', error);
+      //setError('Failed to fetch bookings. Please try again later.');
+      alert('Failed to fetch bookings. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchBooking();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
   return (
-    <BaseCard title="Product Perfomance">
+    <BaseCard title="Booked Event">
       <TableContainer
         sx={{
           width: {
@@ -78,66 +115,79 @@ const ProductPerfomance = () => {
               </TableCell>
               <TableCell>
                 <Typography color="textSecondary" variant="h6">
-                  Assigned
+                  EventLocation
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography color="textSecondary" variant="h6">
-                  Name
+                EventDate
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography color="textSecondary" variant="h6">
-                  Priority
+                 
+                  Payment
                 </Typography>
               </TableCell>
               <TableCell align="right">
-                <Typography color="textSecondary" variant="h6">
-                  Budget
-                </Typography>
+                {/* <Typography color="textSecondary" variant="h6">
+                  Status
+                </Typography> */}
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {products.map((product) => (
-              <TableRow key={product.name}>
+            {booking.map((book,index) => (
+              <TableRow key={book.bookingId}>
                 <TableCell>
                   <Typography fontSize="15px" fontWeight={500}>
-                    {product.id}
+                    {book.bookingId}
+                    
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Box display="flex" alignItems="center">
                     <Box>
                       <Typography variant="h6" fontWeight={600}>
-                        {product.name}
+                        {book.eventLocation}
                       </Typography>
                       <Typography color="textSecondary" fontSize="13px">
-                        {product.post}
+                        {book.eventLocation}
                       </Typography>
                     </Box>
                   </Box>
                 </TableCell>
                 <TableCell>
                   <Typography color="textSecondary" variant="h6">
-                    {product.pname}
+                    {book.eventDate}
                   </Typography>
                 </TableCell>
                 <TableCell>
+                  <Typography color="textSecondary" variant="h6">
+                    {book.payment}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  {/* <Typography color="textSecondary" variant="h6">
+                    {book.isBooked}
+                  </Typography> */}
+                </TableCell>
+
+                {/* <TableCell>
                   <Chip
                     sx={{
                       pl: "4px",
                       pr: "4px",
-                      backgroundColor: product.pbg,
+                      backgroundColor: book.pbg,
                       color: "#fff",
                     }}
                     size="small"
-                    label={product.priority}
+                    label={book.payment}
                   ></Chip>
-                </TableCell>
-                <TableCell align="right">
-                  <Typography variant="h6">${product.budget}k</Typography>
-                </TableCell>
+                </TableCell> */}
+                {/* <TableCell align="right">
+                  <Typography variant="h6">${book.payment}k</Typography>
+                </TableCell> */}
               </TableRow>
             ))}
           </TableBody>

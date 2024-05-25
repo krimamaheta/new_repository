@@ -2,31 +2,31 @@ import React from "react";
 import { Card, CardContent, Typography, Button, Grid } from "@mui/material";
 import Image from "next/image";
 
-import user1 from "../../../../public/birthday.jpeg";
-import user2 from "../../../../public/decorantals.jpeg";
-import user3 from "../../../../public/chair.jpeg";
+import user1 from "../../../../public/newDeco.jpeg";
+import user2 from "../../../../public/newDeco2.png";
+import user3 from "../../../../public/newDeco3.jpeg";
 
 const blogs = [
   {
     img: user1,
-    title: "Super awesome, Next 14 is coming soon!",
+    title: "Super awesome, Next new Decoration is coming soon!",
     subtitle:
-      "Some quick example text to build on the card title and make up the bulk of the card's content.",
-    btncolor: "error.main",
-  },
-  {
-    img: user2,
-    title: "Super awesome, Next 14 is coming soon!",
-    subtitle:
-      "Some quick example text to build on the card title and make up the bulk of the card's content.",
-    btncolor: "warning.main",
+      "Innovative and Trendy Decorations Just Around the Corner",
+    // btncolor: "error.main",
   },
   {
     img: user3,
-    title: "Super awesome, Next 14 is coming soon!",
+    title: "Super awesome, Next New Catering  is coming soon!",
     subtitle:
-      "Some quick example text to build on the card title and make up the bulk of the card's content.",
-    btncolor: "primary.main",
+      "Crafting Memorable Meals for Your Special Occasions.",
+    // btncolor: "warning.main",
+  },
+  {
+    img: user2,
+    title: "Super awesome, Next New Decoration is coming soon!",
+    subtitle:
+      "Stay Ahead of the Trend with Our New Decoration Line.",
+    //btncolor: "primary.main",
   },
 ];
 
@@ -71,7 +71,7 @@ const BlogCard: React.FC = () => {
               >
                 {blog.subtitle}
               </Typography>
-              <Button
+              {/* <Button
                 variant="contained"
                 sx={{
                   mt: "15px",
@@ -82,7 +82,7 @@ const BlogCard: React.FC = () => {
                 }}
               >
                 Learn More
-              </Button>
+              </Button> */}
             </CardContent>
           </Card>
         </Grid>

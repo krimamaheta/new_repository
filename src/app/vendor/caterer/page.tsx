@@ -316,6 +316,8 @@ const Caterer = () => {
                     images: [],
                     dishName: ""
                 });
+                handleClose(true);
+                await fetchCaterer();
 
             } else {
                 //500 error
@@ -419,7 +421,7 @@ const Caterer = () => {
 
 
     const handleUpdateOpen = (id: String) => {
-        alert(id);
+       // alert(id);
         const caterer = vendorCaterer.find(e => e.id == id);
         if (caterer) {
             const { dishName, price, images, eventId, vendorId, id } = caterer;
@@ -431,7 +433,6 @@ const Caterer = () => {
             setImages(images || []);
             setVendorId(vendorId);
             setUpdateOpen(true);
-
             handleUpdateClick(id);
         }
 
@@ -450,13 +451,13 @@ const Caterer = () => {
 
     
 
-    const handleUpdateClick = async (id: String) => {
+    const handleUpdateClick = async (Id: String) => {
         try {
 
             // Make the PUT request to update the vendor event
            
             //alert(id)
-
+           
             const cloudinaryUploadPromises = value.images.map(async (image) => {
                 const formData = new FormData();
                 formData.append("file", image);
@@ -498,19 +499,22 @@ const Caterer = () => {
             console.log("response", response);
             // Handle success response
             console.log('Update successful:', response.data);
-            alert("update Value successfully...!")
-            setValue({
-                eventId:"",
-                vendorId:"",
-                dishName:"",
-                price: "",
-                images: []
-            })
+            alert("update Value successfully...!");
+            handleupdateClose();
+            // setValue({
+            //     eventId:"",
+            //     vendorId:"",
+            //     dishName:"",
+            //     price: "",
+            //     images: []
+            // });
+            await fetchCaterer();
+
             //await fetchCaterer(vendorId);
           
         } catch (error) {
             console.log("error");
-            alert("error coming");
+            //alert("error coming");
 
         }
     }

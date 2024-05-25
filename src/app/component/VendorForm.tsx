@@ -31,35 +31,35 @@ import * as signalR from "@microsoft/signalr";
 //user side vendor
 const VendorForm: React.FC = () => {
     
-    const [connection, setConnection] = useState<signalR.HubConnection|null>(null);
-    useEffect(() => {
-        // Create a SignalR connection
-        debugger
-        const newConnection = new signalR.HubConnectionBuilder()
-          .withUrl("https://localhost:44340/notificationhub")
-          .withAutomaticReconnect()
-          .build();
+    // const [connection, setConnection] = useState<signalR.HubConnection|null>(null);
+    // useEffect(() => {
+    //     // Create a SignalR connection
+    //     debugger
+    //     const newConnection = new signalR.HubConnectionBuilder()
+    //       .withUrl("https://localhost:44340/notificationhub")
+    //       .withAutomaticReconnect()
+    //       .build();
     
-        setConnection(newConnection);
-      }, []);
+    //     setConnection(newConnection);
+    //   }, []);
     
-      useEffect(() => {
-        if (connection) {
-          // Start the SignalR connection
-          connection.start().then(() => {
-            console.log("SignalR connected");
-          }).catch(err => console.error(err));
+    //   useEffect(() => {
+    //     if (connection) {
+    //       // Start the SignalR connection
+    //       connection.start().then(() => {
+    //         console.log("SignalR connected");
+    //       }).catch(err => console.error(err));
     
-          // Listen for incoming notifications
-          connection.on("SendMessage", (notification: { message: string }) => {
-            console.log("Notification received:", notification);
-            // Display the notification to the user
-            alert(notification.message);
-            console.log("notification msg",notification.message);
+    //       // Listen for incoming notifications
+    //       connection.on("SendMessage", (notification: { message: string }) => {
+    //         console.log("Notification received:", notification);
+    //         // Display the notification to the user
+    //         alert(notification.message);
+    //         console.log("notification msg",notification.message);
             
-          });
-        }
-      }, [connection]);
+    //       });
+    //     }
+    //   }, [connection]);
 
 
 
@@ -249,6 +249,7 @@ const VendorForm: React.FC = () => {
                 setTypeOfVendor(data.typeOfVendor);
                 console.log("typeofvendor",data.typeOfVendor);
 
+                
                 //await AdminApprove(data.vendorId);
                 //await approveVendor();
                 //await approveVendor(data.vendorId);
@@ -546,11 +547,11 @@ export const GetAllVendor: React.FC = () => {
     const [vendorDecorator, setVendorDecorator] = useState<vendorDecoratorModel[]>([]);
     const handleClickOpen1 = (id: string) => {
         setOpen(true);
-        alert(id);
+       // alert(id);
         const decorator = vendorDecorator.find(e => e.id == id);
         if (decorator) {
             const { price, images, eventId, vendorId, id } = decorator;
-            alert(`price:${price},images:${images} ,eventid:${eventId},vendorId ${vendorId} ,id:${id}`);
+           // alert(`price:${price},images:${images} ,eventid:${eventId},vendorId ${vendorId} ,id:${id}`);
             setId(id);
             setEventId(eventId);
             setPrice(price || '');
@@ -563,6 +564,7 @@ export const GetAllVendor: React.FC = () => {
         }
 
     };
+
     const handleClose = () => {
         setOpen(false);
     };
@@ -573,9 +575,11 @@ export const GetAllVendor: React.FC = () => {
 
     //fetch vendorId
     const User = useSelector((state) => state.auth.user);
+
     const FetchVendorId = async (userId: any) => {
 
         try {
+            
             var res = await axios.get(`https://localhost:44340/Api/Vendor/getByUserId/${userId}`)
             console.log("res..", res);
             console.log("vendorid", res.data.vendorId);
@@ -592,13 +596,13 @@ export const GetAllVendor: React.FC = () => {
     const fetchDecoration = async (vendorId: any) => {
         try {
 
-            // debugger
+             debugger
             setLoading(true)
             const vendorId = await FetchVendorId(User.user.userID);
             // var res = await axios.get("https://localhost:44340/api/VendorEvent/List");
             var res = await axios.get(`https://localhost:44340/api/VendorEvent/GetAllByVendorId?vendorId=${vendorId}`)
             console.log("vendor id", vendorId);
-            console.log("response", res);
+            console.log("fetch decoration", res);
             setvendorDecoration(res.data);
             setVendorDecorator(res.data);
         } catch (error) {
@@ -754,7 +758,7 @@ export const GetAllVendor: React.FC = () => {
                 ...value,
                 images: uploadedImageUrls
             };
-            alert("image upload sucessfully...!");
+            //alert("image upload sucessfully...!");
 
             const url = `https://localhost:44340/api/VendorEvent/${id}`;
             const response = await axios.put(url, {
@@ -771,13 +775,16 @@ export const GetAllVendor: React.FC = () => {
             console.log('Update successful:', response.data);
             alert("update Value successfully...!")
             await ResetValue();
+            await fetchDecoration();
+            
             //await fetchCaterer(vendorId);
 
         } catch (error) {
             console.log("error");
-            alert("error coming");
+           // alert("error coming");
         }
     }
+    
 
     return (
         <div>

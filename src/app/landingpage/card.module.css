@@ -103,3 +103,21 @@
     margin-top: 2rem;
     margin-bottom: 3rem;
   }
+  .b1{
+  background-color: #794b06; /* Green */
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  margin-left: 2rem;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+  }
+
+  .main12{
+    margin-left: 30rem;
+  }

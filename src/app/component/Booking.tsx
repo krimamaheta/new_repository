@@ -101,12 +101,18 @@ const Booking = () => {
   const [events, setEvents] = useState([]);
   const[isBooked,setIsBooked]=useState<boolean>(false);
 
+  const[page,setPage]=useState(1);
+  const[pageSize,setPageSize]=useState(5);
+
   const fetchBooking = async () => {
     //e.preventDefaut();
     setLoading(true);
     try {
-      const response = await axios.get('https://localhost:44340/api/Booking/AllBooking');
+      
+      //const res="https://localhost:44340/api/Booking/AllBooking"
+      const response = await axios.get(`https://localhost:44340/api/Booking/AllBooking?page=${page}&pageSize=${pageSize}`);
       setBookings(response.data);
+
 
     } catch (error) {
       console.error('Error fetching bookings:', error);
@@ -119,12 +125,26 @@ const Booking = () => {
     }
   }
 
+  const handleNextPage = () => {
+    setPage(page + 1); 
+    fetchBooking ();
+    // Increment page number
+  }
+   
+  const handlePreviousPage = () => {
+    if (page > 1) {
+      setPage(page - 1);
+      fetchBooking (); // Decrement page number if greater than 1
+    }
+  }
+
 
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
     
   }
+  
   const handleClose = () => {
     setOpen(false)
   }
@@ -181,7 +201,7 @@ const Booking = () => {
   console.log(User);
   const AddBooking=async(userId:string)=>{
     try{
-      debugger
+     
       const userId = User.user.userID;
       console.log(userId);
       console.log("userid",userId);
@@ -375,13 +395,17 @@ const Booking = () => {
 
         <div className={style.button1} onClick={fetchBooking}><button>BookingList</button></div>
         <div className={style1.eventList}>
+       
           {loading ? (
             <p>Loading....!</p>
           ) : error ? (
             <p>Error... {error}</p>
           ) : bookings.length > 0 ? (
             <>
+           
               <div className={style1.head}>Booking List</div>
+             
+            
               <table className={style1.eventTable}>
                 <thead>
                   <tr>
@@ -412,7 +436,15 @@ const Booking = () => {
                     </tr>
                   ))}
                 </tbody>
+                
+               
               </table>
+              <div className={style.main1}>
+                <div className={style.font1}>{page}</div>
+                <button className={style.button2} onClick={handlePreviousPage} disabled={page === 1}>Previous Page</button>
+                <div className={style.font1}>{pageSize}</div>
+                <button className={style.button2} onClick={handleNextPage}>Next Page</button>
+              </div>
             </>
           ) : (
             <p>No bookings available</p>
@@ -510,7 +542,6 @@ const Booking = () => {
                 value={eventLocation}
                 onChange={(e) => setEventLocation(e.target.value)}
               />
-
 
         </DialogContent>
         <DialogActions>

@@ -54,16 +54,16 @@ export const SideBarData:SideBarItem[]=[
         link: "/admin/booking",
     },
     // {
-    //     title: "Payment",
+    //     title: "Logout",
     //     icon: <PaymentIcon/>,
     //     link: "/payment",
     // },
 
-    {
-        title: "Mail",
-        icon: <EmailIcon/>, 
-        link: "/mail",
-    }
+    // {
+    //     title: "Mail",
+    //     icon: <EmailIcon/>, 
+    //     link: "/mail",
+    // }
 
 
 ]

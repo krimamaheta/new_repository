@@ -5,10 +5,13 @@ import React, { createContext, useContext, useState } from "react";
 interface DecorationPriceContextType {
   decorationPrice: string;
   eventID:string;
+  isApproved: boolean;
   setPrices: (price: string) => void;
   setEventID:(eventID:string)=>void;
-  isApproved: boolean;
-  setApprovalStatus: (status: boolean) => void;
+  handlesetIsApproved: (isApproved: boolean) => void;
+ 
+
+  
 }
 
 const DecorationPriceContext = createContext<DecorationPriceContextType | null>(
@@ -26,20 +29,23 @@ export const useDecorationPrice = () => {
 };
 
 export const DecorationPriceProvider: React.FC = ({ children }) => {
+ 
   const [decorationPrice, setDecorationPrice] = useState("");
   const [eventID,setEventID]=useState("");
-  const [isApproved, setIsApproved] = useState(false);
+  const [isApproved, setIsApproved] = useState<boolean>(false);
 
   const setPrices = (price: string) => {
+    console.log("setprice price",price)
     setDecorationPrice(price);
   };
+  const handlesetIsApproved = (isApproved: boolean) => {
+    setIsApproved(isApproved);
+  };
 
-  const setApprovalStatus=(status:boolean)=>{
-    setIsApproved(status);
-  }
+
 
   return (
-    <DecorationPriceContext.Provider value={{ decorationPrice, setPrices ,eventID,setEventID,isApproved,setApprovalStatus}}>
+    <DecorationPriceContext.Provider value={{ decorationPrice, setPrices ,eventID,setEventID,isApproved,handlesetIsApproved}}>
       {children}
     </DecorationPriceContext.Provider>
   );

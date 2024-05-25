@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import styled from "styled-components";
 import { GlobalStyle } from "@/Styles/globalStyles";
@@ -12,85 +12,121 @@ import { useRouter } from "next/navigation";
 import Link from "next/link"
 import { login } from "@/Redux/authslice/authslice";
 import setToken from "@/store/token";
-import {setToken as authTokenSetToken} from "@/lib/AuthToken";
+import { setToken as authTokenSetToken } from "@/lib/AuthToken";
+import axios from "axios";
+import { RouterOutlined } from "@mui/icons-material";
 
 
-  const LogIn:React.FC=()=>{
 
-    const router = useRouter();
-    const dispatch = useDispatch();
+const LogIn: React.FC = () => {
 
-    const [formData, setFormData] = useState({
-  email: "",
-  password: "",
-});
 
-const [showForgotPassWord, setShowForgotPassword] = useState(false);
+  const router = useRouter();
+  const dispatch = useDispatch();
 
-const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const { name, value } = e.target;
-  console.log(e.target);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
-  setFormData((pre) => ({ ...pre, [name]: value }));
-  console.log(formData);
-};
+  const [showForgotPassWord, setShowForgotPassword] = useState(false);
+  const [approve, setApprove] = useState(null)
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    console.log(e.target);
 
-const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  try {
-    const res = await fetch("https://localhost:44340/Api/Auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        //  Authorization: `Bearer ${jwt}`,
-      },
-      body: JSON.stringify(formData),
-    });
-    const data = await res.json();
-    console.log(res);
-    
-    if (!res.ok) {
-      alert(data.message);
-    }
-    if (res.ok) {
-      console.log("res : ", res);
-      console.log("login Successfully");
-      const current_user = data.user;
-      console.log(current_user);
-      await alert("login successfully");
+    setFormData((pre) => ({ ...pre, [name]: value }));
+    console.log(formData);
+  };
 
-     
-      console.log("data.token",data.token);
-      await authTokenSetToken(data.token); 
-      
-    
-      dispatch(login({ user: current_user }));
-      
+  const User = useSelector((state) => state.auth.user);
+  console.log(User);
 
-      if(current_user.roles=="User"){
-        window.location.href = "/home";
-      }else if(current_user.roles=="Admin"){
-        window.location.href="/admin"
-      }else if(current_user.roles=="Decorator"||current_user.roles=="Caterer"){
-        window.location.href="/vendor"
-      }else{
-        window.location.href="/landingpage"
+  const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("https://localhost:44340/Api/Auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          //  Authorization: `Bearer ${jwt}`,
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      console.log(res);
+
+      if (!res.ok) {
+        alert(data.message);
       }
+      if (res.ok) {
+        console.log("res : ", res);
+        console.log("login Successfully");
+        const current_user = data.user;
+        console.log(current_user);
+        await alert("login successfully");
+
+
+        console.log("data.token", data.token);
+        await authTokenSetToken(data.token);
+
+        dispatch(login({ user: current_user }));
 
 
 
-
+        if (current_user.roles === "Decorator" || current_user.roles === "Caterer") {
+          const approving = await FetchVendorId(current_user.userID);
+          console.log("approving",approving);
+          
+          if (!approving.isApprove) {
+            
+            window.location.href = "/vendor";
+            return;
+          } else {
+            if (current_user.roles === "Caterer") {
+              window.location.href = "/vendor/caterer";
+            } else {
+              window.location.href = "/vendor/allvendor";
+            }
+          }
+        } else if (current_user.roles === "User") {
+          window.location.href = "/home";
+        } else if (current_user.roles === "Admin") {
+          window.location.href = "/admin/dashboard";
+        } else {
+          window.location.href = "/landingpage";
+        }
+      }
+    } catch (error) {
+      console.error("Error logging in:", error);
     }
-  } catch (error) {
-    console.error("Error logging in:", error);
-  }
-};
+  };
 
 
-  
-    return(
-        <>
-        <GlobalStyle />
+  const FetchVendorId = async (userId: string) => {
+    try {
+      
+      const res = await axios.get(`https://localhost:44340/Api/Vendor/getByUserId/${userId}`);
+      console.log("res", res);
+
+      console.log("response", res.data);
+
+      console.log("Response data:", res.data.isApprove);
+      alert(res.data.isApprove);
+      const a = res.data.isApprove
+      setApprove(approve);
+      //alert(a);
+      return res.data;
+
+    } catch (error) {
+      console.error("Error fetching vendor data:", error);
+      alert("Failed to fetch vendor data");
+    }
+  };
+
+  return (
+    <>
+      <GlobalStyle />
       <Wrapper>
         <div className="container">
           <div className="modal">
@@ -98,11 +134,11 @@ const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
               <div className="modal-left">
                 <h1 className="modal-title">Log In </h1>
                 <p className="modal-desc">
-                Welcome! 
+                  Welcome!
                 </p>
-                
+
                 <form onSubmit={HandleSubmit}>
-                 
+
                   <div className="input-block">
                     <label htmlFor="email" className="input-label">
                       Email
@@ -115,11 +151,11 @@ const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                       placeholder="Email"
                       value={formData.email}
                       onChange={handleChange}
-                      
-                    />   
+
+                    />
                   </div>
 
-                  
+
                   <div className="input-block">
                     <label htmlFor="password" className="input-label">
                       Password
@@ -132,27 +168,27 @@ const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                       placeholder="Password"
                       value={formData.password}
                       onChange={handleChange}
-                      
+
                     />
                   </div>
                   <div className="modal-buttons">
-                   
+
                     <p className="sign-up">
-                  Already have an account? <Link href="/signup">Sign Up now</Link>
-                </p>
-                <p className="sign-up">
-                  Are You Forgot Password? <Link href="/forgotpassword">Forgot Password</Link>
-                </p>
-                
+                      Already have an account? <Link href="/signup">Sign Up now</Link>
+                    </p>
+                    <p className="sign-up">
+                      Are You Forgot Password? <Link href="/forgotpassword">Forgot Password</Link>
+                    </p>
+
                     <button className="input-button" type="submit">
                       LogIn
                     </button>
                   </div>
-                 
+
                 </form>
               </div>
               <div className="modal-right">
-                <Image src={homeImage} alt="home image"/>
+                <Image src={homeImage} alt="home image" />
               </div>
             </div>
           </div>
@@ -160,7 +196,7 @@ const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       </Wrapper>
     </>
 
-    )
+  )
 }
 
 export default LogIn;
@@ -331,3 +367,7 @@ const Wrapper = styled.section`
     }
   }
 `;
+function async(userID: any) {
+  throw new Error("Function not implemented.");
+}
+

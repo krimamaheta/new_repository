@@ -224,12 +224,15 @@ const Vendor = () => {
         handleClose();
     };
 
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(5);
 
     const AllVendor = async () => {
        // e.preventDefault();
         setLoading(true)
         try {
-            const res = await axios.get("https://localhost:44340/Api/vendor/All");
+           // const res1="https://localhost:44340/Api/vendor/All"
+            const res = await axios.get(`https://localhost:44340/Api/vendor/All?page=${page}&pageSize=${pageSize}`);
             setvendors(res.data);
         } catch {
             setError("fail to vendor vendorlist")
@@ -238,8 +241,27 @@ const Vendor = () => {
             setLoading(false);
         }
     }
+ 
+    const handlePreviousPage = () => {
+        if (page > 1) {
+            setPage(page - 1);
+            AllVendor();
+        }
+    };
 
+    const handleNextPage = () => {
+        const nextPage = page + 1;
+        if (nextPage !== page) {
+            setPage(nextPage);
+            AllVendor();
+        }
+        // setPage(page + 1);
+        // AllVendor();
+    };
 
+    const handleFetchVendor=async()=>{
+        await AllVendor();
+    }
     const FetchEventList = async (e) => {
         e.preventDefault();
         await AllVendor();
@@ -268,7 +290,7 @@ const Vendor = () => {
                 alert("Failed to delete vendor");
             }
     }
-    const { setApprovalStatus } = useDecorationPrice();
+    //const { setApprovalStatus } = useDecorationPrice();
 
     const FinalApprove = async (Id: string) => {
 
@@ -281,16 +303,17 @@ const Vendor = () => {
 
                 if (res.status === 200) {
                     alert("Approval Confirmation Done");
-                    setApprovalStatus(true);
+                   // setApprovalStatus(true);
                 } else {
                     alert("fail to approve from Admin side");
-                    setApprovalStatus(false);
+                    //setApprovalStatus(false);
                 }
 
             }
             catch (error) {
                 alert("Failed to Approve vendor");
-                setApprovalStatus(false);
+               //
+               // setApprovalStatus(false);
             }
     }
 
@@ -398,11 +421,13 @@ const Vendor = () => {
                         </DialogActions>
                     </Dialog>
                 </div>
-
+                  
                 <div className={style.button1} onClick={AllVendor}><button>VendorList</button></div>
                 <div className={style1.eventList}>
+                
                     {loading ? (<p>Loading....!</p>) : error ? (<p>Error...</p>) : vendors.length > 0 ? (
                         <>
+                        
                             <div className={style1.head}>VendorList</div>
                             <table className={style1.eventTable}>
                                 <thead>
@@ -452,6 +477,14 @@ const Vendor = () => {
                                     ))}
                                 </tbody>
                             </table>
+                            <div className={style.main2}>
+                            <div className={style.font1}>{page}</div>
+                            <button className={style.button2} onClick={handlePreviousPage} disabled={page === 1}>Previous Page</button>
+                            <div className={style.font1}>{pageSize}</div>
+                            <button className={style.button2} onClick={handleNextPage}>Next Page</button>
+
+                            </div>
+                           
                         </>
                     ) : (<p>No vendor Available</p>)}
 

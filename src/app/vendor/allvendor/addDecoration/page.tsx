@@ -7,6 +7,8 @@ import axios from "axios";
 import { debug } from "console";
 import { useSelector } from "react-redux";
 import { user } from "@/Redux/authslice/authslice";
+import { useRouter } from "next/navigation";
+import { useDecorationPrice } from "@/context/DecorationPrice";
 
 //3
 interface Event {
@@ -22,6 +24,24 @@ interface FormValue {
 }
 
 const DecorationForm: React.FC = () => {
+
+  const User=useSelector((state)=>state.auth.user);
+  const userId = User.user.userID;
+  console.log(userId);
+  const role=User.user.roles
+  console.log("role",role);
+  const route=useRouter();
+  
+ // const { setApprovalStatus } = useDecorationPrice();
+  
+// useEffect(()=>{
+//  //console.log(isApprove)
+//   if(!isApprove)
+//   {
+//     redirect to form
+//     route.push("/vendor")
+//   }
+// },[])
 
   const [value, setValue] = useState<FormValue>({
     eventId: "",
@@ -50,8 +70,10 @@ const DecorationForm: React.FC = () => {
   }, []);
 
 
+ 
+
   //fetch vendor by userId
-  const User = useSelector((state) => state.auth.user);
+ // const User = useSelector((state) => state.auth.user);
 
   const FetchVendor = async (userId: any) => {
     try {
