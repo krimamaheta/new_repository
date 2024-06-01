@@ -14,25 +14,18 @@ import { jsx } from "@emotion/react";
 import { LandingPage as ComponentLandingPage, LandingPage } from "./component/LandingPage";
 import { Provider } from "react-redux";
 import NavBar from "./navigation";
-//import Footer from "./componets/footer";
 import store from "@/Redux/store";
 import Footer from "./component/footer"
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-
 import { Grid, Box } from '@mui/material';
-import PageContainer from '@/app/component/dashboard/YearlyBreakup';
-// components
-import SalesOverview from '@/app/component/dashboard/SalesOverview';
-import DailyActivity from '@/app/component/dashboard/DailyActivity';
 import ProductPerformance from '@/app/component/dashboard/ProductPerformance';
 import BlogCard from '@/app/component/dashboard/Blog';
 //import store from "@/Redux/store";
 
 
-//import Navbar from "./navigation"
+
 const roboto = Roboto({
   weight: '400',
   subsets: ['latin'],
@@ -52,7 +45,7 @@ interface HomeProps{
         <LandingPage />
         <Footer />
       </Provider>
-      {/* <ComponentHome /> */}
+   
     </>
     
       </>

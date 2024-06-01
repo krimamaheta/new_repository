@@ -3,6 +3,7 @@ import axios from "axios";
 import { eventNames } from "process";
 import React, { useEffect, useState } from "react";
 import style from "./../changepassword/style.module.css"
+import style2 from "./../admin/style.module.css"
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -17,11 +18,11 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 interface Event {
-  eventId?: string;
+  eventId?: string|any;
   eventName: string;
   description: string;
 }
-//admin add event 
+//admin side add event 
 export const Event: React.FC = () => {
   const [open, setOpen] = React.useState(false);
   const [EventName, setEventName] = useState("");
@@ -49,7 +50,7 @@ export const Event: React.FC = () => {
 
 
   //add event
-  const onClick = async (e) => {
+  const onClick = async (e:any) => {
     e.preventDefault();
     try {
 
@@ -64,19 +65,11 @@ export const Event: React.FC = () => {
       });
 
 
-      // Render the success alert using ReactDOM or any other method
-      // For example, if you're using ReactDOM, you can render it to a specific element
-
-      // if(response.status===200){
-
-      //   console.log("---------------------",response.data.message)
-      //   alert(response.data.message);
-      // }
-
+     
       console.log("Event Added Successfully:", response.data);
       alert("Event Added Successfully");
       await FetchEventList();
-      //Reset form fields after successful submission
+      
       setEventName("");
       setDescription("");
       handleClose();
@@ -87,14 +80,17 @@ export const Event: React.FC = () => {
     }
   };
 
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+
   const FetchEventList = async () => {
-    // e.preventDefault();
+     
     setLoading(true)
 
     try {
-      console.log('------ get all');
 
-      const response = await axios.get("https://localhost:44340/Api/Event/AllEvent",);
+      //const res="https://localhost:44340/Api/Event/AllEvent"
+      const response = await axios.get(`https://localhost:44340/api/Event/AllEvent?page=${page}&pageSize=${pageSize}`,);
       setEvent(response.data);
 
     } catch (error) {
@@ -106,7 +102,32 @@ export const Event: React.FC = () => {
 
   }
 
-  const EventList = async (e) => {
+  useEffect(() => {
+
+    FetchEventList();
+
+  }, [page,pageSize])
+
+
+  
+  const handlePreviousPage = () => {
+    if (page > 1) {
+        setPage(page - 1);
+        FetchEventList();
+    }
+};
+
+const handleNextPage = () => {
+    const nextPage = page + 1;
+    if (nextPage !== page) {
+        setPage(nextPage);
+        FetchEventList();
+    }
+   
+};
+
+
+  const EventList = async (e:any) => {
     e.preventDefault();
     await FetchEventList();
   }
@@ -129,8 +150,6 @@ export const Event: React.FC = () => {
     try {
       const res = await axios.put(`https://localhost:44340/Api/Event/update/${Id}`, updatedata);
       console.log('----------------update');
-
-      // await EventList();
       return res.data;
     } catch (error) {
       console.error("Error updating event:", error);
@@ -140,7 +159,6 @@ export const Event: React.FC = () => {
 
   const handleUpdateOpen = async (event: Event) => {
     try {
-      debugger
       const eventData = await fecthEventDetails(event.eventId);
       setUpdateEvent(eventData);
       setUpdatedEventName(eventData.eventName);
@@ -148,7 +166,7 @@ export const Event: React.FC = () => {
       setUpdateOpen(true);
     } catch (error) {
       console.error("Error fetching event details:", error);
-      // Handle error (e.g., show error message)
+      
     }
   };
 
@@ -166,7 +184,7 @@ export const Event: React.FC = () => {
         alert("Event Updated Successfully");
         handleUpdateClose();
         await FetchEventList();
-        // EventList();
+        
       } else {
         console.error("Event Id is missing or invalid.");
         alert("Failed to update event: Invalid event data");
@@ -180,11 +198,7 @@ export const Event: React.FC = () => {
     setUpdateOpen(false);
   };
 
-  useEffect(() => {
 
-    FetchEventList();
-
-  }, [])
 
   //delete
 
@@ -224,31 +238,18 @@ export const Event: React.FC = () => {
     }
   };
 
-  // const handleUpdateClick = async () => {
-  //   try {
-  //       const response = await axios.put(
-  //           `https://localhost:44340/Api/Event/UpdateEvent/${updateEvent?.id}`,
-  //           {
-  //               EventName: updatedEventName,
-  //               Description: updatedDescription,
-  //           }
-  //       );
-  //       console.log("Event Updated Successfully:", response.data);
-  //       alert("Event Updated Successfully");
-  //       EventList();
-  //       handleUpdateClose(); // Close the update dialog after successful update
-  //   } catch (error) {
-  //       console.error("Error while updating event:", error);
-  //       alert("Failed to update event");
-  //   }
-  // };
+  
 
 
   return (
     <div>
+
+      <div style={{marginLeft:'0rem',marginTop:'2rem'}}>
       <div className={style.button1}>
         <button onClick={handleClickOpen}>+AddEvent</button>
+      </div>
 
+      
         <Dialog
           open={open}
           onClose={handleClose}
@@ -290,12 +291,10 @@ export const Event: React.FC = () => {
             <Button type="submit" onClick={onClick}>Add</Button>
           </DialogActions>
         </Dialog>
-      </div>
+     </div>
 
 
-      <div className={style.button1}>
-        <button onClick={EventList}>EventList</button>
-      </div>
+     
       <div className={style1.eventList}>
         {loading ? (
           <p>Loading...</p>
@@ -307,7 +306,7 @@ export const Event: React.FC = () => {
             <table className={style1.eventTable}>
               <thead>
                 <tr>
-                  <th>id</th>
+                  <th>No.</th>
                   <th>Event Name</th>
                   <th>Description</th>
                   <th>Update</th>
@@ -317,7 +316,8 @@ export const Event: React.FC = () => {
               <tbody>
                 {events.map((event, index) => (
                   <tr key={index}>
-                    <td>{event.eventId}</td>
+                    <td>{index+1}</td>
+                   
                     <td>{event.eventName}</td>
                     <td>{event.description}</td>
                     <td><button onClick={() => handleUpdateOpen(event)}><ModeEditOutlineOutlinedIcon /></button></td>
@@ -326,17 +326,18 @@ export const Event: React.FC = () => {
                 ))}
               </tbody>
             </table>
+            <div style={{marginBlock:'3rem',display:'flex',marginTop:'1rem',marginLeft:'12rem'}}>
+                            <div className={style2.font1}>{page}</div>
+                            <button className={style2.button2} onClick={handlePreviousPage} disabled={page === 1}>Previous Page</button>
+                            <div className={style2.font1}>{pageSize}</div>
+                            <button className={style2.button2} onClick={handleNextPage}>Next Page</button>
+
+                            </div>
           </>
         ) : (
           <p>No events available</p>
         )}
       </div>
-
-
-
-
-        
-
       {updateOpen && updateEvent && (
         <Dialog open={updateOpen} onClose={handleUpdateClose}>
           <DialogTitle>Update Event</DialogTitle>

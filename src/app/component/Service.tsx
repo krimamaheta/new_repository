@@ -45,12 +45,13 @@ interface Caterer {
   images: string[];
   dishName: string;
   price: string;
+  eventId:string;
 }
 
 const Service = () => {
   const route = useRouter();
-  const { setPrices } = useDecorationPrice();
-  const { setEventID } = useDecorationPrice();
+  const { setPrices,updateEventID } = useDecorationPrice();
+  //const { setEventID } = useDecorationPrice();
 
   const imageFilenames = [{ imageurl: 'https://images.pexels.com/photos/14608917/pexels-photo-14608917.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', price: 15000 },
   { imageurl: 'https://media.istockphoto.com/id/471906412/photo/beautiful-table-setting-for-an-wedding-reception-or-an-event.jpg?s=2048x2048&w=is&k=20&c=_eAWgEvA_hOaeJ4kQLJWR7rwFcmIm6h9_Z83B59t_fk=', price: 16000 },
@@ -82,35 +83,39 @@ const Service = () => {
     { imageurl: 'https://as1.ftcdn.net/v2/jpg/02/46/22/48/1000_F_246224832_aSoSICzJB4G49WcNz0BdVwTxxCNK2tTS.jpg', price: '20000' }
   ]
 
-  const [value, setValue] = useState({
+  const [value, setValue] = useState<({
+    district:string,
+    city:string,
+    price:string,
+    eventName:string,
+    eventId:string
+  })>({
     district: "",
     city: "",
     price: "",
     eventName: "",
+    eventId:''
+    
   })
 
 
 
   const [events, setEvents] = useState([]);
-
   const [loading, setLoading] = useState(false);
-
   const [price, setPrice] = useState([]);
   const [city, setCity] = useState([]);
   const [selectedPrice, setSelectedPrice] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
   const [district, setDistrict] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState("");
-
   const [selectedEventId, setSelectedEventId] = useState("");
   const [decorations, setDecorations] = useState<Decoration[]>([]);
   const [caterers, setCaterer] = useState<Caterer[]>([]);
   const [showCaterers, setShowCaterers] = useState(false);
   const [decorationPrice,setDecorationPrice] = useState("")
-
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(3);
-
+  
 
   useEffect(() => {
     fetchDecorations();
@@ -182,7 +187,7 @@ const Service = () => {
   const fetchEvent = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("https://localhost:44340/Api/Event/AllEvent");
+      const response = await axios.get("https://localhost:44340/Api/Event/AllEvents");
       setEvents(response.data);
       console.log("response", response);
       console.log("responseprice", response.data.price);
@@ -198,28 +203,30 @@ const Service = () => {
   }, [])
 
 
-  // const selectchange = (e: { target: { value: any; }; }) => {
-  //    const { value } = e.target;
-  //    setValue((prevValue) => ({ ...prevValue, eventId: value }));
+  const selectchange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+     const { value } = e.target;
+     setValue((prevValue) => ({ ...prevValue, eventId: value }));
+     setSelectedEventId(value);
+     console.log("eventid",selectedEventId);
 
-  // };
-
-  const selectchange = (e: { target: { value: any; }; }) => {
-    const { value } = e.target;
-    setSelectedEventId(value);
+    // const { value } = e.target;
+    // const selectedEventId = events.find(event => event.eventId === value)?.eventId || '';
+    // setValue(prevValue => ({ ...prevValue, eventId: value }));
+    // setSelectedEventId(selectedEventId);
+    // console.log("eventid", selectedEventId);
+     
   };
 
-  const User = useSelector((state) => state.auth.user);
+ 
+  const User = useSelector((state:any) => state.auth.user);
   console.log("esr", User);
 
-  const userId = User.user.userID;
+  const userId = User?.user?.userID;
 
 
   const fetchDecorations = async () => {
     try {
-      //const=`https://localhost:44340/api/VendorEvent/GetDecoration`
-      //const =`https://localhost:44340/api/VendorEvent/GetDecoration?page=${currentPage}&pageSize=6`
-    
+      
       setLoading(true)
       const res = await axios.post(`https://localhost:44340/api/VendorEvent/GetDecoration?page=${currentPage}&pageSize=6`, {
         district: selectedDistrict,
@@ -227,31 +234,20 @@ const Service = () => {
         price: selectedPrice,
         eventId: selectedEventId
       })
-
-      console.log("user iD", userId);
-      console.log("response",res);
-      
-      //setDecorations(res.data);
       setDecorations(res.data.decorations);
-      //console.log("decorationprice", res.data[0].price);
-      //setDecorationPrice(res.data[0].price)
       setDecorationPrice(res.data.decorations[0].price)
-      console.log("gsadbasbvresponse",res);
-      //const prices = res.data[0].price;
-      console.log("decorations",res.data.decorations);
-      
       const prices=res.data.decorations[0].price;
-      console.log("prices",prices);
-      
       setPrices(prices)
-
-      //console.log("prices", price);
-
-      //console.log("eventid", res.data[0].eventId);
-      setEventID(res.data[0].eventID)
+     
+      if (res.data.decorations.length > 0) {
+       
+        const firstDecoration = res.data.decorations[0];
+        const eve1=firstDecoration.eventId
+        updateEventID(firstDecoration.eventId);
+        setDecorationPrice(firstDecoration.price);
+        setPrices(firstDecoration.price);
+      }
       setTotalPages(res.data.totalPages);
-
-
       setLoading(false)
     } catch (error) {
       console.error("Error fetching decorations:", error);
@@ -288,35 +284,18 @@ const Service = () => {
   };
 
 
-  const AllCaterer = async () => {
-    try {
-      setLoading(true);
-      const res = await axios.get("https://localhost:44340/api/VendorEvent/AllCaterer");
-      console.log("response all caterer", res);
-      setCaterer(res.data);
-      setLoading(false)
+  
 
-    } catch (error) {
-      console.log("fail to fetch caterer");
-      alert("fail to fetch caterer");
-      setLoading(false)
-    }
-  }
-  useEffect(() => {
-    AllCaterer();
-  }, [])
   const handleContinue = () => {
     setShowCaterers(true);
   
   };
 
-
-  const CtaringPage = (e) => {
-    e.preventDefault();
-    route.push("services/catering")
+ const routes=useRouter()
+  const CtaringPage = (e:any) => {
+     e.preventDefault();
+     route.push("services/catering")
   }
-
-
 
   return (
     <div>
@@ -415,7 +394,7 @@ const Service = () => {
 
             <div className={style1.input1}>
               <div className={style1.heading2}>
-                <label htmlFor="district">Select District:</label></div>
+                <label htmlFor="district">Select State:</label></div>
               <select className={style1.s1} name="district" id="District" value={selectedDistrict} onChange={handleDistrictChange}>
                 {loading ? (<option>Loading...</option>) : (
                   district.map((districtone, index) => (
@@ -458,7 +437,7 @@ const Service = () => {
 
               <select className={style1.s1} name="events" id="events" value={value.eventId} onChange={selectchange}>
                 {loading ? (<option value="">Loading.....</option>) :
-                  (events.map((event) => (
+                  (events.map((event:any) => (
                     <option key={event.eventId} value={event.eventId}>
                       {event.eventName}
                     </option>
@@ -470,18 +449,20 @@ const Service = () => {
              
             </div>
 
+            
             <Grid container spacing={{ xs: 2, md: 4 }} columns={{ xs: 4, sm: 8, md: 12 }} style={{ marginTop: '2rem', marginBottom: '2rem' }}>
               {decorations && decorations.map((decoration: Decoration, index: number) => (
-                <Grid item xs={2} sm={4} md={4} key={index} style={{ padding: '2rem 5rem', margin: '2rem 0' }}>
-                  <Card>
-                    <CardContent>
+                <Grid item xs={2} sm={4} md={4} key={index} style={{ padding: '2rem 5rem' ,margin: '2rem 0' }}>
+                  <Card style={{background:'white',width:'24rem'}}>
+                    <CardContent >
                       {decoration.imageUrls && decoration.imageUrls.map((imageUrl: string, imageIndex: number) => (
-                        <img key={imageIndex} src={imageUrl} alt="vendorDecorationImage" style={{ width: '700px', height: '300px', objectFit: 'cover' }} />
+                        <img key={imageIndex} src={imageUrl} alt="vendorDecorationImage" style={{  width: '700px', height: '300px', objectFit: 'cover' }} />
                       ))}
                       <div className={style.details}>
-                       <div  className={style.details1}>Event:{decoration.eventName}</div>
-                        <div className={style.details1}>DecorationPrice: {decoration.price}</div>
+                       <div  className={style.details1}>EventName:{decoration.eventName}</div>
+                        <div className={style.details1}>Rs.{decoration.price}/-</div>
                        
+          
                       </div>
                       <div className={style.buttoncontainer}>
                         <button className={style.button} onClick={CtaringPage}>Continue</button>
@@ -498,28 +479,9 @@ const Service = () => {
             <div className={Styles.main12}>
             <button className={Styles.b1} onClick={handlePreviousPage} disabled={currentPage === 1}>Previous Page</button>
             <button className={Styles.b1} onClick={handleNextPage} disabled={currentPage === totalPages}>Next Page</button>  
-            </div>
-                     
-            <Dialog
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogTitle id="alert-dialog-title">{"Sucesss....!"}</DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                  Your Event book SuccessFully......!
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                {/* <Button onClick={handleClose}>Disagree</Button> */}
-                <Button onClick={handleClose} autoFocus>
-                  Agree
-                </Button>
-              </DialogActions>
-            </Dialog>
-
+            </div>    
+            
+          
 
 
 
@@ -614,7 +576,7 @@ const Service = () => {
               laughter, each event a testament to the power of love,
               unity, and shared moments. Across weddings, ring ceremonies,
               yagnopavit, anniversaries, and birthdays, our commitment to crafting memorable experiences remains unwavering,
-              ensuring that every occasion is a reflection of our dedication to excellence and the magic of life's special moments."
+              ensuring that every occasion is a reflection of our dedication to excellence and the magic  special moments.
             </p>
           </div>
 
@@ -629,7 +591,7 @@ const Service = () => {
             <div className="xl:w-1/4 md:w-1/2 p-4">
               <div className="bg-gray-100 p-6 rounded-lg">
                 <div className="h-40 rounded w-full object-cover object-center mb-6">
-                  <Image src={Profile} height={600} width={250} />
+                  <Image alt="profile" src={Profile} height={600} width={250} />
                 </div>
 
                 <h2 className="text-lg text-gray-900 font-medium title-font mb-4">Wedding Ceremony</h2>
@@ -640,7 +602,7 @@ const Service = () => {
             <div className="xl:w-1/4 md:w-1/2 p-4">
               <div className="bg-gray-100 p-6 rounded-lg">
                 <div className="h-40 rounded w-full object-cover object-center mb-6">
-                  <Image src={birthday1} height={100} width={300} />
+                  <Image alt="birthdayimage" src={birthday1} height={100} width={300} />
                 </div>
 
                 <h2 className="text-lg text-gray-900 font-medium title-font mb-4">Birthday Celebration</h2>
@@ -651,7 +613,7 @@ const Service = () => {
             <div className="xl:w-1/4 md:w-1/2 p-4">
               <div className="bg-gray-100 p-6 rounded-lg">
                 <div className="h-40 rounded w-full object-cover object-center mb-6">
-                  <Image src={deco2} height={100} width={300} />
+                  <Image alt="decorationimage" src={deco2} height={100} width={300} />
                 </div>
 
                 <h2 className="text-lg text-gray-900 font-medium title-font mb-4">Decorantals</h2>
@@ -662,7 +624,7 @@ const Service = () => {
             <div className="xl:w-1/4 md:w-1/2 p-4">
               <div className="bg-gray-100 p-6 rounded-lg">
                 <div className="h-40 rounded w-full object-cover object-center mb-6">
-                  <Image src={ring2} height={100} width={300} />
+                  <Image alt="ringimage" src={ring2} height={100} width={300} />
                 </div>
 
                 <h2 className="text-lg text-gray-900 font-medium title-font mb-4">Ring Ceremony</h2>

@@ -1,4 +1,4 @@
-"use client"
+
 import Image from "next/image"
 import Styles from "./../../app/landingpage/card.module.css";
 import Ring from "./../../../public/ring.png"
@@ -40,11 +40,12 @@ export const LandingPage = (): JSX.Element => {
 
             </p>
             <Stack direction="row" spacing={2} className="brown-text">
-              {/* <Button variant="contained" href="#contained-buttons" className="brown-button">
-           Sign Up
-        </Button> */}
+              <div style={{marginTop:'1rem',backgroundColor:'rgb(238, 228, 216)',borderRadius:'14px',fontSize:'17px',padding:'1rem'}}>
               <button>
-                <a href="/signup" className={Styles.button}>SignUp</a></button>
+                <a href="/signup" className={Styles.button}>SignUp</a>
+              </button>
+              </div>
+             
             </Stack>
           </div>
         </div>
@@ -53,7 +54,7 @@ export const LandingPage = (): JSX.Element => {
       <div className="container px-5 py-24 mx-auto">
         <div className="text-center mb-20">
           <h1 className="sm:text-3xl text-2xl font-medium title-font text-gray-900 mb-4">Features</h1>
-          {/* <p className="text-base leading-relaxed xl:w-2/4 lg:w-3/4 mx-auto text-gray-500s">Blue bottle crucifix vinyl post-ironic four dollar toast vegan taxidermy. Gastropub indxgo juice poutine, ramps microdosing banh mi pug.</p> */}
+          
           <div className="flex mt-6 justify-center">
 
             <div className="w-16 h-1 rounded-full bg-yellow-700 inline-flex"></div>
@@ -110,7 +111,7 @@ export const LandingPage = (): JSX.Element => {
 
           </div>
         </div>
-        {/* <button className="flex mx-auto mt-16 text-white bg-pink-500 border-0 py-2 px-8 focus:outline-none hover:bg-pink-600 rounded text-lg">Button</button> */}
+        
       </div>
 
       <div className={Styles.s_main}>
@@ -261,7 +262,7 @@ export const LandingPage = (): JSX.Element => {
           laughter, each event a testament to the power of love,
           unity, and shared moments. Across weddings, ring ceremonies,
           yagnopavit, anniversaries, and birthdays, our commitment to crafting memorable experiences remains unwavering,
-          ensuring that every occasion is a reflection of our dedication to excellence and the magic of life's special moments."
+          ensuring that every occasion is a reflection of our dedication to excellence and the magic of  special moments
         </p>
       </div>
 

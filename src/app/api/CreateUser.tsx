@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import Route from "next/navigation"
-//import { useRouter } from "next/navigation";
+
 const CreateUserPage: React.FC = async (value) => {
 
-   // const route=useRouter();
-    // const [registerError, setRegisterError] = useState("");
+  
    try{
    
     const url = "https://localhost:44340/Api/Auth/register";
@@ -15,7 +14,7 @@ const CreateUserPage: React.FC = async (value) => {
             "Content-Type": "application/json",
             // "Access-Control-Allow-Origin": "*",
         },
-        body: JSON.stringify(value) // Wrap JSON.stringify(value) with parentheses
+        body: JSON.stringify(value) 
     });
     if(res.ok){
         const data = await res.json();

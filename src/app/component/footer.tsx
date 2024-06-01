@@ -23,12 +23,6 @@ const Footer=()=>{
             <a className="text-gray-600 hover:text-gray-800">Decoration</a>
           </li>
           <li>
-            <a className="text-gray-600 hover:text-gray-800">Ligting</a>
-          </li>
-          <li>
-            <a className="text-gray-600 hover:text-gray-800">Flower</a>
-          </li>
-          <li>
             <a className="text-gray-600 hover:text-gray-800">Catering</a>
           </li>
         </nav>
@@ -47,6 +41,9 @@ const Footer=()=>{
           </li>
           <li>
             <a className="text-gray-600 hover:text-gray-800">Yagnopavit ceremony</a>
+          </li>
+          <li>
+            <a className="text-gray-600 hover:text-gray-800">Annyversary Celebration</a>
           </li>
         </nav>
       </div>
@@ -70,8 +67,8 @@ const Footer=()=>{
   </div>
   <div className="bg-gray-100">
     <div className="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
-      <p className="text-gray-500 text-sm text-center sm:text-left">Copyright © 2024 EventMaker —
-        <a href="https://twitter.com/knyttneve" rel="noopener noreferrer" className="text-gray-600 ml-1" target="_blank">@knyttneve</a>
+      <p className="text-gray-500 text-sm text-center sm:text-left">Copyright © 2024 EventMaker 
+       
       </p>
       <span className="inline-flex sm:ml-auto sm:mt-0 mt-2 justify-center sm:justify-start">
         <a className="text-gray-500">

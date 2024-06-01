@@ -39,7 +39,7 @@ const LogIn: React.FC = () => {
     console.log(formData);
   };
 
-  const User = useSelector((state) => state.auth.user);
+  const User = useSelector((state:any) => state.auth.user);
   console.log(User);
 
   const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -65,15 +65,9 @@ const LogIn: React.FC = () => {
         const current_user = data.user;
         console.log(current_user);
         await alert("login successfully");
-
-
         console.log("data.token", data.token);
         await authTokenSetToken(data.token);
-
         dispatch(login({ user: current_user }));
-
-
-
         if (current_user.roles === "Decorator" || current_user.roles === "Caterer") {
           const approving = await FetchVendorId(current_user.userID);
           console.log("approving",approving);
@@ -112,10 +106,9 @@ const LogIn: React.FC = () => {
       console.log("response", res.data);
 
       console.log("Response data:", res.data.isApprove);
-      alert(res.data.isApprove);
+      //alert(res.data.isApprove);
       const a = res.data.isApprove
       setApprove(approve);
-      //alert(a);
       return res.data;
 
     } catch (error) {

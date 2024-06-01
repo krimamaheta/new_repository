@@ -28,7 +28,7 @@ export const SignUp = () => {
       validationSchema: signUpSchema,
       onSubmit: (values, action) => {
         console.log(
-          "file: Registration.jsx ~ line 11 ~ Registration ~ values",
+          "Registration values",
           values
         );
         console.log('Selected user role:', values.userRole);
@@ -40,7 +40,7 @@ export const SignUp = () => {
     });
 
   console.log(
-    "file: Registration.jsx ~ line 25 ~ Registration ~ errors",
+    "Registration error",
     errors
   );
 
@@ -142,7 +142,7 @@ export const SignUp = () => {
                       onBlur={handleBlur}
                     >
                       <option value="" style={{ fontSize: "16px", color: "#333" }}>Select a role</option>
-                      <option value="Admin" style={{ fontSize: "16px", color: "#333" }}>Admin</option>
+                     
                       <option value="User" style={{ fontSize: "16px", color: "#333" }}>User</option>
                       <option value="Decorator" style={{ fontSize: "16px", color: "#333" }}>Decorator</option>
                       <option value="Caterer" style={{ fontSize: "16px", color: "#333" }}>Caterer</option>

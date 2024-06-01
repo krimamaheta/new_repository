@@ -83,11 +83,12 @@
    cursor: pointer;
    border-radius: 12px;
    margin-top: 20px;
-   margin-left: 40px;
+   margin-left: 5rem;
+   margin-right: 0rem;
 }
 
 
-      .button {
+  .button {
         background-color: #90613b; 
         border: none;
         color: white;
@@ -152,6 +153,7 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    
 }
 .bg3{
     background-image: url("https://img.freepik.com/free-photo/photorealistic-wedding-venue-with-intricate-decor-ornaments_23-2151481485.jpg?t=st=1715231295~exp=1715234895~hmac=043b4407843b4cd1fab0c3b236c8f386de7050f2c7c5d917ded58690c2f95502&w=900");

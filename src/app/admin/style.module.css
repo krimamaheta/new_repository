@@ -18,9 +18,11 @@
     height: 100%;
     width: 250px;
     background-color:#f5e9e1;
+    margin-top: 31px;
+
 }
 .sidebarlist{
-    height: auto;
+    height: screen;
     padding: 0%;
     width: 100%;
     
@@ -314,8 +316,7 @@
     display: flex;
   }
 
-  .font1{
-    margin-top: 0.5rem;
-    color: #8b4e2b;
-
+ 
+  .heading12{
+    margin-top: 2rem;
   }

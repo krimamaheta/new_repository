@@ -8,12 +8,7 @@ const DecoratorPage=()=>{
         <div>
          
             <AdminPanel>
-            {/* <Sidebar isMobileSidebarOpen={true} onSidebarClose={function (event: React.MouseEvent<HTMLElement, MouseEvent>): void {
-                throw new Error("Function not implemented.");
-            } } isSidebarOpen={true}> */}
             <Vendor/>
-            {/* </Sidebar> */}
-           
             </AdminPanel> 
            
         </div>

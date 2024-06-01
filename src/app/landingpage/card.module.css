@@ -70,6 +70,7 @@
     margin-bottom: 10px;
     display: flex;
     justify-content: center; 
+    
   }
   .heading2{
     color: black;
@@ -120,4 +121,9 @@
 
   .main12{
     margin-left: 30rem;
+  }
+
+
+  .b1{
+    background-color: #cec2b1;
   }

@@ -20,29 +20,19 @@ interface FormValue {
   eventId: string;
   vendorId: string;
   Price: string;
-  images: string[]; // Assuming images will be stored as URLs
+  images: string[]; 
 }
 
 const DecorationForm: React.FC = () => {
 
-  const User=useSelector((state)=>state.auth.user);
+  const User=useSelector((state:any)=>state.auth.user);
   const userId = User.user.userID;
   console.log(userId);
   const role=User.user.roles
   console.log("role",role);
   const route=useRouter();
   
- // const { setApprovalStatus } = useDecorationPrice();
-  
-// useEffect(()=>{
-//  //console.log(isApprove)
-//   if(!isApprove)
-//   {
-//     redirect to form
-//     route.push("/vendor")
-//   }
-// },[])
-
+ 
   const [value, setValue] = useState<FormValue>({
     eventId: "",
     vendorId: "",
@@ -56,7 +46,7 @@ const DecorationForm: React.FC = () => {
   const fetchEvent = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("https://localhost:44340/Api/Event/AllEvent");
+      const response = await axios.get("https://localhost:44340/api/Event/AllEvents");
       setEvents(response.data);
       setLoading(false);
     } catch (error) {
@@ -72,8 +62,6 @@ const DecorationForm: React.FC = () => {
 
  
 
-  //fetch vendor by userId
- // const User = useSelector((state) => state.auth.user);
 
   const FetchVendor = async (userId: any) => {
     try {
@@ -92,7 +80,7 @@ const DecorationForm: React.FC = () => {
 
   const onChangeFile = (e: { target: { files: any; }; }) => {
     const files = e.target.files;
-    // setValue((prevValue) => ({ ...prevValue, images: files }));
+   
     if (files) {
       setValue((prevValue) => ({ ...prevValue, images: Array.from(files) }));
     }
@@ -100,7 +88,7 @@ const DecorationForm: React.FC = () => {
 
   const onClick = async () => {
     try {
-      // debugger
+     
       const vendorId = await FetchVendor(User.user.userID);
       const formData = new FormData();
       formData.append("eventId", value.eventId);
@@ -110,7 +98,7 @@ const DecorationForm: React.FC = () => {
       const cloudinaryUploadPromises = value.images.map(async (image) => {
         const formData = new FormData();
         formData.append("file", image);
-        //formData.append("Images",image)
+       
         formData.append("upload_preset", "unsign_upload");
         formData.append("cloud_name", "dqtsmfpvb");
 
@@ -125,10 +113,7 @@ const DecorationForm: React.FC = () => {
         console.log("data", data);
 
 
-        // setValue((pre:FormValue)=>({
-        //   ...pre,
-        //   images:data.secure_url
-        // }))
+       
         return data.secure_url;
       });
 
@@ -186,6 +171,7 @@ const DecorationForm: React.FC = () => {
 
   return (
     <div>
+      
       <div className={styles["change-password-container"]}>
         <div className={styles["card-container"]}>
           <div className={styles["input-container"]}>
@@ -198,7 +184,7 @@ const DecorationForm: React.FC = () => {
               {loading ? (
                 <option disabled>Loading...</option>
               ) : (
-                events.map((event) => (
+                events.map((event:any) => (
                   <option key={event.eventId} value={event.eventId}>
                     {event.eventName}
                   </option>

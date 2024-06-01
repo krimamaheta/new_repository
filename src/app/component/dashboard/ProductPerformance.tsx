@@ -12,45 +12,7 @@ import {
 } from "@mui/material";
 import BaseCard from "../shared/DashboardCard";
 import axios from "axios";
-
-const products = [
-  {
-    id: "1",
-    name: "Sunil Joshi",
-    post: "Web Designer",
-    pname: "Elite Admin",
-    priority: "Low",
-    pbg: "primary.main",
-    budget: "3.9",
-  },
-  {
-    id: "2",
-    name: "Andrew McDownland",
-    post: "Project Manager",
-    pname: "Real Homes WP Theme",
-    priority: "Medium",
-    pbg: "secondary.main",
-    budget: "24.5",
-  },
-  {
-    id: "3",
-    name: "Christopher Jamil",
-    post: "Project Manager",
-    pname: "MedicalPro WP Theme",
-    priority: "High",
-    pbg: "error.main",
-    budget: "12.8",
-  },
-  {
-    id: "4",
-    name: "Nirav Joshi",
-    post: "Frontend Engineer",
-    pname: "Hosting Press HTML",
-    priority: "Critical",
-    pbg: "success.main",
-    budget: "2.4",
-  },
-];
+import style from "./../../admin/style.module.css"
 
 interface BookingModel{
   bookingId:"",
@@ -59,15 +21,20 @@ interface BookingModel{
   eventDate:"",
   isBooked:"",
 }
+
 const ProductPerfomance = () => {
   const[loading,setLoading]=useState<boolean>(false)
   const[booking,setBooking]=useState<BookingModel[]>([])
   const[error,setError]=useState(null);
+  const[page,setPage]=useState(1);
+  const[pageSize,setPageSize]=useState(5);
+
   const fetchBooking = async () => {
     setLoading(true);
     setError(null); // Reset any previous error
     try {
-      const response = await axios.get('https://localhost:44340/api/Booking/AllBooking');
+      //https://localhost:44340/api/Booking/AllBooking
+      const response = await axios.get(`https://localhost:44340/api/Booking/AllBooking?page=${page}&pageSize=${pageSize}`);
       setBooking(response.data);
     } catch (error) {
       console.error('Error fetching bookings:', error);
@@ -80,6 +47,20 @@ const ProductPerfomance = () => {
   useEffect(() => {
     fetchBooking();
   }, []);
+
+
+  const handleNextPage = () => {
+    setPage(page + 1); 
+    fetchBooking ();
+    // Increment page number
+  }
+   
+  const handlePreviousPage = () => {
+    if (page > 1) {
+      setPage(page - 1);
+      fetchBooking (); // Decrement page number if greater than 1
+    }
+  }
 
   if (loading) {
     return <div>Loading...</div>;
@@ -110,7 +91,7 @@ const ProductPerfomance = () => {
             <TableRow>
               <TableCell>
                 <Typography color="textSecondary" variant="h6">
-                  Id
+                  No.
                 </Typography>
               </TableCell>
               <TableCell>
@@ -130,9 +111,7 @@ const ProductPerfomance = () => {
                 </Typography>
               </TableCell>
               <TableCell align="right">
-                {/* <Typography color="textSecondary" variant="h6">
-                  Status
-                </Typography> */}
+                
               </TableCell>
             </TableRow>
           </TableHead>
@@ -141,7 +120,7 @@ const ProductPerfomance = () => {
               <TableRow key={book.bookingId}>
                 <TableCell>
                   <Typography fontSize="15px" fontWeight={500}>
-                    {book.bookingId}
+                   {index+1}
                     
                   </Typography>
                 </TableCell>
@@ -192,6 +171,12 @@ const ProductPerfomance = () => {
             ))}
           </TableBody>
         </Table>
+        <div className={style.main1}>
+                <div className={style.font1}>{page}</div>
+                <button className={style.button2} onClick={handlePreviousPage} disabled={page === 1}>Previous Page</button>
+                <div className={style.font1}>{pageSize}</div>
+                <button className={style.button2} onClick={handleNextPage}>Next Page</button>
+              </div>
       </TableContainer>
     </BaseCard>
   );

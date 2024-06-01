@@ -21,7 +21,8 @@ import yellow from "./../../../public/y1.png"
 interface HomeProps{
   children:React.ReactNode;
 }
-
+//style={{marginTop:'1rem',color:'black',fontSize:'28px',marginLeft:'5rem',marginRight:'3rem'}}
+// <div className={Styles.heading}>
   export const Home = ():JSX.Element=>{
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
@@ -35,12 +36,13 @@ interface HomeProps{
       <section className="text-gray-600 body-font">
   <div className="container px-5 py-24 mx-auto">
     <div className="text-center mb-20">
-      <h1 className="sm:text-3xl text-2xl font-medium title-font text-gray-900 mb-4">Features</h1>
+      {/* <h1 className="sm:text-3xl text-2xl font-medium title-font text-gray-900 mb-4">Features</h1> */}
+      <div style={{marginTop:'1rem',fontSize:'30px',marginLeft:'5rem',marginRight:'3rem',textDecoration:'underline',color:'rgb(90, 47, 16)',marginBottom:'0rem'}}>Features</div>
     
-      <div className="flex mt-6 justify-center">
+      {/* <div className="flex mt-6 justify-center">
     
         <div className="w-16 h-1 rounded-full bg-yellow-700 inline-flex"></div>
-      </div>
+      </div> */}
     </div>
     <div className="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 md:space-y-0 space-y-6">
       <div className="p-4 md:w-1/3 flex flex-col text-center items-center">
@@ -50,6 +52,7 @@ interface HomeProps{
                 <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
             </svg>
             </div>
+
         <h2 className="text-gray-900 text-lg title-font font-medium mb-3">EventMaker</h2>
          <p className="leading-relaxed text-base">Event planning, design  within time limits. Working with clients to identify their needs
  and ensure customer satisfaction,Organizing facilities and details such as decorations, catering,  
@@ -94,7 +97,8 @@ From menu planning , allowing you to relax and enjoy your event while we take ca
    
   </div>
 
-
+  <div style={{marginTop:'1rem',fontSize:'30px',marginLeft:'53rem',marginRight:'3rem',textDecoration:'underline',color:'rgb(90, 47, 16)'}}>Events</div>
+ 
 <div className={Styles.s_main}>
   <div className={Styles.service_container}>
           <div className={Styles.service_image_div}>

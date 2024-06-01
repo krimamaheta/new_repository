@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "./../admin/style.module.css"
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -26,7 +26,7 @@ import { useDecorationPrice } from "@/context/DecorationPrice";
 //return value
 interface vendor {
     isApprove: any;
-    vendorId?: string;
+    vendorId?: string|any;
     userId?: string;
     websiteUrl: string;
     address: string;
@@ -38,14 +38,6 @@ interface vendor {
 
 const Vendor = () => {
 
-
-    const showToastMessage = (message: any) => {
-        toast.success(message, {
-            position: toast.POSITION.TOP_RIGHT,
-        });
-    };
-
-
     const [open, setOpen] = React.useState(false);
     const [WebsiteUrl, setWebsiteUrl] = useState("");
     const [Address, setAddress] = useState("");
@@ -53,13 +45,9 @@ const Vendor = () => {
     const [District, setDistrict] = useState("");
     const [FirmName, setFirmName] = useState("");
     const [TypeOfVendor, setTypeOfVendor] = useState("");
-
-
     const [loading, setLoading] = useState<boolean>(false);
     const [vendors, setvendors] = useState<vendor[]>([]);
     const [error, setError] = useState<string | null>(null);
-
-
 
     //update
 
@@ -111,18 +99,15 @@ const Vendor = () => {
                 cityName: updateCityname,
                 district: updateDistrict,
                 firmName: updateFirmname,
-                typeOfVendor: updateTypeofvendor
-
+                typeOfVendor: updateTypeofvendor,
+                isApprove: undefined
             };
             console.log(updatedData)
 
             if (updateVendor && updateVendor.vendorId) {
                 const updatedVendor = await UpdateVendor(updateVendor.vendorId, updatedData);
                 console.log(updatedVendor);
-                // if(updatedVendor.status===200){
-                //     console.log("......12342345")
-                //     alert(message)
-                // }
+               
 
                 console.log("vendor details Updated Successfully:", updatedVendor);
                 alert("Vendor Details Updated Successfully");
@@ -131,7 +116,7 @@ const Vendor = () => {
 
 
 
-                // EventList();
+                
             } else {
                 console.error("vendor Id is missing or invalid.");
                 alert("Failed to update event: Invalid event data");
@@ -171,9 +156,9 @@ const Vendor = () => {
     const handleClose = () => {
         setOpen(false);
     }
-    const User = useSelector((state) => state.auth.user);
+    const User = useSelector((state:any) => state.auth.user);
     console.log(User);
-    // User.userID
+   
     const VendorAdd = async (userId: string) => {
 
         try {
@@ -201,8 +186,7 @@ const Vendor = () => {
 
             console.log("Decorator Added Successfully:", response.data);
             alert("Decorator detalis Added Successfully");
-            //await FetchEventList();
-            //Reset form fields after successful submission
+            
             resetForm();
 
             handleClose();
@@ -228,10 +212,10 @@ const Vendor = () => {
     const [pageSize, setPageSize] = useState(5);
 
     const AllVendor = async () => {
-       // e.preventDefault();
+      
         setLoading(true)
         try {
-           // const res1="https://localhost:44340/Api/vendor/All"
+           //const res1="https://localhost:44340/Api/vendor/All"
             const res = await axios.get(`https://localhost:44340/Api/vendor/All?page=${page}&pageSize=${pageSize}`);
             setvendors(res.data);
         } catch {
@@ -255,14 +239,13 @@ const Vendor = () => {
             setPage(nextPage);
             AllVendor();
         }
-        // setPage(page + 1);
-        // AllVendor();
+       
     };
 
     const handleFetchVendor=async()=>{
         await AllVendor();
     }
-    const FetchEventList = async (e) => {
+    const FetchEventList = async (e:any) => {
         e.preventDefault();
         await AllVendor();
     }
@@ -290,8 +273,7 @@ const Vendor = () => {
                 alert("Failed to delete vendor");
             }
     }
-    //const { setApprovalStatus } = useDecorationPrice();
-
+   
     const FinalApprove = async (Id: string) => {
 
         if (window.confirm("Are You Sure to Approve the Vendor ? "))
@@ -303,29 +285,33 @@ const Vendor = () => {
 
                 if (res.status === 200) {
                     alert("Approval Confirmation Done");
-                   // setApprovalStatus(true);
+                  
                 } else {
                     alert("fail to approve from Admin side");
-                    //setApprovalStatus(false);
+                   
                 }
 
             }
             catch (error) {
                 alert("Failed to Approve vendor");
-               //
-               // setApprovalStatus(false);
+            
             }
     }
 
+
+    useEffect(()=>{
+        AllVendor();
+    },[])
 
     const { isApproved } = useDecorationPrice();
 
     return (
 
         <div>
-            <div>
-
-                <div className={style.button1}><button onClick={handleClickOpen}>+AddVendor</button>
+                 <div>
+                    <div className={style.heading12}>
+                    <div className={style.button1}><button onClick={handleClickOpen}>+AddVendor</button></div>
+                </div>
 
                     <Dialog
                         open={open}
@@ -420,9 +406,9 @@ const Vendor = () => {
                             <Button type="submit" onClick={() => VendorAdd(User.userId)}>Add</Button>
                         </DialogActions>
                     </Dialog>
-                </div>
+             
                   
-                <div className={style.button1} onClick={AllVendor}><button>VendorList</button></div>
+                {/* <div className={style.button1} onClick={AllVendor}><button>VendorList</button></div> */}
                 <div className={style1.eventList}>
                 
                     {loading ? (<p>Loading....!</p>) : error ? (<p>Error...</p>) : vendors.length > 0 ? (
@@ -432,14 +418,14 @@ const Vendor = () => {
                             <table className={style1.eventTable}>
                                 <thead>
                                     <tr>
-                                        <th>VendorId</th>
-
-                                        <th>websiteUrl</th>
+                                        
+                                        <th>No.</th>
+                                        <th>WebsiteUrl</th>
                                         <th>Address</th>
-                                        <th> cityName</th>
-                                        <th>district</th>
-                                        <th>firmName</th>
-                                        <th>typeOfVendor</th>
+                                        <th>CityName</th>
+                                        <th>State</th>
+                                        <th>FirmName</th>
+                                        <th>TypeOfVendor</th>
                                         <th>Update</th>
                                         <th>Delete</th>
                                         <th>Approve</th>
@@ -448,8 +434,7 @@ const Vendor = () => {
                                 <tbody>
                                     {vendors.map((vendor, index) => (
                                         <tr key={index}>
-                                            <td>{vendor.vendorId}</td>
-
+                                            <td>{index+1}</td>
                                             <td>{vendor.websiteUrl}</td>
                                             <td>{vendor.address}</td>
                                             <td>{vendor.cityName}</td>
@@ -458,7 +443,7 @@ const Vendor = () => {
                                             <td>{vendor.typeOfVendor}</td>
                                             <td><button onClick={() => VendorUpdateOpen(vendor)}><ModeEditOutlineOutlinedIcon /></button></td>
                                             <td><button onClick={() => VendorDelete(vendor.vendorId)}><DeleteOutlineOutlinedIcon /></button></td>
-                                            {/* <td><button onClick={()=>FinalApprove(vendor.vendorId)}><CheckBoxOutlinedIcon /></button></td> */}
+                                           
                                             <td>
                                                 {vendor.isApprove
                                                     ? (
@@ -477,7 +462,8 @@ const Vendor = () => {
                                     ))}
                                 </tbody>
                             </table>
-                            <div className={style.main2}>
+                            
+                            <div style={{marginBlock:'3rem',display:'flex',marginTop:'1rem',marginLeft:'24.5rem'}}>
                             <div className={style.font1}>{page}</div>
                             <button className={style.button2} onClick={handlePreviousPage} disabled={page === 1}>Previous Page</button>
                             <div className={style.font1}>{pageSize}</div>
@@ -586,17 +572,7 @@ const Vendor = () => {
                     </DialogActions>
                 </Dialog>
             )}
-
-
-
-
-
-
         </div>
-
-
-
-
     )
 }
 

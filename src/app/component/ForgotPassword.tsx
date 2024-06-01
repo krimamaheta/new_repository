@@ -12,18 +12,16 @@ const Forgotpassword: React.FC = () => {
 
   const HandleResetPass = async(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    //setEmail((e.target as HTMLButtonElement).value);
+   
     try{
       var res=await axios.post(`https://localhost:44340/Api/Auth/forgot-password?email=${email}`);
  
       console.log('---------------------------',res);
       console.log(res.data.message)
-      if(res.status===200){
-       // const{email,token}=res.data;  
+      if(res.status===200){ 
         alert(res.data.message)
-        //email("");
         window.location.href="https://ethereal.email/messages";
-        //alert("open your mailbox")
+       
        // route.push("/changepassword")
       }else{
         //500 error
@@ -49,18 +47,11 @@ const Forgotpassword: React.FC = () => {
     route.push("/login")
   }
 
-const User=useSelector((state)=>state.auth.user);
+const User=useSelector((state:any)=>state.auth.user);
 console.log(User);
 
 const Email=User?.user?.email;
 console.log(Email);
-
-// useEffect(()=>{
-
-//   if(User && User.user && User.user.email){
-//     setEmail(User.user.email);
-//   }
-// },[User])
 
 
   return (

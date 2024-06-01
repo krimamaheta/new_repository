@@ -71,18 +71,7 @@ const BlogCard: React.FC = () => {
               >
                 {blog.subtitle}
               </Typography>
-              {/* <Button
-                variant="contained"
-                sx={{
-                  mt: "15px",
-                  backgroundColor: blog.btncolor,
-                  "&:hover": {
-                    backgroundColor: blog.btncolor,
-                  },
-                }}
-              >
-                Learn More
-              </Button> */}
+              
             </CardContent>
           </Card>
         </Grid>
