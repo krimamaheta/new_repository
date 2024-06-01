@@ -96,8 +96,6 @@ const Caterer = () => {
         setOpen(false);
     };
 
-
-
     const AllCaterer = async (eventId: string) => {
         try {
 
@@ -323,7 +321,7 @@ const Caterer = () => {
                                                 disabled
                                             />
 
-                                            <LocalizationProvider dateAdapter={AdapterDayjs} locale="en">
+                                             <LocalizationProvider dateAdapter={AdapterDayjs} locale="en">
                                                 <DatePicker
                                                     value={EventDate}
                                                     onChange={handleDateChange}
@@ -343,6 +341,7 @@ const Caterer = () => {
                                                 />
 
                                             </LocalizationProvider>
+                                            
                                         
                                             <TextField
                                                 autoFocus

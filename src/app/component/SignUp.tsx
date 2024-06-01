@@ -134,20 +134,22 @@ export const SignUp = () => {
                     <label htmlFor="userRole" className="input-label">
                       User Role
                     </label>
+                    
                     <select
                       name="userRole"
                       id="userRole"
                       value={values.userRole}
                       onChange={handleChange}
                       onBlur={handleBlur}
+                      style={{fontSize: "16px"}}
                     >
-                      <option value="" style={{ fontSize: "16px", color: "#333" }}>Select a role</option>
-                     
-                      <option value="User" style={{ fontSize: "16px", color: "#333" }}>User</option>
-                      <option value="Decorator" style={{ fontSize: "16px", color: "#333" }}>Decorator</option>
-                      <option value="Caterer" style={{ fontSize: "16px", color: "#333" }}>Caterer</option>
+                      <option value="" style={{ fontSize: "16px", color: "#333" ,marginTop:'2rem'}}>Select a role</option>
+                      <option value="User" style={{ fontSize: "16px", color: "#333",marginTop:'2rem'}}>User</option>
+                      <option value="Decorator" style={{ fontSize: "16px", color: "#333",marginTop:'2rem'}}>Decorator</option>
+                      <option value="Caterer" style={{ fontSize: "16px", color: "#333",marginTop:'2rem'}}>Caterer</option>
 
                     </select>
+                   
                     {errors.userRole && touched.userRole ? (
                       <p className="form-error">{errors.userRole}</p>
                     ) : null}

@@ -15,10 +15,3 @@ export const LogInSchema=Yup.object({
 })
 
 
-export const EventForm=Yup.object({
-    TypeofEvent:Yup.string(),
-    Place:Yup.string().max(25),
-    DateTimeStartEvent: Yup.number(),
-    DateTimeEndEvent: Yup.number(),
-    Budget:Yup.number().min(10000).max(200000)
-})

@@ -308,11 +308,12 @@ const Service = () => {
             </div>
 
           </div>
-          <div className={style1.heading3}>
-            <h2>Events:</h2>
-          </div>
+         
 
           <div className={style1.carousel}>
+          <div style={{marginTop:'2rem',marginBottom:'2rem',marginLeft:'33rem',color:'#4e2a07',fontSize:'30px',fontFamily:'Franklin Gothic Medium',textDecoration:'underline'}}>
+            <h2>Events</h2>
+          </div>
             <Carousel itemsToShow={2} isRTL={false}>
               <Image src={w1} alt="decoration" />
               <Image src={Ring} alt="decoration" />
@@ -327,12 +328,15 @@ const Service = () => {
 
           <div className="container px-5 py-24 mx-auto">
             <div className="text-center mb-20">
-              <h1 className="sm:text-3xl text-2xl font-medium title-font text-gray-900 mb-4">Features</h1>
+              {/* <h1 className="sm:text-3xl text-2xl font-medium title-font text-gray-900 mb-4">Features</h1> */}
+              <div style={{marginTop:'0rem',marginBottom:'2rem',marginLeft:'1rem',color:'#4e2a07',fontSize:'30px',fontFamily:'Franklin Gothic Medium',textDecoration:'underline'}}>
+            <h2>Features</h2>
+          </div>
 
-              <div className="flex mt-6 justify-center">
+              {/* <div className="flex mt-6 justify-center">
 
                 <div className="w-16 h-1 rounded-full bg-yellow-700 inline-flex"></div>
-              </div>
+              </div> */}
             </div>
             <div className="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 md:space-y-0 space-y-6">
               <div className="p-4 md:w-1/3 flex flex-col text-center items-center">
@@ -388,10 +392,14 @@ const Service = () => {
 
           </div>
 
-          <div className={style1.heading1}>
-            <label htmlFor="city">SearchDecoration:</label></div>
+          {/* <div className={style1.heading1}>
+            <label>SearchDecoration:</label>  
+          </div> */}
+          <div style={{marginTop:'0rem',marginLeft:'32rem',color:'#4e2a07',fontSize:'30px',fontFamily:'Franklin Gothic Medium',textDecoration:'underline'}}>Search Decoration</div>
           <div className={style1.container}>
 
+
+          <div style={{marginLeft:'12rem',marginBottom:'0rem',marginTop:'0rem'}}>
             <div className={style1.input1}>
               <div className={style1.heading2}>
                 <label htmlFor="district">Select State:</label></div>
@@ -446,7 +454,7 @@ const Service = () => {
                 }
 
               </select>
-             
+              </div>
             </div>
 
             

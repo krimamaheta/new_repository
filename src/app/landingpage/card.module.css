@@ -41,7 +41,6 @@
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size:x-large;
     color:rgb(90, 47, 16);
-
     text-align: center;
   }
   
@@ -49,6 +48,7 @@
     font-size: larger;
     font-weight: 400;
     color: #31363f;
+    margin-left: 5rem;
    
   }
 

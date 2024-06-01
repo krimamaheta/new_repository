@@ -21,8 +21,7 @@ import { useDecorationPrice } from "@/context/DecorationPrice";
 
 
 
-//admin side vendor
-
+//admin side vendor add,update,delete
 //return value
 interface vendor {
     isApprove: any;
@@ -65,12 +64,10 @@ const Vendor = () => {
 
     const FecthVendor = async (Id: string) => {
         try {
-
             const res = await axios.get(`https://localhost:44340/Api/Vendor/get/${Id}`);
             console.log("----fetch", res);
             console.log(res.data);
             return res.data;
-
         } catch (error) {
             console.error("Error fetching event details:", error);
             throw error;
@@ -107,21 +104,17 @@ const Vendor = () => {
             if (updateVendor && updateVendor.vendorId) {
                 const updatedVendor = await UpdateVendor(updateVendor.vendorId, updatedData);
                 console.log(updatedVendor);
-               
-
                 console.log("vendor details Updated Successfully:", updatedVendor);
                 alert("Vendor Details Updated Successfully");
                 handleUpdateClose();
                 await AllVendor();
-
-
-
-                
-            } else {
+            }
+            else {
                 console.error("vendor Id is missing or invalid.");
                 alert("Failed to update event: Invalid event data");
             }
-        } catch (error) {
+        }
+         catch (error) {
             console.error("Error updating event:", error);
             alert("Failed to update event");
         }

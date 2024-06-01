@@ -69,9 +69,9 @@ export const LandingPage = (): JSX.Element => {
                 </svg>
               </div>
               <h2 className="text-gray-900 text-lg title-font font-medium mb-3">EventMaker</h2>
-              <p className="leading-relaxed text-base">Event planning, design  within time limits. Working with clients to identify their needs
+              <div className="leading-relaxed text-base">Event planning, design  within time limits. Working with clients to identify their needs
                 and ensure customer satisfaction,Organizing facilities and details such as decorations, catering,
-                location,  special guests etc.</p>
+                location,  special guests etc.</div>
             </div>
 
           </div>
@@ -88,9 +88,9 @@ export const LandingPage = (): JSX.Element => {
 
 
               <h2 className="text-gray-900 text-lg title-font font-medium mb-3">Decorentals</h2>
-              <p className="leading-relaxed text-base">
+              <div className="leading-relaxed text-base">
                 Our team specializes in crafting mesmerizing lighting and flower arrangements that illuminate your venue with warmth and sophistication
-                our skilled decorators also excel in creating breathtaking floral arrangements.</p>
+                our skilled decorators also excel in creating breathtaking floral arrangements.</div>
             </div>
 
 
@@ -105,15 +105,15 @@ export const LandingPage = (): JSX.Element => {
               </div>
 
               <h2 className="text-gray-900 text-lg title-font font-medium mb-3">Catering</h2>
-              <p className="leading-relaxed text-base"> Our catering team offers professional service and seamless coordination to ensure that every aspect of your dining experience is flawless,
-                From menu planning , allowing you to relax and enjoy your event while we take care of the rest.</p>
+              <div className="leading-relaxed text-base"> Our catering team offers professional service and seamless coordination to ensure that every aspect of your dining experience is flawless,
+                From menu planning , allowing you to relax and enjoy your event while we take care of the rest.</div>
             </div>
 
           </div>
         </div>
         
       </div>
-
+      <div style={{marginLeft:'52rem',fontSize:'30px',textDecoration:'underline',color:'rgb(90, 47, 16)'}}>Events</div>
       <div className={Styles.s_main}>
         <div className={Styles.service_container}>
           <div className={Styles.service_image_div}>
@@ -201,12 +201,12 @@ export const LandingPage = (): JSX.Element => {
               <h1>Birthday Ceremony</h1>
             </div>
             <div className={Styles.service_description_summary}>
-              <p>
+              <div>
                 Make every birthday a memorable occasion with our exceptional birthday celebration services.
                 At EventMaker, we understand the importance of
                 commemorating another year of life, and we are committed
                 to creating unforgettable moments for you and your children
-              </p>
+              </div>
             </div>
           </div>
           <div className={Styles.service_image_div}>
@@ -236,12 +236,12 @@ export const LandingPage = (): JSX.Element => {
               <h1>Anniversary party</h1>
             </div>
             <div className={Styles.service_description_summary}>
-              <p>
+              <div>
                 Mark the milestone of your enduring love and commitment with our bespoke wedding
                 anniversary celebration services. At Event Maker, we believe that every love story
                 deserves to be celebrated in style, and we are dedicated to creating unforgettable
                 moments that honor your journey together.
-              </p>
+              </div>
             </div>
           </div>
         </div>
@@ -249,7 +249,7 @@ export const LandingPage = (): JSX.Element => {
 
       <div className={Styles.main}>
         <h2 className={Styles.heading3}>Event Memories</h2>
-        <p className={Styles.phead3}>
+        <div className={Styles.phead3}>
           In our journey as event makers,
           we have curated a diverse array of unforgettable moments,
           from fairy-tale weddings in picturesque gardens to romantic ring
@@ -263,7 +263,7 @@ export const LandingPage = (): JSX.Element => {
           unity, and shared moments. Across weddings, ring ceremonies,
           yagnopavit, anniversaries, and birthdays, our commitment to crafting memorable experiences remains unwavering,
           ensuring that every occasion is a reflection of our dedication to excellence and the magic of  special moments
-        </p>
+        </div>
       </div>
 
 

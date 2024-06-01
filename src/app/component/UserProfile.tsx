@@ -55,7 +55,6 @@ const Profile = () => {
         try {
             const res = await axios.get(`https://localhost:44340/api/Booking/AllUserId?userId=${userId}`);
             console.log("res", res);
-            //console.log("payment",res.data[0].finalPayment);
             setBookings(res.data);
         } catch (error) {
             alert("fail to fetch booking event list");
@@ -68,8 +67,7 @@ const Profile = () => {
     const BookingCancel = async (bookingId: string) => {
         if ((window.confirm("Are you sure to cancel Booking ?")))
             try {
-                //alert(bookingId);
-               
+              
                 const res = await axios.delete(`https://localhost:44340/api/Booking/Delete?Id=${bookingId}`)
                 if (res.status == 200) {
                    // alert(res.data.message)
@@ -82,7 +80,7 @@ const Profile = () => {
                 }
             }
             catch (error) {
-                //console.log("error occure fail to cancel booking ",error);
+              
                 alert("An Error occure fail to Cancel Booking");
             }
     }

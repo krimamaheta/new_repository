@@ -18,6 +18,7 @@ import style from "./../admin/style.module.css"
 import { useSelector } from "react-redux";
 import { eventNames } from "process";
 
+//admin side User add,update,delete
 interface UserModel {
   id: string,
   userName: string,

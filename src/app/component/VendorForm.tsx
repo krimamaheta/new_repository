@@ -101,7 +101,11 @@ const VendorForm: React.FC = () => {
 
     const handleSubmit = async () => {
         try {
-            debugger
+            if (!validateForm()) {
+                alert('Please fix the validation errors before submitting.');
+                return;
+            }
+    
             const userId = User.user.userID;
             console.log(userId);
 
@@ -149,7 +153,11 @@ const VendorForm: React.FC = () => {
         }
     }
 
-    
+    const [errors, setErrors] = useState({
+        WebsiteUrl: '',
+        District: '',
+        CityName: '',
+    });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -158,6 +166,44 @@ const VendorForm: React.FC = () => {
             [name]: value
         }));
     };
+
+
+    const validateField = (name: string, value: string) => {
+        let error = '';
+        switch (name) {
+            case 'WebsiteUrl':
+                if (!/^((http|https):\/\/|www\.)/.test(value)) {
+                    error = 'Website URL must start with "www.", "http://" or "https://"';
+                }
+                break;
+            case 'District':
+                if (!/^[A-Z]/.test(value)) {
+                    error = 'District must start with a capital letter';
+                }
+                break;
+            case 'CityName':
+                if (!/^[A-Z]/.test(value)) {
+                    error = 'City Name must start with a capital letter';
+                }
+                break;
+            default:
+                break;
+        }
+        return error;
+    };
+
+    const validateForm = () => {
+        const newErrors = {
+            WebsiteUrl: validateField('WebsiteUrl', value.WebsiteUrl),
+            District: validateField('District', value.District),
+            CityName: validateField('CityName', value.CityName),
+        };
+
+        setErrors(newErrors);
+        return !Object.values(newErrors).some((error) => error !== '');
+    };
+
+
     return (
         <div className={Style.container}>
             <div className={Style.card}>
@@ -168,58 +214,21 @@ const VendorForm: React.FC = () => {
                 <div className={Style.inputgroup}>
                     <label htmlFor="WebsiteUrl">Your Website URL:</label>
                     <input type="text" name="WebsiteUrl" id="WebsiteUrl" value={value.WebsiteUrl} onChange={handleChange} />
+                    {errors.WebsiteUrl && <span className={Style.error}>{errors.WebsiteUrl}</span>}
                 </div>
                 <div className={Style.inputgroup}>
                     <label htmlFor="Address">Address:</label>
                     <input type="text" name="Address" id="Address" value={value.Address} onChange={handleChange} />
                 </div>
                 <div className={Style.inputgroup}>
-                    <label htmlFor="District">District</label>
+                    <label htmlFor="District">State</label>
                     <input type="text" name="District" id="District" value={value.District} onChange={handleChange} />
-                    {/* <select name="District" id="District" value={value.District} onChange={handleChange}>
-                        <option value="Gujarat">Gujarat</option>
-                        <option value="Rajsthan">Rajsthan</option>
-                        <option value="Taminnadu">Taminnadu</option>
-                        <option value="Tripura">Tripura</option>
-                        <option value="Uttrakhand">Uttrakhand</option>
-                        <option value="AndhraPradesh">AndhraPradesh</option>
-                        <option value="Assam">Assam</option>
-                        <option value="DadraNagarHaveli">DadraNagarHaveli</option>
-                        <option value="Bihar">Bihar</option>
-                        <option value="DamanandDiu">DamanandDiu</option>
-                        <option value="Goa">Goa</option>
-                        <option value="Hriyana">Hriyana</option>
-                        <option value="JammuKashmir">JammuKashmir</option>
-                        <option value="Karnataka">Karnataka</option>
-                        <option value="Ladakh">Ladakh</option>
-                        <option value="madhyaPradesh">madhyaPradesh</option>
-                        <option value="Manipur">Manipur</option>
-                        <option value="Mizoram"> Mizoram</option>
-                        <option value="AndmanAndNicobarIslands">AndmanAndNicobarIslands</option>
-                        <option value="Odissa">Odissa</option>
-                        <option value="Punjab">Punjab</option>
-                        <option value="Sikkim">Sikkim</option>
-                        <option value="Telangana">Telangana</option>
-                        <option value="UtterPradesh">UtterPradesh</option>
-                        <option value="westBengal">westBengal</option>
-                        <option value="ArunachalPradesh">ArunachalPradesh</option>
-                        <option value="Chattishgarh">Chattishgarh</option>
-                        <option value="Delhi">Delhi</option>
-                        <option value="HimachalPradesh">HimachalPradesh</option>
-                        <option value="Jharkhand">Jharkhand</option>
-                        <option value="Kerala">Kerala</option>
-                        <option value="Lakshdweep">Lakshdweep</option>
-                        <option value="Maharastra">Maharastra</option>
-                        <option value="Meghalaya">Meghalaya</option>
-                        <option value="Nagaland">Nagaland</option>
-                        <option value="Puducherry">Puducherry</option>
-                        
-                        
-                    </select> */}
+                    {errors.District && <span className={Style.error}>{errors.District}</span>}
                 </div>
                 <div className={Style.inputgroup}>
                     <label htmlFor="CityName">City Name:</label>
                     <input type="text" name="CityName" id="CityName" value={value.CityName} onChange={handleChange} />
+                    {errors.CityName && <span className={Style.error}>{errors.CityName}</span>}
                 </div>
                 <div className={Style.inputgroup}>
                     <label htmlFor="FirmName">Firm Name:</label>
@@ -262,7 +271,6 @@ interface vendordecorationModel {
 interface vendorDecoratorModel {
     eventId: "";
     vendorId: "";
-
     images: any;
     id: "",
     price: "",
@@ -326,7 +334,7 @@ export const GetAllVendor: React.FC = () => {
     const FetchVendorId = async (userId: any) => {
 
         try {
-            
+
             var res = await axios.get(`https://localhost:44340/Api/Vendor/getByUserId/${userId}`)
             console.log("res..", res);
             console.log("vendorid", res.data.vendorId);

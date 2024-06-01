@@ -8,9 +8,7 @@ const BookingPage=()=>{
     return(
         <div>
             <AdminPanel>
-            
                 <Booking/>
-              
             </AdminPanel>
         </div>
     )
