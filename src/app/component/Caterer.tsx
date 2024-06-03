@@ -228,7 +228,7 @@ const Caterer = () => {
                                     </div>
 
                                     <h3>Dish Name: {caterer.dishName}</h3>
-                                    <p>Rs.{caterer.price}/-</p>
+                                    <div>Rs.{caterer.price}/-</div>
                                     <button className={style.button} onClick={() => handleClickOpen(caterer.id)}>Order</button>
 
 

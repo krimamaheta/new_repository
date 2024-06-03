@@ -229,7 +229,7 @@ const handleNextPage = () => {
      
 
       {loading ? (
-        <p>Loading...</p>
+        <div>Loading...</div>
       ) : AdminUser.length >0 ? (
         <>
           <div className={style1.head}>User List</div>
@@ -267,7 +267,7 @@ const handleNextPage = () => {
                             </div>
         </>
       ) : (
-        <p>No users available</p>
+        <div>No users available</div>
       )}
 
 

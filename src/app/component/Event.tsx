@@ -297,9 +297,9 @@ const handleNextPage = () => {
      
       <div className={style1.eventList}>
         {loading ? (
-          <p>Loading...</p>
+          <div>Loading...</div>
         ) : error ? (
-          <p>{error}</p>
+          <div>{error}</div>
         ) : events.length > 0 ? (
           <>
             <div className={style1.head}>Event List</div>
@@ -335,7 +335,7 @@ const handleNextPage = () => {
                             </div>
           </>
         ) : (
-          <p>No events available</p>
+          <div>No events available</div>
         )}
       </div>
       {updateOpen && updateEvent && (

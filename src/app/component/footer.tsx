@@ -13,7 +13,7 @@ const Footer=()=>{
       
       
       </a>
-      <p className="mt-2 text-sm text-gray-500">Welcome our Website</p>
+      <div className="mt-2 text-sm text-gray-500">Welcome our Website</div>
     </div>
     <div className="flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center">
       <div className="lg:w-1/4 md:w-1/2 w-full px-4">
@@ -67,9 +67,9 @@ const Footer=()=>{
   </div>
   <div className="bg-gray-100">
     <div className="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
-      <p className="text-gray-500 text-sm text-center sm:text-left">Copyright © 2024 EventMaker 
+      <div className="text-gray-500 text-sm text-center sm:text-left">Copyright © 2024 EventMaker 
        
-      </p>
+      </div>
       <span className="inline-flex sm:ml-auto sm:mt-0 mt-2 justify-center sm:justify-start">
         <a className="text-gray-500">
           <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-5 h-5" viewBox="0 0 24 24">

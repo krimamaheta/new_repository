@@ -363,9 +363,9 @@ const Booking = () => {
         <div className={style1.eventList}>
 
           {loading ? (
-            <p>Loading....!</p>
+            <div>Loading....!</div>
           ) : error ? (
-            <p>Error... {error}</p>
+            <div>Error... {error}</div>
           ) : bookings.length > 0 ? (
             <>
 
@@ -412,7 +412,7 @@ const Booking = () => {
               </div>
             </>
           ) : (
-            <p>No bookings available</p>
+            <div>No bookings available</div>
           )}
         </div>
 

@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import { logout } from "@/Redux/authslice/authslice";
 import { removeToken } from "@/lib/AuthToken";
 import { CatererHome } from "@/app/component/dashboard/CatererHome";
+import Footer from "@/app/component/footer";
 
 interface Caterer {
     images: any;
@@ -290,9 +291,9 @@ const Caterer = () => {
 
     }
 
-
+    const userId=User?.user?.userID;
     useEffect(() => {
-        if (User) {
+        if (User&& User.user && User.user.userID) {
             FetchVendorId(User.user.userID).then(vendorId => {
                 if (vendorId) {
                     fetchCaterer(vendorId);
@@ -442,7 +443,7 @@ const Caterer = () => {
         
         <div>
             <div><CatererHome/></div>
-            <p className={style.left}>
+            <div className={style.left}>
                 <button className={style.b2} onClick={() => setOpen(true)}>
                     Add Catering
                 </button>
@@ -525,7 +526,7 @@ const Caterer = () => {
                
                 <button className={style.logoutbtn} onClick={handlelogout}>Logout</button>
 
-            </p>
+            </div>
 
 
             <Grid container spacing={{ xs: 2, md: 4 }} columns={{ xs: 4, sm: 8, md: 12 }} style={{ marginTop: '2rem', marginBottom: '2rem' }}>
@@ -568,14 +569,7 @@ const Caterer = () => {
                     </Grid>
                 ))}
             </Grid>
-
-
-
-
-
-
-
-
+            <Footer/>
         </div>
     );
 };

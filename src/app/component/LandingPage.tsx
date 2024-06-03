@@ -34,11 +34,11 @@ export const LandingPage = (): JSX.Element => {
           <div className={Styles.service_description_summary}>
 
             <h2 className={Styles.heading2}>Create Special Service For Your Events</h2>
-            <p>
+            <div>
               Unique,memorable events
               production of social and corporate events!!!!!
 
-            </p>
+            </div>
             <Stack direction="row" spacing={2} className="brown-text">
               <div style={{marginTop:'1rem',backgroundColor:'rgb(238, 228, 216)',borderRadius:'14px',fontSize:'17px',padding:'1rem'}}>
               <button>
@@ -131,13 +131,13 @@ export const LandingPage = (): JSX.Element => {
               <h1>Ring Ceremony</h1>
             </div>
             <div className={Styles.service_description_summary}>
-              <p>
+              <div>
                 At Event Maker,
                 we understand the importance of this cherished moment in your journey together,
                 and we are dedicated to ensuring that every detail of your ring ceremony is nothing short of perfection.
                 From the elegant décor to the exquisite floral arrangements, our team of experienced event planners will work
                 closely with you to bring your vision to life.
-              </p>
+              </div>
             </div>
           </div>
         </div>
@@ -148,12 +148,12 @@ export const LandingPage = (): JSX.Element => {
               <h1>Wedding Ceremony</h1>
             </div>
             <div className={Styles.service_description_summary}>
-              <p>
+              <div>
                 Elevate your special day to extraordinary heights with our meticulously crafted wedding ceremony services.
                 At EventMaker,
                 we understand the significance of this once-in-a-lifetime event,
                 and we are committed to turning your dreams into reality
-              </p>
+              </div>
             </div>
           </div>
           <div className={Styles.service_image_div}>
@@ -185,12 +185,12 @@ export const LandingPage = (): JSX.Element => {
               <h1>Yagnopavit Ceremony</h1>
             </div>
             <div className={Styles.service_description_summary}>
-              <p>
+              <div>
                 Embark on a sacred journey of spiritual growth and knowledge with our Upanayan Sanskar ceremony services.
                 At EventMaker, we recognize the profound significance of this
                 traditional Hindu rite of passage and are honored to help you celebrate this important
                 milestone in your childs life.
-              </p>
+              </div>
             </div>
           </div>
         </div>

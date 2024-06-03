@@ -209,7 +209,7 @@ const DecorationForm: React.FC = () => {
             <input type="file" name="images" multiple onChange={onChangeFile} />
           </div>
           <button className={styles.b1} onClick={onClick}>Add</button>
-          <Link href="/vendor/allvendor">Go to VendorPage</Link>
+          <Link  className={styles.b1}  href="/vendor/allvendor">Back</Link>
         </div>
       </div>
     </div>

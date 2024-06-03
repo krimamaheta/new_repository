@@ -112,7 +112,7 @@ const UpdateBox = () => {
             setVendorCaterer(res.data);
         } catch (error) {
             console.error("Error fetching vendor Catering:", error);
-            alert("Failed to fetch catering list. Please try again later.");
+            //alert("Failed to fetch catering list. Please try again later.");
         } finally {
             setLoading(false);
         }
@@ -234,7 +234,7 @@ const UpdateBox = () => {
                 <DialogTitle className={style.heading}>Update Details</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Update the details of the caterer.
+                      
                     </DialogContentText>
                     <TextField
                         autoFocus

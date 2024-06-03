@@ -33,6 +33,7 @@ body {
 } */
 .navbar {
   background-color:rgb(250, 243, 238);
+  /* background-color: #f3f1f0; */
   margin-top: 20px;
   margin-bottom: 20px; /* Light brown background color */
   text-align: center;

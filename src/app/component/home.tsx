@@ -116,13 +116,13 @@ From menu planning , allowing you to relax and enjoy your event while we take ca
               <h1>Ring Ceremony</h1>
             </div>
             <div className={Styles.service_description_summary}>
-              <p>
+              <div>
               At Event Maker,
        we understand the importance of this cherished moment in your journey together, 
        and we are dedicated to ensuring that every detail of your ring ceremony is nothing short of perfection.
     From the elegant décor to the exquisite floral arrangements, our team of experienced event planners will work
     closely with you to bring your vision to life.
-              </p>
+              </div>
             </div>
           </div>
         </div>
@@ -133,12 +133,12 @@ From menu planning , allowing you to relax and enjoy your event while we take ca
       <h1>Wedding Ceremony</h1>
     </div>
     <div className={Styles.service_description_summary}>
-      <p>
+      <div>
       Elevate your special day to extraordinary heights with our meticulously crafted wedding ceremony services. 
       At EventMaker,
        we understand the significance of this once-in-a-lifetime event, 
        and we are committed to turning your dreams into reality
-      </p>
+      </div>
     </div>
   </div>
   <div className={Styles.service_image_div}>
@@ -170,12 +170,12 @@ From menu planning , allowing you to relax and enjoy your event while we take ca
               <h1>Yagnopavit Ceremony</h1>
             </div>
             <div className={Styles.service_description_summary}>
-              <p>
+              <div>
               Embark on a sacred journey of spiritual growth and knowledge with our Upanayan Sanskar ceremony services.
                At EventMaker, we recognize the profound significance of this
                traditional Hindu rite of passage and are honored to help you celebrate this important 
                milestone in your childs life.
-              </p>
+              </div>
             </div>
           </div>
         </div>
@@ -186,12 +186,12 @@ From menu planning , allowing you to relax and enjoy your event while we take ca
       <h1>Birthday Ceremony</h1>
     </div>
     <div className={Styles.service_description_summary}>
-      <p>
+      <div>
       Make every birthday a memorable occasion with our exceptional birthday celebration services.
        At EventMaker, we understand the importance of 
       commemorating another year of life, and we are committed 
       to creating unforgettable moments for you and your children
-      </p>
+      </div>
     </div>
   </div>
   <div className={Styles.service_image_div}>
@@ -221,12 +221,12 @@ From menu planning , allowing you to relax and enjoy your event while we take ca
               <h1>Anniversary party</h1>
             </div>
             <div className={Styles.service_description_summary}>
-              <p>
+              <div>
               Mark the milestone of your enduring love and commitment with our bespoke wedding 
               anniversary celebration services. At Event Maker, we believe that every love story 
               deserves to be celebrated in style, and we are dedicated to creating unforgettable 
               moments that honor your journey together.
-              </p>
+              </div>
             </div>
           </div>
         </div>

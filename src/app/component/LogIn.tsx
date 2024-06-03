@@ -45,6 +45,7 @@ const LogIn: React.FC = () => {
   const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+     
       const res = await fetch("https://localhost:44340/Api/Auth/login", {
         method: "POST",
         headers: {
@@ -68,12 +69,12 @@ const LogIn: React.FC = () => {
         console.log("data.token", data.token);
         await authTokenSetToken(data.token);
         dispatch(login({ user: current_user }));
+       
         if (current_user.roles === "Decorator" || current_user.roles === "Caterer") {
           const approving = await FetchVendorId(current_user.userID);
           console.log("approving",approving);
           
-          if (!approving.isApprove) {
-            
+          if (!approving || !approving.isApprove) {
             window.location.href = "/vendor";
             return;
           } else {
@@ -102,18 +103,21 @@ const LogIn: React.FC = () => {
       
       const res = await axios.get(`https://localhost:44340/Api/Vendor/getByUserId/${userId}`);
       console.log("res", res);
-
       console.log("response", res.data);
-
       console.log("Response data:", res.data.isApprove);
       //alert(res.data.isApprove);
       const a = res.data.isApprove
+      //alert(a);
+      console.log("log a",a);
+      
       setApprove(approve);
+      //return a
       return res.data;
 
     } catch (error) {
       console.error("Error fetching vendor data:", error);
-      alert("Failed to fetch vendor data");
+      //alert("Failed to fetch vendor data");
+      
     }
   };
 

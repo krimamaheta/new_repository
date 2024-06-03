@@ -404,7 +404,7 @@ const Vendor = () => {
                 {/* <div className={style.button1} onClick={AllVendor}><button>VendorList</button></div> */}
                 <div className={style1.eventList}>
                 
-                    {loading ? (<p>Loading....!</p>) : error ? (<p>Error...</p>) : vendors.length > 0 ? (
+                    {loading ? (<div>Loading....!</div>) : error ? (<div>Error...</div>) : vendors.length > 0 ? (
                         <>
                         
                             <div className={style1.head}>VendorList</div>
@@ -465,7 +465,7 @@ const Vendor = () => {
                             </div>
                            
                         </>
-                    ) : (<p>No vendor Available</p>)}
+                    ) : (<div>No vendor Available</div>)}
 
 
 

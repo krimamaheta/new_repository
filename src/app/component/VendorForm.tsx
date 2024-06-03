@@ -20,6 +20,8 @@ import { useDecorationPrice } from "@/context/DecorationPrice";
 import { removeToken } from "@/lib/AuthToken";
 import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import * as signalR from "@microsoft/signalr";
+import NavBar from "../navigation";
+import Footer from "./footer";
 
 //user side vendor
 const VendorForm: React.FC = () => {
@@ -203,9 +205,11 @@ const VendorForm: React.FC = () => {
         return !Object.values(newErrors).some((error) => error !== '');
     };
 
-
+const BackLogin=()=>{
+    route.push("/login");
+}
     return (
-        <div className={Style.container}>
+        <><NavBar /><div className={Style.container}>
             <div className={Style.card}>
                 <div className={Style.heading}>
                     <h2>Welcome to Our Website</h2>
@@ -244,11 +248,13 @@ const VendorForm: React.FC = () => {
                     </select>
                 </div>
                 <div className={Style.buttongroup}>
-                     
+
                     <button onClick={handleSubmit}>Submit</button>
+
+
                 </div>
             </div>
-        </div>
+        </div><Footer/></>
     )
 }
 
@@ -353,7 +359,7 @@ export const GetAllVendor: React.FC = () => {
 
             setLoading(true)
             const vendorId = await FetchVendorId(User.user.userID);
-           
+  
             var res = await axios.get(`https://localhost:44340/api/VendorEvent/GetAllByVendorId?vendorId=${vendorId}`)
             console.log("vendor id", vendorId);
             console.log("fetch decoration", res);
@@ -361,7 +367,7 @@ export const GetAllVendor: React.FC = () => {
             setVendorDecorator(res.data);
         } catch (error) {
             console.error("error fetching vendor decoration");
-            alert("error to fetch list");
+           // alert("error to fetch list");
         }
         finally {
             setLoading(false);
@@ -523,7 +529,7 @@ export const GetAllVendor: React.FC = () => {
     //get all list
     useEffect(() => {
         const fetchData = async () => {
-            if (User) {
+            if (User && User.user && User.user.userID) {
                 const vendorId = await FetchVendorId(User.user.userID);
                 if (vendorId) {
                     await fetchDecoration(vendorId);
@@ -539,10 +545,10 @@ export const GetAllVendor: React.FC = () => {
         <div>
 
 
-            <p className={Style.left}>
+            <div className={Style.left}>
                 <button className={style.b2} onClick={onClick}>AddDecoration</button>
                 <button className={style.b2} onClick={handlelogout}>Logout</button>
-            </p>
+            </div>
 
            
 

@@ -67,7 +67,7 @@ const UpdateDecortor=()=>{
            
         } catch (error) {
             console.error("error fetching vendor decoration");
-            alert("error to fetch list");
+            //alert("error to fetch list");
         }
         finally {
             setLoading(false);
@@ -307,6 +307,7 @@ const [value, setValue] = useState<FormValue>({
                                         <DialogActions>
                                             <Button onClick={handleClose}>Cancel</Button>
                                             <Button type="submit" onClick={()=>handleUpdateClick(id)}>Update</Button>
+                                            
                                         </DialogActions>
                                     </Dialog>
                                    
