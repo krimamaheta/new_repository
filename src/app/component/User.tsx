@@ -228,7 +228,7 @@ const handleNextPage = () => {
       
      
 
-      {loading ? (
+       {loading ? (
         <div>Loading...</div>
       ) : AdminUser.length >0 ? (
         <>
@@ -268,9 +268,8 @@ const handleNextPage = () => {
         </>
       ) : (
         <div>No users available</div>
-      )}
-
-
+      )} 
+    
       <Dialog
         open={open}
         onClose={handleClose}

@@ -17,13 +17,6 @@ const Logo = ({ currentUser }: any) => (
     <Image src="/logo.png" alt="Logo" width={120} height={40} />
   </div>
 );
-// const Logo = ({ currentUser }: any) => (
-//   <div style={currentUser?.user?.roles === "Admin" ? { position: "absolute", left: "24px", top: "1px" } : {}}>
-//     <Image src={logo} alt="Logo" width={300} height={40} />
-//   </div>
- 
-// );
-
 
 
 const NavBar = () => {
@@ -50,66 +43,7 @@ const NavBar = () => {
 
   return (
    
-    // <div  className="navbar" style={{ position: "relative", margin: "0",}}>
-    //   <div className="container">
-    //     <div className="navbar-content">
-    //       <Logo currentUser={currentUser} />
-    //       {isClient && ( // Render only on the client side
-    //         <ul className="nav-links" style={currentUser?.user?.roles === "Admin" ? { color: 'black', position: "absolute", right: "24px", top: "16px" } : {}}>
-    //           <li>
-    //             <Link href="/">Home</Link>
-    //           </li>
-    //           <li>
-    //             <Link href="/about">About Us</Link>
-    //           </li>
-  
-    //           <>
-    //             {/* Check if the user is a "User" */}
-    //             {isAuthenticatedValue && currentUser?.user?.roles === "User" && (
-    //               <>
-    //                 <li>
-    //                   <Link href="/services">Services</Link>
-    //                 </li>
-    //                 <li>
-    //                   <Link href="/userprofile">Profile</Link>
-    //                 </li>
-    //               </>
-    //             )}
-    //           </>
-    //           <>
-    //             {isAuthenticatedValue && currentUser?.user?.roles === "Caterer" && (
-    //               <>
-    //                 <li>
-    //                   <Link href="/vendor/caterer">Catering</Link>
-    //                 </li>
-    //               </>
-    //             )
-    //             }
-    //           </>
-
-    //           {isAuthenticatedValue && currentUser?.user?.roles === "Decorator" && (
-    //             <>
-    //               <li><Link href="/vendor/allvendor">Decoration</Link></li>
-    //             </>
-    //           )}
-
-
-    //           {/* Conditionally render login/signup or logout link */}
-    //           {isAuthenticatedValue ? (
-    //             <li>
-    //               <Link href="#" onClick={handleLogout}>{Email} LogOut</Link>
-    //             </li>
-    //           ) : (
-    //             <>
-    //               <li><Link href="/login">Login</Link></li>
-    //               <li><Link href="/signup">SignUp</Link></li>
-    //             </>
-    //           )}
-    //         </ul>
-    //       )}
-    //     </div>
-    //   </div>
-    // </div>
+   
     <div className="navbar" style={{ position: "relative", margin: "0" }}>
     <div className="container">
       <div className="navbar-content">

@@ -68,14 +68,11 @@ const About = () => {
       <Carousel itemsToShow={2} isRTL={false}>
         <Image src={w1} alt="decoration" />
         <Image src={r1} alt="decoration" />
-
         <Image src={r2} alt="decoration" />
         <Image src={r3} alt="decoration" />
-
         <Image src={c1} alt="decoration" />
         <Image src={c2} alt="decoration" />
         <Image src={c3} alt="decoration" />
-
       </Carousel>
       </div>
     </div>
@@ -105,9 +102,6 @@ const About = () => {
           </div>
         </div>
       </div>
-
-
-
       <div className={Styles.service_container}>
         <div className={Styles.service_description_container}>
           <div className={Styles.service_description_title}>

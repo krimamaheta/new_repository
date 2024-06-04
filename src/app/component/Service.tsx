@@ -317,12 +317,9 @@ const Service = () => {
             <Carousel itemsToShow={2} isRTL={false}>
               <Image src={w1} alt="decoration" />
               <Image src={Ring} alt="decoration" />
-
               <Image src={birthday1} alt="decoration" />
               <Image src={deco2} alt="decoration" />
-
               <Image src={chair} alt="decoration" />
-
             </Carousel>
           </div>
 
@@ -509,7 +506,7 @@ const Service = () => {
                         <p>Price: {caterer.price}</p>
                         <button className={style.button} onClick={handleClickOpen}>Order</button>
 
-                        <Dialog className={style.bg2}
+                        {/* <Dialog className={style.bg2}
                           open={open}
                           onClose={handleClose}
                           PaperProps={{
@@ -546,7 +543,7 @@ const Service = () => {
                             <Button onClick={handleClose}>Cancel</Button>
                             <Button type="submit">Subscribe</Button>
                           </DialogActions>
-                        </Dialog>
+                        </Dialog> */}
 
 
                       </CardContent>
