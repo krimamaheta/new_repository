@@ -48,7 +48,6 @@ export const config = {
     '/vendor',
     '/vendor/allvendor',
     '/vendor/allvendor/addDecoration',
-
     '/vendor/caterer'
   ],
 };

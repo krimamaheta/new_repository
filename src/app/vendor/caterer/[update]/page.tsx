@@ -1,5 +1,4 @@
 "use client"
-
 import { useParams } from "next/navigation"
 import React, { ChangeEvent, cache, useCallback, useEffect } from "react";
 import style from "./../../vendorStyle.module.css"
@@ -101,12 +100,14 @@ const UpdateBox = () => {
         }
     }
 
-    
-    const fetchCaterer = async () => {
+    const[page,setPage]=useState(1);
+    const[pageSize]=useState(9);
+    const fetchCaterer = async (vendorId:any,page:number,pageSize:number) => {
         try {
             setLoading(true);
             const vendorId = await FetchVendorId(User.user.userID);
-            const res = await axios.get(`https://localhost:44340/api/VendorEvent/GetAllByVendorId?vendorId=${vendorId}`);
+            //const res = await axios.get(`https://localhost:44340/api/VendorEvent/GetAllByVendorId?vendorId=${vendorId}`);
+            var res=await axios.get(`https://localhost:44340/api/VendorEvent/GetAllByVendorId?vendorId=${vendorId}&page=${page}&pageSize=${pageSize}`);
             console.log("vendor id", vendorId);
             console.log("response", res);
             setVendorCaterer(res.data);
@@ -120,13 +121,25 @@ const UpdateBox = () => {
 
     const [vendorCaterer, setVendorCaterer] = useState<vendorCatererModel[]>([]);
 
+    // useEffect(() => {
+    //     if (User) {
+    //         FetchVendorId(User.user.userID).then(vendorId => {
+    //             fetchCaterer(vendorId,page,pageSize);
+    //         });
+    //     }
+    // }, [User]);
     useEffect(() => {
-        if (User) {
-            FetchVendorId(User.user.userID).then(vendorId => {
-                fetchCaterer(vendorId);
-            });
-        }
-    }, [User]);
+        const fetchData = async () => {
+            if (User) {
+                const vendorId = await FetchVendorId(User.user.userID);
+                if (vendorId) {
+                    await fetchCaterer(vendorId,page,pageSize);
+                }
+            }
+        };
+
+        fetchData();
+    }, [User,page,pageSize]);
 
     useEffect(() => {
         if (id && vendorCaterer.length > 0) {

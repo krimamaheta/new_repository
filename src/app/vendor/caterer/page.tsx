@@ -20,6 +20,7 @@ import { logout } from "@/Redux/authslice/authslice";
 import { removeToken } from "@/lib/AuthToken";
 import { CatererHome } from "@/app/component/dashboard/CatererHome";
 import Footer from "@/app/component/footer";
+import style1 from "./../../../Styles/global.module.css"
 
 interface Caterer {
     images: any;
@@ -212,7 +213,7 @@ const Caterer = () => {
                 alert(res.data);
 
                 handleClose();
-                await fetchCaterer();
+                await fetchCaterer(vendorId,page,pageSize);
 
             } else {
                 //500 error
@@ -254,12 +255,14 @@ const Caterer = () => {
         }
     }
 
-
-    const fetchCaterer = async () => {
+    const[page,setPage]=useState(1);
+    const[pageSize]=useState(9);
+    const fetchCaterer = async (vendorId:any,page:number,pageSize:number) => {
         try {
             setLoading(true);
             const vendorId = await FetchVendorId(User.user.userID);
-            const res = await axios.get(`https://localhost:44340/api/VendorEvent/GetAllByVendorId?vendorId=${vendorId}`);
+            //const res = await axios.get(`https://localhost:44340/api/VendorEvent/GetAllByVendorId?vendorId=${vendorId}`);
+            var res=await axios.get(`https://localhost:44340/api/VendorEvent/GetAllByVendorId?vendorId=${vendorId}&page=${page}&pageSize=${pageSize}`)
             console.log("vendor id", vendorId);
             console.log("response", res);
             setVendorCaterer(res.data);
@@ -271,13 +274,21 @@ const Caterer = () => {
         }
     }
 
-    
+    const handleNext = () => {
+        setPage(prevPage => prevPage + 1);
+    };
+
+    const handlePrevious = () => {
+        if (page > 1) {
+            setPage(prevPage => prevPage - 1);
+        }
+    };
     const onClick1 = async (e: any) => {
         setLoading(true)
         setEvents(e.target.event);
         setTimeout(async () => {
             try {
-                await fetchCaterer();
+                await fetchCaterer(vendorId);
             } catch (error) {
                 console.log("Error fetching vendor Catering:", error);
                 alert("fail to fetch")
@@ -296,11 +307,11 @@ const Caterer = () => {
         if (User&& User.user && User.user.userID) {
             FetchVendorId(User.user.userID).then(vendorId => {
                 if (vendorId) {
-                    fetchCaterer(vendorId);
+                    fetchCaterer(vendorId,page,pageSize);
                 }
             });
         }
-    }, [User]);
+    }, [User,page,pageSize]);
 
     //delete  details api
     const DeleteDetails = async (Id: string) => {
@@ -312,7 +323,7 @@ const Caterer = () => {
                     console.log("response", res.data);
                     alert("Vendor Event deleted successfully");
 
-                    await fetchCaterer();
+                    await fetchCaterer(vendorId,page,pageSize);
                     return res.data;
                 } else {
 
@@ -336,80 +347,20 @@ const Caterer = () => {
 
     }
 
-    const selectFile2 = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const files: FileList | null = event.target.files;
+    // const selectFile2 = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     const files: FileList | null = event.target.files;
 
-        if (files) {
-            const selectedFiles: File[] = Array.from(files);
-            const imageUrls: string[] = selectedFiles.map(file => URL.createObjectURL(file));
-            setImages(imageUrls);
-        }
-    };
+    //     if (files) {
+    //         const selectedFiles: File[] = Array.from(files);
+    //         const imageUrls: string[] = selectedFiles.map(file => URL.createObjectURL(file));
+    //         setImages(imageUrls);
+    //     }
+    // };
 
 
 
     
-    const handleUpdateClick = async (Id: String) => {
-        try {
-            const cloudinaryUploadPromises = value.images.map(async (image) => {
-                const formData = new FormData();
-                formData.append("file", image);
-                formData.append("upload_preset", "unsign_upload");
-                formData.append("cloud_name", "dqtsmfpvb");
-
-                const response = await fetch(
-                    "https://api.cloudinary.com/v1_1/dqtsmfpvb/image/upload",
-                    {
-                        method: "POST",
-                        body: formData,
-                    }
-                );
-                const data = await response.json();
-                return data.secure_url;
-            });
-
-            const uploadedImageUrls = await Promise.all(cloudinaryUploadPromises);
-            console.log("Updated images:", uploadedImageUrls);
-
-            // Prepare updated data
-            const updatedValue = {
-                ...value,
-                images: uploadedImageUrls
-            };
-            //alert("image upload sucessfully...!");
-
-            const url = `https://localhost:44340/api/VendorEvent/${id}`;
-            const response = await axios.put(url, {
-                Id: id,
-                VendorId: vendorId,
-                EventId: eventId,
-                Price: price,
-                DishName: dishName,
-                images: uploadedImageUrls,
-               
-            });
-            console.log("response", response);
-            // Handle success response
-            console.log('Update successful:', response.data);
-            alert("update Value successfully...!");
-            handleupdateClose();
-            // setValue({
-            //     eventId:"",
-            //     vendorId:"",
-            //     dishName:"",
-            //     price: "",
-            //     images: []
-            // });
-            await fetchCaterer();
-
-          
-
-        } catch (error) {
-            console.log("error");
-            //alert("error coming");
-
-        }
-    }
+   
     interface VendorEvent {
         id: string
         eventId: string;
@@ -422,7 +373,6 @@ const Caterer = () => {
 
     const handleFileChange = (e: { target: { files: any; }; }) => {
         const files = e.target.files;
-
         if (files) {
             setValue((prevValue) => ({ ...prevValue, images: Array.from(files) }));
         }
@@ -526,6 +476,24 @@ const Caterer = () => {
                
                 <button className={style.logoutbtn} onClick={handlelogout}>Logout</button>
 
+                {/* <div className={style1.input1}>
+              <div className={style1.heading2}>
+                <label htmlFor="Event">Select Event:</label></div>
+
+              <select className={style1.s1} name="events" id="events" value={value.eventId} onChange={selectchange}>
+                {loading ? (<option value="">Loading.....</option>) :
+                  (events.map((event:any) => (
+                    <option key={event.eventId} value={event.eventId}>
+                      {event.eventName}
+                    </option>
+                  )))
+
+                }
+
+              </select>
+            </div> */}
+
+
             </div>
 
 
@@ -547,10 +515,10 @@ const Caterer = () => {
                                 <div className={style.details1}>CityName:{event.cityName}</div>
                                 <div className={style.details1}>FirmAddress:{event.address}</div>
                                 <div className={style.details1}>District:{event.district}</div>
-                                <div className={style.details1}>Websiteurl:{event.websiteUrl}</div>
-                                <div className={style.details1}>EventName:{event.eventName}</div> */}
+                                <div className={style.details1}>Websiteurl:{event.websiteUrl}</div>*/}
+                                <div className={style.details1}>EventName:{event.eventName}</div> 
                                     <div className={style.details1}>DishName:{event.dishName}</div>
-                                    <div className={style.details1}>DishPrice:{event.price}</div>
+                                    <div className={style.details1}>Rs:{event.price}/-</div>
                                 </div>
 
                                 <div className={style.buttoncontainer}>
@@ -568,7 +536,12 @@ const Caterer = () => {
 
                     </Grid>
                 ))}
+                
             </Grid>
+            <div>
+                        <button style={{marginLeft:'50rem',marginBottom:'5rem',backgroundColor:'#6e380c',color:'white',borderRadius:'12px',padding:'12px'}} onClick={handlePrevious} disabled={page === 1}>Previous</button>
+                        <button style={{marginLeft:'2rem',marginBottom:'5rem',backgroundColor:'#6e380c',color:'white',borderRadius:'12px',padding:'12px'}}onClick={handleNext}>NextPage</button>
+            </div>
             <Footer/>
         </div>
     );

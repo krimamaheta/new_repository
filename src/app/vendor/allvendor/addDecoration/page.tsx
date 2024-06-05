@@ -111,9 +111,6 @@ const DecorationForm: React.FC = () => {
         );
         const data = await response.json();
         console.log("data", data);
-
-
-       
         return data.secure_url;
       });
 
@@ -125,7 +122,6 @@ const DecorationForm: React.FC = () => {
         formData.append("Images", url);
       });
      
-
       // Update the state with the uploaded image URLs
       // setValue((prevValue: FormValue) => ({
       //   ...prevValue,
@@ -139,9 +135,6 @@ const DecorationForm: React.FC = () => {
       console.log("First image URL:", uploadedImageUrls[0]); 
       console.log("value before state update:", value);
       console.log("value", value);
-
-
-
       const res = await axios.post("https://localhost:44340/api/VendorEvent/AddVendorEvent.", formData, {
         headers: {
           "Content-Type": "multipart/form-data"

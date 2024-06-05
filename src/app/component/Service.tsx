@@ -451,7 +451,8 @@ const Service = () => {
                 }
 
               </select>
-              </div>
+            </div>
+            
             </div>
 
             

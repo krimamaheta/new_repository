@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import styled from "styled-components";
@@ -15,24 +14,20 @@ import setToken from "@/store/token";
 import { setToken as authTokenSetToken } from "@/lib/AuthToken";
 import axios from "axios";
 import { RouterOutlined } from "@mui/icons-material";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 
 
 
 
 const LogIn: React.FC = () => {
-
-
   const router = useRouter();
   const dispatch = useDispatch();
-
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const [showForgotPassWord, setShowForgotPassword] = useState(false);
+ 
   const [approve, setApprove] = useState(null)
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -62,7 +57,7 @@ const LogIn: React.FC = () => {
 
       if (!res.ok) {
         alert(data.message);
-       //toast.error(data.message, { autoClose: 4000 });
+      
        return;
       }
       if (res.ok) {
@@ -71,7 +66,6 @@ const LogIn: React.FC = () => {
         const current_user = data.user;
         console.log(current_user);
         await alert("login successfully");
-       // toast.success("Login successfully",{ autoClose: 4000 });
         console.log("data.token", data.token);
         await authTokenSetToken(data.token);
         dispatch(login({ user: current_user }));
@@ -196,7 +190,7 @@ const LogIn: React.FC = () => {
             </div>
           </div>
         </div>
-        <ToastContainer autoClose={4000} />
+        
       </Wrapper>
     </>
 

@@ -140,9 +140,6 @@ const VendorForm: React.FC = () => {
                 setTypeOfVendor(data.typeOfVendor);
                 console.log("typeofvendor",data.typeOfVendor);
 
-                
-                
-
             } else {
                 // Handle other HTTP errors
                 console.error("Failed to add value:", response.statusText);
@@ -250,8 +247,6 @@ const BackLogin=()=>{
                 <div className={Style.buttongroup}>
 
                     <button onClick={handleSubmit}>Submit</button>
-
-
                 </div>
             </div>
         </div><Footer/></>
@@ -353,18 +348,20 @@ export const GetAllVendor: React.FC = () => {
 
         }
     }
-
-    const fetchDecoration = async (vendorId: any) => {
+    const[page,setPage]=useState(1);
+    const[pageSize]=useState(9);
+    const fetchDecoration = async (vendorId: any,page:number,pageSize:number) => {
         try {
 
             setLoading(true)
             const vendorId = await FetchVendorId(User.user.userID);
-  
-            var res = await axios.get(`https://localhost:44340/api/VendorEvent/GetAllByVendorId?vendorId=${vendorId}`)
+            //var res = await axios.get(`https://localhost:44340/api/VendorEvent/GetAllByVendorId?vendorId=${vendorId}`)
+            var res=await axios.get(`https://localhost:44340/api/VendorEvent/GetAllByVendorId?vendorId=${vendorId}&page=${page}&pageSize=${pageSize}`)
             console.log("vendor id", vendorId);
             console.log("fetch decoration", res);
             setvendorDecoration(res.data);
             setVendorDecorator(res.data);
+         
         } catch (error) {
             console.error("error fetching vendor decoration");
            // alert("error to fetch list");
@@ -374,11 +371,12 @@ export const GetAllVendor: React.FC = () => {
         }
     }
 
+
     const onClick1 = async (e:any) => {
         setLoading(true)
         setEvent(e.target.event);
         setTimeout(async () => {
-            await fetchDecoration(vendorId);
+            await fetchDecoration(vendorId,page,pageSize);
             setLoading(false);
 
         }, 1000)
@@ -397,7 +395,7 @@ export const GetAllVendor: React.FC = () => {
                 if (res.status === 200) {
                     console.log("response", res.data);
                     alert("Vendor Event deleted successfully");
-                    await fetchDecoration(vendorId);
+                    await fetchDecoration(vendorId,page,pageSize);
                     return res.data;
                 } else {
                    
@@ -471,59 +469,7 @@ export const GetAllVendor: React.FC = () => {
         });
     };
     
-    const handleUpdateClick = async (Id: string) => {
-        try {
-          
-            const cloudinaryUploadPromises = value.images.map(async (image) => {
-                const formData = new FormData();
-                formData.append("file",image);
-                formData.append("upload_preset", "unsign_upload");
-                formData.append("cloud_name", "dqtsmfpvb");
-
-                const response = await fetch(
-                    "https://api.cloudinary.com/v1_1/dqtsmfpvb/image/upload",
-                    {
-                        method: "POST",
-                        body: formData,
-                    }
-                );
-                const data = await response.json();
-                return data.secure_url;
-            });
-
-            const uploadedImageUrls = await Promise.all(cloudinaryUploadPromises);
-            console.log("Updated images:", uploadedImageUrls);
-
-          
-            const updatedValue = {
-                ...value,
-                images: uploadedImageUrls
-            };
-
-
-            const url = `https://localhost:44340/api/VendorEvent/${id}`;
-            const response = await axios.put(url, {
-                Id: id,
-                VendorId: vendorId,
-                EventId:value.eventId,
-                Price: price,
-                images: uploadedImageUrls,
-              
-            });
-            console.log("response", response);
-            
-            console.log('Update successful:', response.data);
-            alert("update Value successfully...!")
-            await ResetValue();
-            await fetchDecoration(vendorId);
-            
-           
-
-        } catch (error) {
-            console.log("error");
-          
-        }
-    }
+   
 
 
     //get all list
@@ -532,15 +478,24 @@ export const GetAllVendor: React.FC = () => {
             if (User && User.user && User.user.userID) {
                 const vendorId = await FetchVendorId(User.user.userID);
                 if (vendorId) {
-                    await fetchDecoration(vendorId);
+                    await fetchDecoration(vendorId,page,pageSize);
                 }
             }
         };
 
         fetchData();
-    }, [User]);
+    }, [User,page,pageSize]);
     
+    const handleNext = () => {
+        setPage(prevPage => prevPage + 1);
+    };
 
+    const handlePrevious = () => {
+        if (page > 1) {
+            setPage(prevPage => prevPage - 1);
+        }
+    };
+    
     return (
         <div>
 
@@ -578,6 +533,10 @@ export const GetAllVendor: React.FC = () => {
                     </Grid>
                 ))}
             </Grid>
+            <div>
+                        <button style={{marginLeft:'50rem',marginBottom:'5rem',backgroundColor:'#6e380c',color:'white',borderRadius:'12px',padding:'12px'}} onClick={handlePrevious} disabled={page === 1}>Previous</button>
+                        <button style={{marginLeft:'2rem',marginBottom:'5rem',backgroundColor:'#6e380c',color:'white',borderRadius:'12px',padding:'12px'}}onClick={handleNext}>NextPage</button>
+            </div>
         </div>
     )
 }

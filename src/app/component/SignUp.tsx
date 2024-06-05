@@ -34,6 +34,7 @@ export const SignUp = () => {
         console.log('Selected user role:', values.userRole);
         console.log(values);
         CreateUserPage(values);
+       
         action.resetForm();
         route.push("/login");
       },
@@ -343,3 +344,5 @@ const Wrapper = styled.section`
     }
   }
 `;
+
+

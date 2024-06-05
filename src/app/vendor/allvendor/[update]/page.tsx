@@ -44,7 +44,6 @@ const UpdateDecortor=()=>{
             var res = await axios.get(`https://localhost:44340/Api/Vendor/getByUserId/${userId}`)
             console.log("res..", res);
             console.log("vendorid", res.data.vendorId);
-
             return res.data.vendorId;
 
         } catch (error) {
@@ -53,14 +52,15 @@ const UpdateDecortor=()=>{
 
         }
     }
-   
-    const fetchDecoration = async (vendorId: any) => {
+   const[page,setPage]=useState(1);
+    const[pageSize]=useState(9);
+    const fetchDecoration = async (vendorId: any,page:number,pageSize:number) => {
         try {
 
             setLoading(true)
             const vendorId = await FetchVendorId(User.user.userID);
-           
-            var res = await axios.get(`https://localhost:44340/api/VendorEvent/GetAllByVendorId?vendorId=${vendorId}`)
+           //var res = await axios.get(`https://localhost:44340/api/VendorEvent/GetAllByVendorId?vendorId=${vendorId}`)
+           var res=await axios.get(`https://localhost:44340/api/VendorEvent/GetAllByVendorId?vendorId=${vendorId}&page=${page}&pageSize=${pageSize}`)
             console.log("vendor id", vendorId);
             console.log("fetch decoration", res);
             setvendorDecoration(res.data);
@@ -80,13 +80,13 @@ const UpdateDecortor=()=>{
             if (User) {
                 const vendorId = await FetchVendorId(User.user.userID);
                 if (vendorId) {
-                    await fetchDecoration(vendorId);
+                    await fetchDecoration(vendorId,page,pageSize);
                 }
             }
         };
 
         fetchData();
-    }, [User]);
+    }, [User,page,pageSize]);
 
     const [vendorId, setVendorId] = useState("");
     const [ids,setIds] = useState("");
@@ -174,7 +174,15 @@ const [value, setValue] = useState<FormValue>({
         });
     };
   
+const handleNext = () => {
+        setPage(prevPage => prevPage + 1);
+    };
 
+    const handlePrevious = () => {
+        if (page > 1) {
+            setPage(prevPage => prevPage - 1);
+        }
+    };
     //update
     const handleUpdateClick = async (Id: string) => {
         try {
