@@ -502,7 +502,7 @@ export const GetAllVendor: React.FC = () => {
 
             <div className={Style.left}>
                 <button className={style.b2} onClick={onClick}>AddDecoration</button>
-                <button className={style.b2} onClick={handlelogout}>Logout</button>
+                {/* <button className={style.b2} onClick={handlelogout}>Logout</button> */}
             </div>
 
            

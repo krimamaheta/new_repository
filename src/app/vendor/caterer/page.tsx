@@ -474,7 +474,7 @@ const Caterer = () => {
                     </DialogActions>
                 </Dialog>
                
-                <button className={style.logoutbtn} onClick={handlelogout}>Logout</button>
+                {/* <button className={style.logoutbtn} onClick={handlelogout}>Logout</button> */}
 
                 {/* <div className={style1.input1}>
               <div className={style1.heading2}>
